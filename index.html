@@ -140,6 +140,8 @@
 	  }
 	}
 	</script>
+
+	<script src="/radio-station.js"></script>
   
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
@@ -2099,7 +2101,7 @@
 	  	this.currentSection = 'home';
 	  	this.currentAudio = null;
 	  	this.isPlaying = false;
-		this.radioStation = 'mixed';
+		this.radioStation = new RadioStation();
 		this.radioPlaylist = [];
 		this.radioCurrentIndex = 0;
 		this.radioAudio = null;
@@ -2124,22 +2126,29 @@
 
 	  // Radio Station Methods
 	  initRadio() {
-	  	const radioElement = document.getElementById('radio-audio');
-	  	if (!radioElement) {
-	  		console.error('Radio audio element not found!');
-	  		return;
-	  	}
-	  	
-	  	this.radioAudio = radioElement;
-	  	this.radioAudio.volume = this.radioVolume;
-	  	
-	  	// Setup radio audio listeners
-	  	this.radioAudio.addEventListener('timeupdate', () => this.updateRadioProgress());
-	  	this.radioAudio.addEventListener('ended', () => this.playNextRadioTrack());
-	  	this.radioAudio.addEventListener('loadedmetadata', () => this.updateRadioDuration());
-	  	
-	  	// Load initial playlist
-	  	this.loadRadioPlaylist('mixed');
+		  const radioElement = document.getElementById('radio-audio');
+		  if (!radioElement) {
+			console.error('Radio audio element not found!');
+			return;
+		  }
+		  
+		  this.radioStation.init(radioElement);
+		  
+		  // Set up UI callbacks
+		  this.radioStation.setOnTrackChange((current, next) => {
+			document.getElementById('radio-now-playing').textContent = current.title;
+			document.getElementById('radio-up-next').textContent = next.title;
+		  });
+		  
+		  this.radioStation.setOnPlayStateChange((isPlaying) => {
+			document.getElementById('radio-play-btn').textContent = isPlaying ? '⏸️' : '▶️';
+		  });
+		  
+		  this.radioStation.setOnProgressUpdate((progress, currentTime, duration) => {
+			document.getElementById('radio-progress-bar').style.width = `${progress}%`;
+			document.getElementById('radio-current-time').textContent = this.formatTime(currentTime);
+			document.getElementById('radio-total-time').textContent = this.formatTime(duration);
+		  });
 	  }
 	  
 	  toggleRadio() {
@@ -2154,193 +2163,35 @@
 	  	}
 	  }
 	  
-	  loadRadioPlaylist(station) {
-	  	this.radioStation = station;
-	  	
-	  	// Define playlists
-	  	const playlists = {
-	  		mixed: [
-	  			{ title: 'Rest in His Presence', file: 'RestinHisPresence.mp3', duration: 240 },
-	  			{ title: 'Morning Mercies', file: 'MorningMercies.mp3', duration: 225 },
-	  			{ title: 'Healing Waters', file: 'HealingWaters.mp3', duration: 255 },
-	  			{ title: 'Abide in Me', file: 'AbideinMe.mp3', duration: 210 },
-	  			{ title: 'Peace Be Still', file: 'PeaceBeStill.mp3', duration: 270 },
-	  			{ title: 'Come Away With Me', file: 'ComeAwayWithMe.mp3', duration: 230 }
-	  		],
-	  		instrumental: [
-	  			{ title: 'Gentle Streams', file: 'GentleStreams.mp3', duration: 289 },
-	  			{ title: 'Heavenly Peace', file: 'HeavenlyPeace.mp3', duration: 239 },
-	  			{ title: 'Morning Light', file: 'MorningLight.mp3', duration: 240 },
-	  			{ title: 'Quiet Sanctuary', file: 'QuietSanctuary.mp3', duration: 202 },
-	  			{ title: 'Sacred Waters', file: 'SacredWaters.mp3', duration: 169 },
-	  			{ title: 'Peaceful Garden', file: 'PeacefulGarden.mp3', duration: 248 }
-	  		],
-	  		vocals: [
-	  			{ title: 'Rest in His Presence', file: 'RestinHisPresence.mp3', duration: 240 },
-	  			{ title: 'Morning Mercies', file: 'MorningMercies.mp3', duration: 225 },
-	  			{ title: 'Healing Waters', file: 'HealingWaters.mp3', duration: 255 },
-	  			{ title: 'Abide in Me', file: 'AbideinMe.mp3', duration: 210 },
-	  			{ title: 'Peace Be Still', file: 'PeaceBeStill.mp3', duration: 270 },
-	  			{ title: 'Come Away With Me', file: 'ComeAwayWithMe.mp3', duration: 230 }
-	  		]
-	  	};
-	  	
-	  	// Shuffle playlist
-	  	this.radioPlaylist = this.shuffleArray([...playlists[station]]);
-	  	this.radioCurrentIndex = 0;
-	  	this.songsSinceCut = 0;
-	  	
-	  	// Update UI
-	  	this.updateStationButtons(station);
-	  }
-	  
-	  shuffleArray(array) {
-	  	const newArray = [...array];
-	  	for (let i = newArray.length - 1; i > 0; i--) {
-	  		const j = Math.floor(Math.random() * (i + 1));
-	  		[newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-	  	}
-	  	return newArray;
-	  }
-	  
-	  updateStationButtons(station) {
-	  	document.querySelectorAll('.station-btn').forEach(btn => {
-	  		btn.classList.remove('active');
-	  	});
-	  	
-	  	const activeBtn = document.querySelector(`.station-btn[onclick*="${station}"]`);
-	  	if (activeBtn) activeBtn.classList.add('active');
-	  }
-	  
-	  startRadio() {
-	  	if (this.radioPlaylist.length === 0) return;
-	  	
-	  	this.isRadioPlaying = true;
-	  	this.playRadioTrack(0);
-	  }
-	  
-	  playRadioTrack(index) {
-	  	if (index >= this.radioPlaylist.length) {
-	  		// Reshuffle and start over
-	  		this.radioPlaylist = this.shuffleArray(this.radioPlaylist);
-	  		index = 0;
-	  	}
-	  	
-	  	this.radioCurrentIndex = index;
-	  	
-	  	// Check if we should play a cut/break
-	  	if (this.songsSinceCut >= this.cutInterval) {
-	  		this.playRadioCut();
-	  		return;
-	  	}
-	  	
-	  	const track = this.radioPlaylist[index];
-	  	const audioPath = `/audio/${track.file}`;
-	  	
-	  	// Update UI
-	  	document.getElementById('radio-now-playing').textContent = track.title;
-	  	
-	  	// Update up next
-	  	const nextIndex = (index + 1) % this.radioPlaylist.length;
-	  	document.getElementById('radio-up-next').textContent = this.radioPlaylist[nextIndex].title;
-	  	
-	  	// Play audio
-	  	this.radioAudio.src = audioPath;
-	  	this.radioAudio.play();
-	  	document.getElementById('radio-play-btn').textContent = '⏸️';
-	  	
-	  	this.songsSinceCut++;
-	  }
-	  
-	  playRadioCut() {
-	  	// Reset cut counter
-	  	this.songsSinceCut = 0;
-	  	
-	  	// Get appropriate cut file
-	  	const cutFiles = {
-	  		mixed: ['Listening_mixed-0001.mp3', 'Listening_mixed-0002.mp3', 'Listening_mixed-0003.mp3'],
-	  		instrumental: ['Listening_instrumentals-0001.mp3', 'Listening_instrumentals-0002.mp3', 'Listening_instrumentals-0003.mp3'],
-	  		vocals: ['Listening_vocals-0001.mp3', 'Listening_vocals-0002.mp3', 'Listening_vocals-0003.mp3']
-	  	};
-	  	
-	  	const cuts = cutFiles[this.radioStation];
-	  	const randomCut = cuts[Math.floor(Math.random() * cuts.length)];
-	  	
-	  	// Update UI
-	  	document.getElementById('radio-now-playing').textContent = '📢 Station Announcement';
-	  	
-	  	// Play cut
-	  	this.radioAudio.src = `/audio/cuts/${randomCut}`;
-	  	this.radioAudio.play();
-	  	
-	  	// After cut ends, play next song
-	  	this.radioAudio.onended = () => {
-	  		this.radioAudio.onended = () => this.playNextRadioTrack();
-	  		this.playRadioTrack(this.radioCurrentIndex);
-	  	};
-	  }
-	  
 	  playNextRadioTrack() {
 	  	this.playRadioTrack(this.radioCurrentIndex + 1);
 	  }
 	  
 	  toggleRadioPlayPause() {
-	  	const btn = document.getElementById('radio-play-btn');
-	  	
-	  	if (this.radioAudio.paused) {
-	  		this.radioAudio.play();
-	  		btn.textContent = '⏸️';
-	  		this.isRadioPlaying = true;
-	  	} else {
-	  		this.radioAudio.pause();
-	  		btn.textContent = '▶️';
-	  		this.isRadioPlaying = false;
-	  	}
+	    this.radioStation.togglePlayPause();
 	  }
 	  
 	  skipRadioTrack() {
-	  	this.playNextRadioTrack();
+	    this.radioStation.skip();
 	  }
 	  
 	  toggleRadioMute() {
-	  	const btn = document.getElementById('radio-mute-btn');
-	  	
-	  	if (this.radioAudio.muted) {
-	  		this.radioAudio.muted = false;
-	  		btn.textContent = '🔊';
-	  	} else {
-	  		this.radioAudio.muted = true;
-	  		btn.textContent = '🔇';
-	  	}
+	    const isMuted = this.radioStation.toggleMute();
+	    document.getElementById('radio-mute-btn').textContent = isMuted ? '🔇' : '🔊';
 	  }
 	  
 	  setRadioVolume(value) {
-	  	this.radioVolume = value / 100;
-	  	this.radioAudio.volume = this.radioVolume;
+	    this.radioStation.setVolume(value);
 	  }
 	  
 	  setRadioStation(station) {
-	  	// Stop current playback
-	  	this.radioAudio.pause();
-	  	
-	  	// Load new station
-	  	this.loadRadioPlaylist(station);
-	  	
-	  	// Start playing
-	  	this.startRadio();
-	  }
-	  
-	  updateRadioProgress() {
-	  	if (!this.radioAudio.duration) return;
-	  	
-	  	const progress = (this.radioAudio.currentTime / this.radioAudio.duration) * 100;
-	  	document.getElementById('radio-progress-bar').style.width = `${progress}%`;
-	  	
-	  	document.getElementById('radio-current-time').textContent = this.formatTime(this.radioAudio.currentTime);
-	  }
-	  
-	  updateRadioDuration() {
-	  	document.getElementById('radio-total-time').textContent = this.formatTime(this.radioAudio.duration);
+	    this.radioStation.setStation(station);
+	    this.updateStationButtons(station);
+	    
+	    // Start playing if not already
+	    if (!this.radioStation.isPlaying) {
+	  	this.radioStation.play();
+	    }
 	  }
 
 	  showPrivacyPolicy() {
