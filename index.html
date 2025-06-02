@@ -613,6 +613,23 @@
         width: 100%;
         order: 3;
       }
+
+	  footer {
+		padding: 2rem 0 1.5rem 0 !important;
+	  }
+	  
+	  footer div[style*="grid-template-columns"] {
+		grid-template-columns: 1fr !important;
+		gap: 1.5rem !important;
+	  }
+	  
+	  footer a[style*="display: inline-flex"] {
+		display: block !important;
+		text-align: center;
+		width: fit-content;
+		margin: 0 auto;
+	  }
+  
     }
   </style>
 </head>
@@ -776,6 +793,129 @@
 	  	this.bindEvents();
 	  	this.setCopyrightYear(); // Add this
 	  	setInterval(() => this.updateTimeGreeting(), 60000);
+	  }
+
+	  // Legal Policy Modals
+	  showPrivacyPolicy() {
+	    const modal = document.getElementById('detail-modal');
+	    const modalBody = document.getElementById('modal-body');
+	    
+	    modalBody.innerHTML = `
+	  	<div style="max-width: 600px;">
+	  	  <h2 style="color: var(--deep-navy); margin-bottom: 2rem;">Privacy Policy</h2>
+	  	  
+	  	  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Information We Collect</h3>
+	  	  <p style="line-height: 1.6; margin-bottom: 1rem;">
+	  		Daily Grace stores your devotions and prayers locally on your device using your browser's storage. 
+	  		We do not collect personal information or transmit your spiritual content to external servers.
+	  	  </p>
+	  	  
+	  	  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">How We Use Information</h3>
+	  	  <p style="line-height: 1.6; margin-bottom: 1rem;">
+	  		Your devotions and prayers remain private and are only accessible to you on your device. 
+	  		We use AI services (Pollinations.ai) to generate content, but your personal prayers and requests are not stored by these services.
+	  	  </p>
+	  	  
+	  	  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Cookies</h3>
+	  	  <p style="line-height: 1.6; margin-bottom: 1rem;">
+	  		We use minimal browser storage to save your content locally. No tracking cookies are used.
+	  	  </p>
+	  	  
+	  	  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Contact</h3>
+	  	  <p style="line-height: 1.6;">
+	  		For questions about privacy, contact us at 
+	  		<a href="mailto:contact@dailygrace.online" style="color: var(--primary-blue);">contact@dailygrace.online</a>
+	  	  </p>
+	  	  
+	  	  <p style="font-size: 0.9rem; color: var(--sage-green); margin-top: 2rem;">
+	  		Last updated: June 2025
+	  	  </p>
+	  	</div>
+	    `;
+	    
+	    modal.classList.add('active');
+	  }
+	  
+	  showTermsOfService() {
+	    const modal = document.getElementById('detail-modal');
+	    const modalBody = document.getElementById('modal-body');
+	    
+	    modalBody.innerHTML = `
+	  	<div style="max-width: 600px;">
+	  	  <h2 style="color: var(--deep-navy); margin-bottom: 2rem;">Terms of Service</h2>
+	  	  
+	  	  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Acceptance of Terms</h3>
+	  	  <p style="line-height: 1.6; margin-bottom: 1rem;">
+	  		By using Daily Grace, you agree to these terms. This service is provided free of charge 
+	  		as a ministry tool for personal spiritual growth.
+	  	  </p>
+	  	  
+	  	  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Use of Service</h3>
+	  	  <p style="line-height: 1.6; margin-bottom: 1rem;">
+	  		Daily Grace is intended for personal devotional use. The AI-generated content is meant to 
+	  		inspire and supplement your personal relationship with God, not replace biblical study or pastoral guidance.
+	  	  </p>
+	  	  
+	  	  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Content Disclaimer</h3>
+	  	  <p style="line-height: 1.6; margin-bottom: 1rem;">
+	  		While we strive for biblical accuracy, AI-generated content should be considered supplementary. 
+	  		Always verify spiritual guidance with scripture and trusted spiritual advisors.
+	  	  </p>
+	  	  
+	  	  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Donations</h3>
+	  	  <p style="line-height: 1.6; margin-bottom: 1rem;">
+	  		Donations are voluntary and help maintain the service. No features are restricted based on donation status.
+	  	  </p>
+	  	  
+	  	  <p style="font-size: 0.9rem; color: var(--sage-green); margin-top: 2rem;">
+	  		Last updated: June 2025
+	  	  </p>
+	  	</div>
+	    `;
+	    
+	    modal.classList.add('active');
+	  }
+	  
+	  showCookiePolicy() {
+	    const modal = document.getElementById('detail-modal');
+	    const modalBody = document.getElementById('modal-body');
+	    
+	    modalBody.innerHTML = `
+	  	<div style="max-width: 600px;">
+	  	  <h2 style="color: var(--deep-navy); margin-bottom: 2rem;">Cookie Policy</h2>
+	  	  
+	  	  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">What Are Cookies</h3>
+	  	  <p style="line-height: 1.6; margin-bottom: 1rem;">
+	  		Daily Grace uses your browser's local storage (not traditional cookies) to save your devotions 
+	  		and prayers on your device. This data never leaves your device.
+	  	  </p>
+	  	  
+	  	  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">How We Use Local Storage</h3>
+	  	  <ul style="line-height: 1.6; margin-bottom: 1rem; padding-left: 1.5rem;">
+	  		<li>Store your personal devotions and prayers</li>
+	  		<li>Remember your preferences (if any)</li>
+	  		<li>Enable offline functionality</li>
+	  	  </ul>
+	  	  
+	  	  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Managing Storage</h3>
+	  	  <p style="line-height: 1.6; margin-bottom: 1rem;">
+	  		You can clear your stored data through your browser settings. This will remove all saved 
+	  		devotions and prayers from your device.
+	  	  </p>
+	  	  
+	  	  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Third-Party Services</h3>
+	  	  <p style="line-height: 1.6;">
+	  		We use Pollinations.ai for content generation. They may have their own data policies 
+	  		for the requests we send (which don't include your personal prayers).
+	  	  </p>
+	  	  
+	  	  <p style="font-size: 0.9rem; color: var(--sage-green); margin-top: 2rem;">
+	  		Last updated: June 2025
+	  	  </p>
+	  	</div>
+	    `;
+	    
+	    modal.classList.add('active');
 	  }
 	  
 	  // Add this new method
@@ -1560,14 +1700,59 @@
   </script>
   
 <!-- Footer -->
-<footer style="background: var(--deep-navy); color: var(--text-light); text-align: center; padding: 2rem 0; margin-top: 2rem;">
+<footer style="background: var(--deep-navy); color: var(--text-light); padding: 3rem 0 2rem 0; margin-top: 3rem;">
     <div style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
-        <p style="margin-bottom: 0.5rem;">
-            © <span id="copyright-year"></span> DailyGrace.online
-        </p>
-        <p style="font-size: 0.9rem; opacity: 0.8;">
-            Image, Text and Audio generation powered by <a href="https://pollinations.ai" target="_blank" style="color: var(--gold-accent); text-decoration: none;">Pollinations.ai</a>
-        </p>
+        <!-- Main Footer Content -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+            
+            <!-- About Section -->
+            <div>
+                <h4 style="color: var(--gold-accent); margin-bottom: 1rem; font-size: 1.1rem;">Daily Grace</h4>
+                <p style="font-size: 0.9rem; opacity: 0.9; line-height: 1.6;">
+                    Your personal devotional companion, providing AI-powered Christian meditations, prayers, and spiritual guidance. 
+                    Connecting hearts to God through technology and faith.
+                </p>
+            </div>
+            
+            <!-- Support Section -->
+            <div>
+                <h4 style="color: var(--gold-accent); margin-bottom: 1rem; font-size: 1.1rem;">Support Our Mission</h4>
+                <p style="font-size: 0.9rem; opacity: 0.9; line-height: 1.6; margin-bottom: 1rem;">
+                    Daily Grace is free to use because communing with God should never cost money. 
+                    If you've been blessed by this ministry and would like to help with development and hosting costs, 
+                    any contribution is gratefully received.
+                </p>
+                <a href="https://paypal.me/ReverendDrTolerant?country.x=US&locale.x=en_US" target="_blank" rel="noopener" 
+                   style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; 
+                          background: var(--gold-accent); color: var(--deep-navy); text-decoration: none; 
+                          border-radius: 25px; font-weight: 600; transition: all 0.3s ease;">
+                    💝 Support Daily Grace
+                </a>
+            </div>
+            
+            <!-- Legal & Policies -->
+            <div>
+                <h4 style="color: var(--gold-accent); margin-bottom: 1rem; font-size: 1.1rem;">Legal & Privacy</h4>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    <a href="#" onclick="app.showPrivacyPolicy()" style="color: var(--soft-blue); text-decoration: none; font-size: 0.9rem;">Privacy Policy</a>
+                    <a href="#" onclick="app.showTermsOfService()" style="color: var(--soft-blue); text-decoration: none; font-size: 0.9rem;">Terms of Service</a>
+                    <a href="#" onclick="app.showCookiePolicy()" style="color: var(--soft-blue); text-decoration: none; font-size: 0.9rem;">Cookie Policy</a>
+                    <a href="mailto:contact@dailygrace.online" style="color: var(--soft-blue); text-decoration: none; font-size: 0.9rem;">Contact Us</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom Bar -->
+        <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; text-align: center;">
+            <p style="margin-bottom: 0.5rem; font-size: 0.9rem;">
+                © <span id="copyright-year"></span> DailyGrace.online - All rights reserved
+            </p>
+            <p style="font-size: 0.8rem; opacity: 0.7;">
+                AI content generation powered by <a href="https://pollinations.ai" target="_blank" rel="noopener" 
+                style="color: var(--gold-accent); text-decoration: none;">Pollinations.ai</a> • 
+                Made with ❤️ for the body of Christ
+            </p>
+        </div>
     </div>
 </footer>
   
