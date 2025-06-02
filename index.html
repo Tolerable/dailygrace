@@ -1246,7 +1246,7 @@
 	/* Radio Station Styles */
 	.radio-station {
 	  position: fixed;
-	  right: 0;
+	  right: -320;
 	  top: 50%;
 	  transform: translateY(-50%);
 	  z-index: 1002;
@@ -2144,6 +2144,11 @@
 		  });
 	  }
 	  
+	  toggleRadio() {
+	    const radioStation = document.getElementById('radio-station');
+	    radioStation.classList.toggle('open');
+	  }	  
+	    
 	  playNextRadioTrack() {
 	  	this.playRadioTrack(this.radioCurrentIndex + 1);
 	  }
