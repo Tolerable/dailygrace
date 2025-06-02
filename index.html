@@ -2344,55 +2344,55 @@
 	  	setInterval(() => this.updateTimeGreeting(), 60000);
 	  }
 
-	showPrivacyPolicy() {
-	  const modal = document.getElementById('detail-modal');
-	  const modalBody = document.getElementById('modal-body');
-		
-	    modalBody.innerHTML = `
-	  	<div style="max-width: 600px;">
-	  	  <h2 style="color: var(--deep-navy); margin-bottom: 2rem;">Privacy Policy</h2>
-		
-		<h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Information We Collect</h3>
-		<p style="line-height: 1.6; margin-bottom: 1rem;">
-		  DailyGrace.Online stores your devotions and prayers locally on your device using your browser's storage. 
-		  We do not collect personal information or transmit your spiritual content to external servers.
-		</p>
-		
-		<h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Analytics and Tracking</h3>
-		<p style="line-height: 1.6; margin-bottom: 1rem;">
-		  We use Google Analytics to understand how visitors use our website. This service collects 
-		  anonymous data about page views, session duration, and general location (country/city level). 
-		  We've configured Google Analytics to operate without cookies for your privacy. 
-		  No personal information is collected or stored by this service.
-		</p>
-		
-		<h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">How We Use Information</h3>
-		<p style="line-height: 1.6; margin-bottom: 1rem;">
-		  Your devotions and prayers are stored locally on your device. When you request AI-generated 
-		  prayers, guidance, or audio, we send your requests to Pollinations.ai for processing. 
-		  We have no control over how long Pollinations.ai caches or stores these requests. 
-		  Please be mindful of what personal information you share.
-		</p>
-		
-		<h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Cookies</h3>
-		<p style="line-height: 1.6; margin-bottom: 1rem;">
-		  We use minimal browser storage to save your content locally. No tracking cookies are used.
-		</p>
-		
-		<h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Contact</h3>
-		<p style="line-height: 1.6;">
-		  For questions about privacy, contact us at 
-		  <a href="mailto:contact@dailygrace.online" style="color: var(--primary-blue);">contact@dailygrace.online</a>
-		</p>
-		
-		<p style="font-size: 0.9rem; color: var(--sage-green); margin-top: 2rem;">
-		  Last updated: June 2025
-		</p>
-	  </div>
-	  `;
-	  
-	  modal.classList.add('active');
-	}
+	  showPrivacyPolicy() {
+	    const modal = document.getElementById('detail-modal');
+	    const modalBody = document.getElementById('modal-body');
+	  	
+	      modalBody.innerHTML = `
+	    	<div style="max-width: 600px;">
+	    	  <h2 style="color: var(--deep-navy); margin-bottom: 2rem;">Privacy Policy</h2>
+	  	
+	  	<h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Information We Collect</h3>
+	  	<p style="line-height: 1.6; margin-bottom: 1rem;">
+	  	  DailyGrace.Online stores your devotions and prayers locally on your device using your browser's storage. 
+	  	  We do not collect personal information or transmit your spiritual content to external servers.
+	  	</p>
+	  	
+	  	<h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Analytics and Tracking</h3>
+	  	<p style="line-height: 1.6; margin-bottom: 1rem;">
+	  	  We use Google Analytics to understand how visitors use our website. This service collects 
+	  	  anonymous data about page views, session duration, and general location (country/city level). 
+	  	  We've configured Google Analytics to operate without cookies for your privacy. 
+	  	  No personal information is collected or stored by this service.
+	  	</p>
+	  	
+	  	<h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">How We Use Information</h3>
+	  	<p style="line-height: 1.6; margin-bottom: 1rem;">
+	  	  Your devotions and prayers are stored locally on your device. When you request AI-generated 
+	  	  prayers, guidance, or audio, we send your requests to Pollinations.ai for processing. 
+	  	  We have no control over how long Pollinations.ai caches or stores these requests. 
+	  	  Please be mindful of what personal information you share.
+	  	</p>
+	  	
+	  	<h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Cookies</h3>
+	  	<p style="line-height: 1.6; margin-bottom: 1rem;">
+	  	  We use minimal browser storage to save your content locally. No tracking cookies are used.
+	  	</p>
+	  	
+	  	<h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Contact</h3>
+	  	<p style="line-height: 1.6;">
+	  	  For questions about privacy, contact us at 
+	  	  <a href="mailto:contact@dailygrace.online" style="color: var(--primary-blue);">contact@dailygrace.online</a>
+	  	</p>
+	  	
+	  	<p style="font-size: 0.9rem; color: var(--sage-green); margin-top: 2rem;">
+	  	  Last updated: June 2025
+	  	</p>
+	    </div>
+	    `;
+	    
+	    modal.classList.add('active');
+	  }
 			  
 	  showTermsOfService() {
 	    const modal = document.getElementById('detail-modal');
@@ -2981,24 +2981,23 @@
 	  }
 	  
 	  startTimer() {
-	    if (this.timerInterval) clearInterval(this.timerInterval);
-	    
-	    let seconds = this.timerMinutes * 60;
-	    
-	    this.timerInterval = setInterval(() => {
-	  	seconds--;
-	  	
-	  	if (seconds <= 0) {
-	  	  this.fadeOutAndStop();
-	  	  clearInterval(this.timerInterval);
-	  	  this.timerInterval = null;
-	  	} else {
-	  	  const mins = Math.floor(seconds / 60);
-	  	  const secs = seconds % 60;
-	  	  document.getElementById('timer-countdown').textContent = 
-	  		`${mins}:${secs.toString().padStart(2, '0')}`;
-	  	}
-	    }, 1000);
+		  if (this.timerInterval) clearInterval(this.timerInterval);
+		  
+		  let seconds = this.timerMinutes * 60;
+		  
+		  this.timerInterval = setInterval(() => {
+			seconds--);
+			
+			if (seconds <= 0) {
+			  this.fadeOutAndStop();
+			  clearInterval(this.timerInterval);
+			  this.timerInterval = null;
+			} else {
+			  const mins = Math.floor(seconds / 60);
+			  const secs = seconds % 60;
+			  document.getElementById('timer-countdown').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+			}
+		  }, 1000);
 	  }
 	  
 	  updateTimerDisplay() {
