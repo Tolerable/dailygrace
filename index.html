@@ -2696,37 +2696,47 @@
 	  }
 	  
 	  addChatMessage(content, sender) {
-	    const messagesContainer = document.getElementById('chat-messages');
-	    const messageDiv = document.createElement('div');
-	    messageDiv.className = `message ${sender}-message`;
-	    
-	    const contentDiv = document.createElement('div');
-	    contentDiv.className = 'message-content';
-	    contentDiv.innerHTML = `<p>${content}</p>`;
-	    
-	    messageDiv.appendChild(contentDiv);
-	    
-		// Add audio controls for bot messages
-		if (sender === 'bot') {
-		  const actionsDiv = document.createElement('div');
-		  actionsDiv.className = 'message-actions';
-		  const audioId = `msg-audio-${Date.now()}`;
-		  actionsDiv.innerHTML = `
-			<button class="message-action-btn play-btn" onclick="app.toggleMessageAudio('${audioId}', '${content.replace(/'/g, "\\'")}', this)">
-			  ▶️ Listen
-			</button>
-			<button class="message-action-btn" onclick="app.regenerateMessageAudio('${audioId}', '${content.replace(/'/g, "\\'")}')">
-			  🔁 Regenerate
-			</button>
-			<audio id="${audioId}" preload="none"></audio>
-		  `;
-		  messageDiv.appendChild(actionsDiv);
-		}
-	    
-	    messagesContainer.appendChild(messageDiv);
-	    
-	    // Scroll to bottom
-	    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+		  const messagesContainer = document.getElementById('chat-messages');
+		  const messageDiv = document.createElement('div');
+		  messageDiv.className = `message ${sender}-message`;
+		  
+		  const contentDiv = document.createElement('div');
+		  contentDiv.className = 'message-content';
+		  contentDiv.innerHTML = `<p>${content}</p>`;
+		  
+		  messageDiv.appendChild(contentDiv);
+		  
+		  // Add audio controls for bot messages
+		  if (sender === 'bot') {
+			const actionsDiv = document.createElement('div');
+			actionsDiv.className = 'message-actions';
+			const audioId = `msg-audio-${Date.now()}`;
+			
+			// Properly escape the content for JavaScript
+			const escapedContent = content
+			  .replace(/\\/g, '\\\\')
+			  .replace(/'/g, "\\'")
+			  .replace(/"/g, '\\"')
+			  .replace(/\n/g, '\\n')
+			  .replace(/\r/g, '\\r')
+			  .replace(/\t/g, '\\t');
+			
+			actionsDiv.innerHTML = `
+			  <button class="message-action-btn play-btn" onclick="app.toggleMessageAudio('${audioId}', '${escapedContent}', this)">
+				▶️ Listen
+			  </button>
+			  <button class="message-action-btn" onclick="app.regenerateMessageAudio('${audioId}', '${escapedContent}')">
+				🔁 Regenerate
+			  </button>
+			  <audio id="${audioId}" preload="none"></audio>
+			`;
+			messageDiv.appendChild(actionsDiv);
+		  }
+		  
+		  messagesContainer.appendChild(messageDiv);
+		  
+		  // Scroll to bottom
+		  messagesContainer.scrollTop = messagesContainer.scrollHeight;
 	  }
 
 	  async toggleMessageAudio(audioId, text, buttonElement) {
