@@ -1261,6 +1261,23 @@
 		Listen to God's Word with AI narration
 	  </p>
 	  
+	  <!-- Loading indicator -->
+	  <div id="bible-loading" class="text-center" style="margin: 2rem 0;">
+		<p>Loading Bible text...</p>
+	  </div>
+	  
+	  <!-- Bible Version Selector -->
+	  <div class="bible-controls" id="bible-controls" style="display: none;">
+		<!-- ... rest of your controls ... -->
+	  </div>
+	  
+	  <!-- Instructions -->
+	  <div class="bible-instructions" id="bible-instructions" style="display: none;">
+		<p class="text-center" style="margin: 2rem 0; padding: 1rem; background: var(--warm-cream); border-radius: 8px;">
+		  📖 Select a book and chapter above, then choose how you'd like to listen!
+		</p>
+	  </div>
+	  
 	  <!-- Bible Version Selector -->
 	  <div class="bible-controls">
 		<div class="version-selector">
@@ -1592,6 +1609,8 @@
 		  const version = document.getElementById('bible-version').value;
 		  
 		  try {
+			document.getElementById('bible-loading').style.display = 'block';
+			
 			const response = await fetch(`/bible/${version}.txt`);
 			const text = await response.text();
 			
@@ -1608,9 +1627,37 @@
 			  bookSelect.appendChild(option);
 			});
 			
+			// Show controls and hide loading
+			document.getElementById('bible-loading').style.display = 'none';
+			document.getElementById('bible-controls').style.display = 'grid';
+			document.getElementById('bible-instructions').style.display = 'block';
+			
 		  } catch (error) {
 			console.error('Failed to load Bible:', error);
+			document.getElementById('bible-loading').innerHTML = '<p style="color: red;">Failed to load Bible. Please try again.</p>';
 		  }
+	  }
+
+	  showVerseList() {
+		  const verseListContainer = document.getElementById('verse-list');
+		  verseListContainer.classList.remove('hidden');
+		  
+		  verseListContainer.innerHTML = this.currentPassages.map((passage, index) => `
+			<div class="verse-item" onclick="app.playSpecificVerse(${index})">
+			  <div class="verse-reference">${passage.reference}</div>
+			  <div class="verse-text">${passage.text}</div>
+			</div>
+		  `).join('');
+	  }
+
+	  playSpecificVerse(index) {
+		  this.currentIndex = index;
+		  this.playCurrentPassage();
+		  
+		  // Update visual state
+		  document.querySelectorAll('.verse-item').forEach((item, i) => {
+			item.classList.toggle('playing', i === index);
+		  });
 	  }
 
 	  parseBibleText(text) {
@@ -1667,18 +1714,48 @@
 	  }
 
 	  setReadingMode(mode) {
+		  const book = document.getElementById('bible-book').value;
+		  const chapter = document.getElementById('bible-chapter').value;
+		  
+		  if (!book || !chapter) {
+			alert('Please select a book and chapter first!');
+			return;
+		  }
+		  
 		  this.readingMode = mode;
 		  this.autoPlay = true;
 		  this.currentIndex = 0;
 		  
-		  // Show player
-		  document.getElementById('bible-player').classList.remove('hidden');
-		  
+		  // Load appropriate passages based on mode
 		  if (mode === 'verse') {
+			this.loadVerses(); // Load just the selected chapter
 			this.showVerseList();
-		  } else {
+		  } else if (mode === 'chapter') {
+			this.loadVerses(); // Same as verse mode but will auto-play through
+			document.getElementById('verse-list').classList.add('hidden');
+		  } else if (mode === 'book') {
+			this.loadEntireBook(book);
 			document.getElementById('verse-list').classList.add('hidden');
 		  }
+		  
+		  // Show player
+		  document.getElementById('bible-player').classList.remove('hidden');
+	  }
+
+	  loadEntireBook(book) {
+		  this.currentPassages = [];
+		  const chapters = this.bibleData[book];
+		  
+		  Object.keys(chapters).forEach(chapterNum => {
+			const verses = chapters[chapterNum];
+			Object.keys(verses).forEach(verseNum => {
+			  this.currentPassages.push({
+				reference: `${book} ${chapterNum}:${verseNum}`,
+				text: verses[verseNum],
+				book, chapter: chapterNum, verse: verseNum
+			  });
+			});
+		  });
 	  }
 
 	  async playCurrentPassage() {
@@ -1995,23 +2072,25 @@
 
       // Navigation
 	  showSection(sectionName) {
-	  	// Hide all sections
-	  	document.querySelectorAll('.section').forEach(section => {
-	  		section.classList.remove('active');
-	  	});
-	  	
-	  	// Show selected section
-	  	document.getElementById(`${sectionName}-section`).classList.add('active');
-	  	this.currentSection = sectionName;
-	  	
-	  	// Load section-specific content
-	  	if (sectionName === 'history') {
-	  		this.loadHistory();
-	  	} else if (sectionName === 'prayers') {
-	  		this.loadSavedPrayers();
-	  	} else if (sectionName === 'devotions') {
-	  		this.loadLatestDevotion(); // Add this
-	  	}
+		  // Hide all sections
+		  document.querySelectorAll('.section').forEach(section => {
+			section.classList.remove('active');
+		  });
+		  
+		  // Show selected section
+		  document.getElementById(`${sectionName}-section`).classList.add('active');
+		  this.currentSection = sectionName;
+		  
+		  // Load section-specific content
+		  if (sectionName === 'history') {
+			this.loadHistory();
+		  } else if (sectionName === 'prayers') {
+			this.loadSavedPrayers();
+		  } else if (sectionName === 'devotions') {
+			this.loadLatestDevotion();
+		  } else if (sectionName === 'bible') {
+			this.loadBibleBooks(); // Add this line
+		  }
 	  }
 
 	  // Add this new method to load the latest devotion
