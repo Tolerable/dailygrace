@@ -1560,9 +1560,59 @@
 		  <h3 class="music-title">Peaceful Garden</h3>
 		  <p class="music-description">Nature sounds with soft flute</p>
 		  <p class="music-duration">4:08</p>
-		</div>
-		
+		</div>		
 	  </div>
+
+		<!-- Add this after the closing </div> of the first music-grid -->
+
+		<h3 class="text-center" style="margin: 3rem 0 1rem 0; color: var(--deep-navy);">Worship Songs with Vocals</h3>
+		<p class="text-center" style="margin-bottom: 2rem; opacity: 0.8;">
+		  Inspirational worship music with lyrics for prayer and reflection
+		</p>
+
+		<div class="music-grid">
+		  <div class="music-card" onclick="app.playTrack('rest-in-his-presence', true)">
+			<img src="/img/RestinHisPresence.jpg" alt="Rest in His Presence" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem;">
+			<h3 class="music-title">Rest in His Presence</h3>
+			<p class="music-description">Finding peace in God's embrace</p>
+			<p class="music-duration">4:00</p>
+		  </div>
+
+		  <div class="music-card" onclick="app.playTrack('morning-mercies', true)">
+			<img src="/img/MorningMercies.jpg" alt="Morning Mercies" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem;">
+			<h3 class="music-title">Morning Mercies</h3>
+			<p class="music-description">God's faithfulness each new day</p>
+			<p class="music-duration">3:45</p>
+		  </div>
+
+		  <div class="music-card" onclick="app.playTrack('healing-waters', true)">
+			<img src="/img/HealingWaters.jpg" alt="Healing Waters" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem;">
+			<h3 class="music-title">Healing Waters</h3>
+			<p class="music-description">Restoration for the soul</p>
+			<p class="music-duration">4:15</p>
+		  </div>
+
+		  <div class="music-card" onclick="app.playTrack('abide-in-me', true)">
+			<img src="/img/AbideinMe.jpg" alt="Abide in Me" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem;">
+			<h3 class="music-title">Abide in Me</h3>
+			<p class="music-description">Dwelling in Christ's love</p>
+			<p class="music-duration">3:30</p>
+		  </div>
+
+		  <div class="music-card" onclick="app.playTrack('peace-be-still', true)">
+			<img src="/img/PeaceBeStill.jpg" alt="Peace Be Still" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem;">
+			<h3 class="music-title">Peace Be Still</h3>
+			<p class="music-description">Calm in life's storms</p>
+			<p class="music-duration">4:30</p>
+		  </div>
+
+		  <div class="music-card" onclick="app.playTrack('come-away-with-me', true)">
+			<img src="/img/ComeAwaywithMe.jpg" alt="Come Away With Me" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem;">
+			<h3 class="music-title">Come Away With Me</h3>
+			<p class="music-description">Jesus' gentle invitation</p>
+			<p class="music-duration">3:50</p>
+		  </div>
+		</div>
 	  
 	  <!-- Music Player Modal -->
 	  <div class="music-player-modal" id="music-player-modal">
@@ -2265,7 +2315,49 @@
 		  icon: '🌿',
 		  url: 'https://www.dailygrace.online/audio/PeacefulGarden.mp3',
 		  duration: 248 // 4:08 in seconds
-		}
+		},
+		'rest-in-his-presence': {
+		  title: 'Rest in His Presence',
+		  description: 'Finding peace in God\'s embrace',
+		  icon: '🙏',
+		  url: 'https://www.dailygrace.online/audio/RestinHisPresence.mp3',
+		  duration: 240
+		},
+		'morning-mercies': {
+		  title: 'Morning Mercies',
+		  description: 'God\'s faithfulness each new day',
+		  icon: '🌅',
+		  url: 'https://www.dailygrace.online/audio/MorningMercies.mp3',
+		  duration: 225
+		},
+		'healing-waters': {
+		  title: 'Healing Waters',
+		  description: 'Restoration for the soul',
+		  icon: '💧',
+		  url: 'https://www.dailygrace.online/audio/HealingWaters.mp3',
+		  duration: 255
+		},
+		'abide-in-me': {
+		  title: 'Abide in Me',
+		  description: 'Dwelling in Christ\'s love',
+		  icon: '🌿',
+		  url: 'https://www.dailygrace.online/audio/AbideinMe.mp3',
+		  duration: 210
+		},
+		'peace-be-still': {
+		  title: 'Peace Be Still',
+		  description: 'Calm in life\'s storms',
+		  icon: '🕊️',
+		  url: 'https://www.dailygrace.online/audio/PeaceBeStill.mp3',
+		  duration: 270
+		},
+		'come-away-with-me': {
+		  title: 'Come Away With Me',
+		  description: 'Jesus\' gentle invitation',
+		  icon: '✨',
+		  url: 'https://www.dailygrace.online/audio/ComeAwaywithMe.mp3',
+		  duration: 230
+		}				
 	    };
 	  
 	    this.currentTrack = tracks[trackId];
