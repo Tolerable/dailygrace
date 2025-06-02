@@ -2872,31 +2872,29 @@
 
       // Daily Verse
 	  async loadDailyVerse() {
-	    const verseContainer = document.getElementById('daily-verse');
-	    const seed = new Date().toDateString();
-	    
-	    try {
-	  	const prompt = `Generate a brief, encouraging Bible verse for today. Include the verse reference. Keep it under 50 words. Focus on comfort, hope, or strength. Output only the verse and reference, no commentary.`;
-	  	
-	  	const response = await fetch(`https://text.pollinations.ai/${encodeURIComponent(prompt)}?model=openai&seed=${seed.hashCode()}`);
-	  	const text = await response.text();
-	  	
-	  	const parts = text.match(/(.+?):\s*"([^"]+)"/);
-	  	if (parts) {
-	  	  verseContainer.innerHTML = `
-	  		<p class="scripture-reference">${parts[1]}</p>
-	  		<p class="devotion-text">"${parts[2]}"</p>
-	  	  `;
-	  	} else {
-	  	  verseContainer.innerHTML = `<p class="devotion-text">${text}</p>`;
-	  	}
-	    } catch (error) {
-	  	console.error('Failed to load daily verse:', error);
-	    }
-	  }
+		  const verseContainer = document.getElementById('daily-verse');
+		  const seed = new Date().toDateString();
+		  
+		  try {
+			const prompt = 'Generate a brief, encouraging Bible verse for today...';
+			
+			const response = await fetch(`https://text.pollinations.ai/${encodeURIComponent(prompt)}?model=openai&seed=${seed}`);
+			const text = await response.text();
+			
+			const parts = text.match(/(.+?):\s*"([^"]+)"/);
+			if (parts) {
+			  verseContainer.innerHTML = `
+				<p class="scripture-reference">${parts[1]}</p>
+				<p class="devotion-text">"${parts[2]}"</p>
+			  `;
+			} else {
+			  verseContainer.innerHTML = `<p class="devotion-text">${text}</p>`;
+			}
+		  } catch (error) {
+			console.error('Failed to load daily verse:', error);
+		  }
+	  } 
       
-	
-
       // Navigation
 	  showSection(sectionName) {
 		// Hide all sections
@@ -3938,7 +3936,7 @@
 		}
 		
 	  }
-    }
+    
 
 	// Radio Station Methods
 	initRadio() {
