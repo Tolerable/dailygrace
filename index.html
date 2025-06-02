@@ -2643,13 +2643,20 @@
         return await response.text();
       }
 
-      async generateDevotionImage(topic) {
-        const visualPrompt = `Christian devotional art image only depicting ${topic}, peaceful spiritual scene, 
-        soft watercolor style, warm light, serene atmosphere, remember include no text within the image description`;
-        
-        const seed = Date.now();
-        return `https://image.pollinations.ai/prompt/${encodeURIComponent(visualPrompt)}?model=flux&width=1200&height=675&seed=${seed}&nologo=true`;
-      }
+	  async generateDevotionImage(topic) {
+		// First, get AI to create a visual description
+		const descriptionPrompt = `Create a visual image description inspired by the Christian devotion topic: "${topic}". 
+		Describe only visual elements for an artist to paint - colors, objects, scenery, lighting. 
+		Do NOT include any text, words, letters, or writing in your description. 
+		Keep it under 50 words. Focus on peaceful, spiritual imagery.`;
+		
+		const descResponse = await fetch(`https://text.pollinations.ai/${encodeURIComponent(descriptionPrompt)}?model=openai`);
+		const visualDescription = await descResponse.text();
+		
+		// Now use that description for the image
+		const seed = Date.now();
+		return `https://image.pollinations.ai/prompt/${encodeURIComponent(visualDescription)}?model=flux&width=1200&height=675&seed=${seed}&nologo=true`;
+	  }
 
       displayDevotion(devotion) {
         const container = document.getElementById('devotion-container');
