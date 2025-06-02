@@ -1753,23 +1753,21 @@
 	  }
 
 	  loadBiblePosition() {
-		  const saved = localStorage.getItem('biblePosition');
-		  if (saved) {
+		const saved = localStorage.getItem('biblePosition');
+		if (saved) {
 			const position = JSON.parse(saved);
 			document.getElementById('bible-version').value = position.version || 'kjv';
-			this.loadBibleBooks().then(() => {
-			  if (position.book) {
+			if (position.book) {
 				document.getElementById('bible-book').value = position.book;
 				this.loadChapters();
 				if (position.chapter) {
-				  setTimeout(() => {
-					document.getElementById('bible-chapter').value = position.chapter;
-					this.loadVerses();
-				  }, 100);
+					setTimeout(() => {
+						document.getElementById('bible-chapter').value = position.chapter;
+						this.loadVerses();
+					}, 100);
 				}
-			  }
-			});
-		  }
+			}
+		}
 	  }
 
 	  async playCurrentPassage() {
