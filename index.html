@@ -2938,9 +2938,11 @@
 		  const container = document.getElementById('guidance-history');
 		  
 		  if (guidanceSessions.length === 0) {
-			container.innerHTML = '';
+			document.getElementById('guidance-history-section').style.display = 'none';
 			return;
 		  }
+		  
+		  document.getElementById('guidance-history-section').style.display = 'block';
 		  
 		  container.innerHTML = guidanceSessions.slice(0, 6).map(session => `
 			<div class="history-item" onclick="app.showGuidanceDetail(${session.id})">
@@ -2983,21 +2985,52 @@
 		  modal.classList.add('active');
 	  }
 
+	  async showGuidanceDetail(id) {
+	    const session = await this.getContentById(id);
+	    const modal = document.getElementById('detail-modal');
+	    const modalBody = document.getElementById('modal-body');
+	    
+	    modalBody.innerHTML = `
+	  	<div class="guidance-interface">
+	  	  <h3>Spiritual Guidance Session</h3>
+	  	  <p class="devotion-date">${new Date(session.date).toLocaleDateString()}</p>
+	  	  
+	  	  <div style="margin: 1.5rem 0;">
+	  		<h4 style="color: var(--sage-green); margin-bottom: 0.5rem;">What you shared:</h4>
+	  		<p style="background: var(--warm-cream); padding: 1rem; border-radius: 8px; font-style: italic;">
+	  		  "${session.question}"
+	  		</p>
+	  	  </div>
+	  	  
+	  	  <div>
+	  		<h4 style="color: var(--sage-green); margin-bottom: 0.5rem;">Biblical encouragement:</h4>
+	  		<div class="response-content">${session.response}</div>
+	  	  </div>
+	  	  
+	  	  <button class="btn btn-accent mt-2" onclick="app.playGuidanceAudio(\`${session.response.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`)">
+	  		🎧 Listen to Response
+	  	  </button>
+	  	</div>
+	    `;
+	    
+	    modal.classList.add('active');
+	  }
+	  
 	  async playGuidanceAudio(text) {
-		  let cleanText = text
-			.replace(/\n/g, ' ')
-			.replace(/\s+/g, ' ')
-			.replace(/([.!?])\s+/g, '$1\n')
-			.trim();
-		  
-		  const transcriptionInstruction = "READ THIS TEXT VERBATIM WITHOUT ANY COMMENTARY OR RESPONSE:";
-		  const textToRead = transcriptionInstruction + " " + cleanText;
-		  
-		  const encodedText = encodeURIComponent(textToRead);
-		  const audioUrl = `https://text.pollinations.ai/${encodedText}?model=openai-audio&voice=nova`;
-		  
-		  const tempAudio = new Audio(audioUrl);
-		  tempAudio.play();
+	    let cleanText = text
+	  	.replace(/\n/g, ' ')
+	  	.replace(/\s+/g, ' ')
+	  	.replace(/([.!?])\s+/g, '$1\n')
+	  	.trim();
+	    
+	    const transcriptionInstruction = "READ THIS TEXT VERBATIM WITHOUT ANY COMMENTARY OR RESPONSE:";
+	    const textToRead = transcriptionInstruction + " " + cleanText;
+	    
+	    const encodedText = encodeURIComponent(textToRead);
+	    const audioUrl = `https://text.pollinations.ai/${encodedText}?model=openai-audio&voice=nova`;
+	    
+	    const tempAudio = new Audio(audioUrl);
+	    tempAudio.play();
 	  }
 
 	  // Audio Management - FIXED based on working transcribe.html
