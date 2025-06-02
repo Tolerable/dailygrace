@@ -1056,6 +1056,21 @@
 		  <p class="music-description">Meditative bells and pads</p>
 		  <p class="music-duration">3:22</p>
 		</div>
+		
+		<div class="music-card" onclick="app.playTrack('sacred-waters')">
+		  <div class="music-icon">💧</div>
+		  <h3 class="music-title">Sacred Waters</h3>
+		  <p class="music-description">Flowing water with gentle harp</p>
+		  <p class="music-duration">2:49</p>
+		</div>
+
+		<div class="music-card" onclick="app.playTrack('peaceful-garden')">
+		  <div class="music-icon">🌿</div>
+		  <h3 class="music-title">Peaceful Garden</h3>
+		  <p class="music-description">Nature sounds with soft flute</p>
+		  <p class="music-duration">4:08</p>
+		</div>
+		
 	  </div>
 	  
 	  <!-- Music Player Modal -->
@@ -1383,7 +1398,21 @@
 	  	  icon: '🕊️',
 	  	  url: 'https://www.dailygrace.online/audio/QuietSanctuary.mp3',
 	  	  duration: 202 // 3:22 in seconds
-	  	}
+	  	},
+		'sacred-waters': {
+		  title: 'Sacred Waters',
+		  description: 'Flowing water with gentle harp',
+		  icon: '💧',
+		  url: 'https://www.dailygrace.online/audio/SacredWaters.mp3',
+		  duration: 169 // 2:49 in seconds
+		},
+		'peaceful-garden': {
+		  title: 'Peaceful Garden',
+		  description: 'Nature sounds with soft flute',
+		  icon: '🌿',
+		  url: 'https://www.dailygrace.online/audio/PeacefulGarden.mp3',
+		  duration: 248 // 4:08 in seconds
+		}
 	    };
 	  
 	    this.currentTrack = tracks[trackId];
