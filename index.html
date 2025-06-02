@@ -1246,7 +1246,7 @@
 	/* Radio Station Styles */
 	.radio-station {
 	  position: fixed;
-	  right: -320;
+	  right: -320px;
 	  top: 50%;
 	  transform: translateY(-50%);
 	  z-index: 1002;
@@ -1476,7 +1476,11 @@
 	  }
 	  
 	  .radio-station {
-		right: 0;
+		right: -280px;  /* Hide it off-screen on mobile too */
+	  }
+	  
+	  .radio-station.open {
+		right: 0;  /* Show it when open */
 	  }
 	}
 
