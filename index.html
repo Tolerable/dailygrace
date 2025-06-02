@@ -1311,7 +1311,12 @@
 	    modal.classList.add('active');
 	  }
 	  
-	  // Add this new method
+	  sendEmail() {
+	    const user = 'contact';
+	    const domain = 'dailygrace.online';
+	    window.location.href = `mailto:${user}@${domain}`;
+	  }
+
 	  setCopyrightYear() {
 	  	const currentYear = new Date().getFullYear();
 	  	const nextYear = currentYear + 1;
@@ -2332,7 +2337,7 @@
                     <a href="#" onclick="app.showPrivacyPolicy()" style="color: var(--soft-blue); text-decoration: none; font-size: 0.9rem;">Privacy Policy</a>
                     <a href="#" onclick="app.showTermsOfService()" style="color: var(--soft-blue); text-decoration: none; font-size: 0.9rem;">Terms of Service</a>
                     <a href="#" onclick="app.showCookiePolicy()" style="color: var(--soft-blue); text-decoration: none; font-size: 0.9rem;">Cookie Policy</a>
-                    <a href="mailto:contact@dailygrace.online" style="color: var(--soft-blue); text-decoration: none; font-size: 0.9rem;">Contact Us</a>
+                    <a href="#" onclick="app.sendEmail()" style="color: var(--soft-blue); text-decoration: none; font-size: 0.9rem;">Contact Us</a>
                 </div>
             </div>
         </div>
