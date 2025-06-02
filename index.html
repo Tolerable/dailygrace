@@ -2189,6 +2189,15 @@
 	    }
 	  }
 
+	  updateStationButtons(station) {
+	    	document.querySelectorAll('.station-btn').forEach(btn => {
+	    		btn.classList.remove('active');
+	    	});
+	    	
+	    	const activeBtn = document.querySelector(`.station-btn[onclick*="${station}"]`);
+	    	if (activeBtn) activeBtn.classList.add('active');
+	  }
+	
 	  showPrivacyPolicy() {
 		  const modal = document.getElementById('detail-modal');
 		  const modalBody = document.getElementById('modal-body');
