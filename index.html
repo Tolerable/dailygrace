@@ -2102,13 +2102,6 @@
 	  	this.currentAudio = null;
 	  	this.isPlaying = false;
 		this.radioStation = new RadioStation();
-		this.radioPlaylist = [];
-		this.radioCurrentIndex = 0;
-		this.radioAudio = null;
-		this.isRadioPlaying = false;
-		this.radioVolume = 0.7;
-		this.cutInterval = 3; // Play a cut every 3 songs
-		this.songsSinceCut = 0;
 	  	this.currentFilter = 'all';
 	  	this.pendingDeleteId = null; 
 	  	this.init();
@@ -2149,18 +2142,6 @@
 			document.getElementById('radio-current-time').textContent = this.formatTime(currentTime);
 			document.getElementById('radio-total-time').textContent = this.formatTime(duration);
 		  });
-	  }
-	  
-	  toggleRadio() {
-	  	console.log('Toggle radio clicked'); // Add this
-	  	const radioStation = document.getElementById('radio-station');
-	  	radioStation.classList.toggle('open');
-	  	
-	  	// Start playing if opening for first time
-	  	if (radioStation.classList.contains('open') && !this.isRadioPlaying && this.radioPlaylist.length === 0) {
-	  		this.loadRadioPlaylist(this.radioStation);
-	  		setTimeout(() => this.startRadio(), 500);
-	  	}
 	  }
 	  
 	  playNextRadioTrack() {
