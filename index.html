@@ -1308,10 +1308,11 @@
 		</div>
 		
 		<div class="bible-audio-controls">
-		  <button class="play-button" onclick="app.playCurrentPassage()" id="bible-play-btn">▶️</button>
-		  <button class="bible-btn" onclick="app.previousPassage()">⏮️</button>
-		  <button class="bible-btn" onclick="app.nextPassage()">⏭️</button>
-		  <button class="bible-btn" onclick="app.toggleAutoPlay()" id="auto-play-btn">🔄</button>
+			<button class="play-button" onclick="app.playCurrentPassage()" id="bible-play-btn">▶️</button>
+			<button class="bible-btn" onclick="app.previousPassage()">⏮️</button>
+			<button class="bible-btn" onclick="app.nextPassage()">⏭️</button>
+			<button class="bible-btn" onclick="app.toggleAutoPlay()" id="auto-play-btn">🔄</button>
+			<button class="bible-btn" onclick="app.redoCurrentPassage()" title="Regenerate audio">🔁</button>
 		</div>
 		
 		<div class="progress-section">
@@ -1775,48 +1776,56 @@
 		}
 	  }
 
-	  async playCurrentPassage() {
-		  if (!this.currentPassages || this.currentPassages.length === 0) return;
-		  
-		  const audio = document.getElementById('bible-audio');
-		  const playBtn = document.getElementById('bible-play-btn');
-		  
-		  // If audio is playing, pause it
-		  if (!audio.paused) {
+	  async playCurrentPassage(forceSeed = null) {
+		if (!this.currentPassages || this.currentPassages.length === 0) return;
+		
+		const audio = document.getElementById('bible-audio');
+		const playBtn = document.getElementById('bible-play-btn');
+		
+		// If audio is playing, pause it
+		if (!audio.paused && !forceSeed) {
 			audio.pause();
 			playBtn.textContent = '▶️';
 			return;
-		  }
-		  
-		  const passage = this.currentPassages[this.currentIndex];
-		  
-		  // Update UI
-		  document.getElementById('current-reference').textContent = passage.reference;
-		  document.getElementById('current-text').textContent = passage.text;
-		  document.getElementById('passage-position').textContent = 
+		}
+		
+		const passage = this.currentPassages[this.currentIndex];
+		
+		// Update UI
+		document.getElementById('current-reference').textContent = passage.reference;
+		document.getElementById('current-text').textContent = passage.text;
+		document.getElementById('passage-position').textContent = 
 			`${this.readingMode === 'verse' ? 'Verse' : 'Passage'} ${this.currentIndex + 1} of ${this.currentPassages.length}`;
-		  
-		  // Generate audio URL
-		  const cleanText = passage.text.replace(/\[|\]/g, '').replace(/\s+/g, ' ').trim();
-		  const transcriptionInstruction = "READ THIS TEXT VERBATIM WITHOUT ANY COMMENTARY OR RESPONSE:";
-		  const textToRead = transcriptionInstruction + " " + cleanText;
-		  
-		  const encodedText = encodeURIComponent(textToRead);
-		  const audioUrl = `https://text.pollinations.ai/${encodedText}?model=openai-audio&voice=nova`;
-		  
-		  audio.src = audioUrl;
-		  
-		  // Setup audio events
-		  audio.onended = () => {
+		
+		// Generate audio URL with seed
+		const cleanText = passage.text.replace(/\[|\]/g, '').replace(/\s+/g, ' ').trim();
+		const transcriptionInstruction = "READ THIS TEXT VERBATIM WITHOUT ANY COMMENTARY OR RESPONSE:";
+		const textToRead = transcriptionInstruction + " " + cleanText;
+		
+		const seed = forceSeed || passage.lastSeed || Math.floor(Math.random() * 10000);
+		passage.lastSeed = seed; // Store the seed for this passage
+		
+		const encodedText = encodeURIComponent(textToRead);
+		const audioUrl = `https://text.pollinations.ai/${encodedText}?model=openai-audio&voice=nova&seed=${seed}`;
+		
+		audio.src = audioUrl;
+		
+		// Setup audio events
+		audio.onended = () => {
 			playBtn.textContent = '▶️';
 			// Only auto-advance if autoPlay is on AND not in verse mode
 			if (this.autoPlay && this.readingMode !== 'verse' && this.currentIndex < this.currentPassages.length - 1) {
-			  setTimeout(() => this.nextPassage(), 1000);
+				setTimeout(() => this.nextPassage(), 1000);
 			}
-		  };
-		  
-		  audio.play();
-		  playBtn.textContent = '⏸️';
+		};
+		
+		audio.play();
+		playBtn.textContent = '⏸️';
+	  }
+
+	  redoCurrentPassage() {
+		const newSeed = Math.floor(Math.random() * 10000);
+		this.playCurrentPassage(newSeed);
 	  }
 
 	  nextPassage() {
