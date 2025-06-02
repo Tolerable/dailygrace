@@ -2092,6 +2092,228 @@
   </div>
   </main>
   <script>
+  
+	// Radio Station Methods
+	initRadio() {
+	  	const radioElement = document.getElementById('radio-audio');
+	  	if (!radioElement) {
+	  		console.error('Radio audio element not found!');
+	  		return;
+	  	}
+	  	
+	  	this.radioAudio = radioElement;
+	  	this.radioAudio.volume = this.radioVolume;
+	  	
+	  	// Setup radio audio listeners
+	  	this.radioAudio.addEventListener('timeupdate', () => this.updateRadioProgress());
+	  	this.radioAudio.addEventListener('ended', () => this.playNextRadioTrack());
+	  	this.radioAudio.addEventListener('loadedmetadata', () => this.updateRadioDuration());
+	  	
+	  	// Load initial playlist
+	  	this.loadRadioPlaylist('mixed');
+	}
+	  
+	toggleRadio() {
+	  	console.log('Toggle radio clicked'); // Add this
+	  	const radioStation = document.getElementById('radio-station');
+	  	radioStation.classList.toggle('open');
+	  	
+	  	// Start playing if opening for first time
+	  	if (radioStation.classList.contains('open') && !this.isRadioPlaying && this.radioPlaylist.length === 0) {
+	  		this.loadRadioPlaylist(this.radioStation);
+	  		setTimeout(() => this.startRadio(), 500);
+	  	}
+	}
+	  
+	loadRadioPlaylist(station) {
+	  	this.radioStation = station;
+	  	
+	  	// Define playlists
+	  	const playlists = {
+	  		mixed: [
+	  			{ title: 'Rest in His Presence', file: 'RestinHisPresence.mp3', duration: 240 },
+	  			{ title: 'Morning Mercies', file: 'MorningMercies.mp3', duration: 225 },
+	  			{ title: 'Healing Waters', file: 'HealingWaters.mp3', duration: 255 },
+	  			{ title: 'Abide in Me', file: 'AbideinMe.mp3', duration: 210 },
+	  			{ title: 'Peace Be Still', file: 'PeaceBeStill.mp3', duration: 270 },
+	  			{ title: 'Come Away With Me', file: 'ComeAwayWithMe.mp3', duration: 230 }
+	  		],
+	  		instrumental: [
+	  			{ title: 'Gentle Streams', file: 'GentleStreams.mp3', duration: 289 },
+	  			{ title: 'Heavenly Peace', file: 'HeavenlyPeace.mp3', duration: 239 },
+	  			{ title: 'Morning Light', file: 'MorningLight.mp3', duration: 240 },
+	  			{ title: 'Quiet Sanctuary', file: 'QuietSanctuary.mp3', duration: 202 },
+	  			{ title: 'Sacred Waters', file: 'SacredWaters.mp3', duration: 169 },
+	  			{ title: 'Peaceful Garden', file: 'PeacefulGarden.mp3', duration: 248 }
+	  		],
+	  		vocals: [
+	  			{ title: 'Rest in His Presence', file: 'RestinHisPresence.mp3', duration: 240 },
+	  			{ title: 'Morning Mercies', file: 'MorningMercies.mp3', duration: 225 },
+	  			{ title: 'Healing Waters', file: 'HealingWaters.mp3', duration: 255 },
+	  			{ title: 'Abide in Me', file: 'AbideinMe.mp3', duration: 210 },
+	  			{ title: 'Peace Be Still', file: 'PeaceBeStill.mp3', duration: 270 },
+	  			{ title: 'Come Away With Me', file: 'ComeAwayWithMe.mp3', duration: 230 }
+	  		]
+	  	};
+	  	
+	  	// Shuffle playlist
+	  	this.radioPlaylist = this.shuffleArray([...playlists[station]]);
+	  	this.radioCurrentIndex = 0;
+	  	this.songsSinceCut = 0;
+	  	
+	  	// Update UI
+	  	this.updateStationButtons(station);
+	}
+	  
+	shuffleArray(array) {
+	  	const newArray = [...array];
+	  	for (let i = newArray.length - 1; i > 0; i--) {
+	  		const j = Math.floor(Math.random() * (i + 1));
+	  		[newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+	  	}
+	  	return newArray;
+	}
+	  
+	updateStationButtons(station) {
+	  	document.querySelectorAll('.station-btn').forEach(btn => {
+	  		btn.classList.remove('active');
+	  	});
+	  	
+	  	const activeBtn = document.querySelector(`.station-btn[onclick*="${station}"]`);
+	  	if (activeBtn) activeBtn.classList.add('active');
+	}
+	  
+	startRadio() {
+	  	if (this.radioPlaylist.length === 0) return;
+	  	
+	  	this.isRadioPlaying = true;
+	  	this.playRadioTrack(0);
+	}
+	  
+	playRadioTrack(index) {
+	  	if (index >= this.radioPlaylist.length) {
+	  		// Reshuffle and start over
+	  		this.radioPlaylist = this.shuffleArray(this.radioPlaylist);
+	  		index = 0;
+	  	}
+	  	
+	  	this.radioCurrentIndex = index;
+	  	
+	  	// Check if we should play a cut/break
+	  	if (this.songsSinceCut >= this.cutInterval) {
+	  		this.playRadioCut();
+	  		return;
+	  	}
+	  	
+	  	const track = this.radioPlaylist[index];
+	  	const audioPath = `/audio/${track.file}`;
+	  	
+	  	// Update UI
+	  	document.getElementById('radio-now-playing').textContent = track.title;
+	  	
+	  	// Update up next
+	  	const nextIndex = (index + 1) % this.radioPlaylist.length;
+	  	document.getElementById('radio-up-next').textContent = this.radioPlaylist[nextIndex].title;
+	  	
+	  	// Play audio
+	  	this.radioAudio.src = audioPath;
+	  	this.radioAudio.play();
+	  	document.getElementById('radio-play-btn').textContent = '⏸️';
+	  	
+	  	this.songsSinceCut++;
+	}
+	  
+	playRadioCut() {
+	  	// Reset cut counter
+	  	this.songsSinceCut = 0;
+	  	
+	  	// Get appropriate cut file
+	  	const cutFiles = {
+	  		mixed: ['Listening_mixed-0001.mp3', 'Listening_mixed-0002.mp3', 'Listening_mixed-0003.mp3'],
+	  		instrumental: ['Listening_instrumentals-0001.mp3', 'Listening_instrumentals-0002.mp3', 'Listening_instrumentals-0003.mp3'],
+	  		vocals: ['Listening_vocals-0001.mp3', 'Listening_vocals-0002.mp3', 'Listening_vocals-0003.mp3']
+	  	};
+	  	
+	  	const cuts = cutFiles[this.radioStation];
+	  	const randomCut = cuts[Math.floor(Math.random() * cuts.length)];
+	  	
+	  	// Update UI
+	  	document.getElementById('radio-now-playing').textContent = '📢 Station Announcement';
+	  	
+	  	// Play cut
+	  	this.radioAudio.src = `/audio/cuts/${randomCut}`;
+	  	this.radioAudio.play();
+	  	
+	  	// After cut ends, play next song
+	  	this.radioAudio.onended = () => {
+	  		this.radioAudio.onended = () => this.playNextRadioTrack();
+	  		this.playRadioTrack(this.radioCurrentIndex);
+	  	};
+	}
+	  
+	playNextRadioTrack() {
+	  	this.playRadioTrack(this.radioCurrentIndex + 1);
+	}
+	  
+	toggleRadioPlayPause() {
+	  	const btn = document.getElementById('radio-play-btn');
+	  	
+	  	if (this.radioAudio.paused) {
+	  		this.radioAudio.play();
+	  		btn.textContent = '⏸️';
+	  		this.isRadioPlaying = true;
+	  	} else {
+	  		this.radioAudio.pause();
+	  		btn.textContent = '▶️';
+	  		this.isRadioPlaying = false;
+	  	}
+	}
+	  
+	skipRadioTrack() {
+	  	this.playNextRadioTrack();
+	}
+	  
+	toggleRadioMute() {
+	  	const btn = document.getElementById('radio-mute-btn');
+	  	
+	  	if (this.radioAudio.muted) {
+	  		this.radioAudio.muted = false;
+	  		btn.textContent = '🔊';
+	  	} else {
+	  		this.radioAudio.muted = true;
+	  		btn.textContent = '🔇';
+	  	}
+	}
+	  
+	setRadioVolume(value) {
+	  	this.radioVolume = value / 100;
+	  	this.radioAudio.volume = this.radioVolume;
+	}
+	  
+	setRadioStation(station) {
+	  	// Stop current playback
+	  	this.radioAudio.pause();
+	  	
+	  	// Load new station
+	  	this.loadRadioPlaylist(station);
+	  	
+	  	// Start playing
+	  	this.startRadio();
+	}
+	  
+	updateRadioProgress() {
+	  	if (!this.radioAudio.duration) return;
+	  	
+	  	const progress = (this.radioAudio.currentTime / this.radioAudio.duration) * 100;
+	  	document.getElementById('radio-progress-bar').style.width = `${progress}%`;
+	  	
+	  	document.getElementById('radio-current-time').textContent = this.formatTime(this.radioAudio.currentTime);
+	}
+	  
+	updateRadioDuration() {
+	  	document.getElementById('radio-total-time').textContent = this.formatTime(this.radioAudio.duration);
+	}
+	
     // Enhanced Daily Grace App
     class DailyGraceApp {
 	  constructor() {
@@ -2118,59 +2340,59 @@
 	  	this.loadDailyVerse();
 	  	this.bindEvents();
 	  	this.setCopyrightYear();
-	  	this.initRadio(); // Add this line
+	  	this.initRadio();
 	  	setInterval(() => this.updateTimeGreeting(), 60000);
 	  }
 
-	  showPrivacyPolicy() {
-		const modal = document.getElementById('detail-modal');
-		const modalBody = document.getElementById('modal-body');
-		  
+	showPrivacyPolicy() {
+	  const modal = document.getElementById('detail-modal');
+	  const modalBody = document.getElementById('modal-body');
+		
 	    modalBody.innerHTML = `
-		<div style="max-width: 600px;">
-		  <h2 style="color: var(--deep-navy); margin-bottom: 2rem;">Privacy Policy</h2>
-		  
-		  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Information We Collect</h3>
-		  <p style="line-height: 1.6; margin-bottom: 1rem;">
-			DailyGrace.Online stores your devotions and prayers locally on your device using your browser's storage. 
-			We do not collect personal information or transmit your spiritual content to external servers.
-		  </p>
-		  
-		  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Analytics and Tracking</h3>
-		  <p style="line-height: 1.6; margin-bottom: 1rem;">
-			We use Google Analytics to understand how visitors use our website. This service collects 
-			anonymous data about page views, session duration, and general location (country/city level). 
-			We've configured Google Analytics to operate without cookies for your privacy. 
-			No personal information is collected or stored by this service.
-		  </p>
-		  
-			<h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">How We Use Information</h3>
-			<p style="line-height: 1.6; margin-bottom: 1rem;">
-			  Your devotions and prayers are stored locally on your device. When you request AI-generated 
-			  prayers, guidance, or audio, we send your requests to Pollinations.ai for processing. 
-			  We have no control over how long Pollinations.ai caches or stores these requests. 
-			  Please be mindful of what personal information you share.
-			</p>
-		  
-		  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Cookies</h3>
-		  <p style="line-height: 1.6; margin-bottom: 1rem;">
-			We use minimal browser storage to save your content locally. No tracking cookies are used.
-		  </p>
-		  
-		  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Contact</h3>
-		  <p style="line-height: 1.6;">
-			For questions about privacy, contact us at 
-			<a href="mailto:contact@dailygrace.online" style="color: var(--primary-blue);">contact@dailygrace.online</a>
-		  </p>
-		  
-		  <p style="font-size: 0.9rem; color: var(--sage-green); margin-top: 2rem;">
-			Last updated: June 2025
-		  </p>
-		</div>
-		`;
-	    
-	    modal.classList.add('active');
-	  }
+	  	<div style="max-width: 600px;">
+	  	  <h2 style="color: var(--deep-navy); margin-bottom: 2rem;">Privacy Policy</h2>
+		
+		<h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Information We Collect</h3>
+		<p style="line-height: 1.6; margin-bottom: 1rem;">
+		  DailyGrace.Online stores your devotions and prayers locally on your device using your browser's storage. 
+		  We do not collect personal information or transmit your spiritual content to external servers.
+		</p>
+		
+		<h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Analytics and Tracking</h3>
+		<p style="line-height: 1.6; margin-bottom: 1rem;">
+		  We use Google Analytics to understand how visitors use our website. This service collects 
+		  anonymous data about page views, session duration, and general location (country/city level). 
+		  We've configured Google Analytics to operate without cookies for your privacy. 
+		  No personal information is collected or stored by this service.
+		</p>
+		
+		<h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">How We Use Information</h3>
+		<p style="line-height: 1.6; margin-bottom: 1rem;">
+		  Your devotions and prayers are stored locally on your device. When you request AI-generated 
+		  prayers, guidance, or audio, we send your requests to Pollinations.ai for processing. 
+		  We have no control over how long Pollinations.ai caches or stores these requests. 
+		  Please be mindful of what personal information you share.
+		</p>
+		
+		<h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Cookies</h3>
+		<p style="line-height: 1.6; margin-bottom: 1rem;">
+		  We use minimal browser storage to save your content locally. No tracking cookies are used.
+		</p>
+		
+		<h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Contact</h3>
+		<p style="line-height: 1.6;">
+		  For questions about privacy, contact us at 
+		  <a href="mailto:contact@dailygrace.online" style="color: var(--primary-blue);">contact@dailygrace.online</a>
+		</p>
+		
+		<p style="font-size: 0.9rem; color: var(--sage-green); margin-top: 2rem;">
+		  Last updated: June 2025
+		</p>
+	  </div>
+	  `;
+	  
+	  modal.classList.add('active');
+	}
 			  
 	  showTermsOfService() {
 	    const modal = document.getElementById('detail-modal');
@@ -3936,228 +4158,6 @@
 		}
 		
 	  }
-    
-
-	// Radio Station Methods
-	initRadio() {
-	  	const radioElement = document.getElementById('radio-audio');
-	  	if (!radioElement) {
-	  		console.error('Radio audio element not found!');
-	  		return;
-	  	}
-	  	
-	  	this.radioAudio = radioElement;
-	  	this.radioAudio.volume = this.radioVolume;
-	  	
-	  	// Setup radio audio listeners
-	  	this.radioAudio.addEventListener('timeupdate', () => this.updateRadioProgress());
-	  	this.radioAudio.addEventListener('ended', () => this.playNextRadioTrack());
-	  	this.radioAudio.addEventListener('loadedmetadata', () => this.updateRadioDuration());
-	  	
-	  	// Load initial playlist
-	  	this.loadRadioPlaylist('mixed');
-	}
-	  
-	toggleRadio() {
-	  	console.log('Toggle radio clicked'); // Add this
-	  	const radioStation = document.getElementById('radio-station');
-	  	radioStation.classList.toggle('open');
-	  	
-	  	// Start playing if opening for first time
-	  	if (radioStation.classList.contains('open') && !this.isRadioPlaying && this.radioPlaylist.length === 0) {
-	  		this.loadRadioPlaylist(this.radioStation);
-	  		setTimeout(() => this.startRadio(), 500);
-	  	}
-	}
-	  
-	loadRadioPlaylist(station) {
-	  	this.radioStation = station;
-	  	
-	  	// Define playlists
-	  	const playlists = {
-	  		mixed: [
-	  			{ title: 'Rest in His Presence', file: 'RestinHisPresence.mp3', duration: 240 },
-	  			{ title: 'Morning Mercies', file: 'MorningMercies.mp3', duration: 225 },
-	  			{ title: 'Healing Waters', file: 'HealingWaters.mp3', duration: 255 },
-	  			{ title: 'Abide in Me', file: 'AbideinMe.mp3', duration: 210 },
-	  			{ title: 'Peace Be Still', file: 'PeaceBeStill.mp3', duration: 270 },
-	  			{ title: 'Come Away With Me', file: 'ComeAwayWithMe.mp3', duration: 230 }
-	  		],
-	  		instrumental: [
-	  			{ title: 'Gentle Streams', file: 'GentleStreams.mp3', duration: 289 },
-	  			{ title: 'Heavenly Peace', file: 'HeavenlyPeace.mp3', duration: 239 },
-	  			{ title: 'Morning Light', file: 'MorningLight.mp3', duration: 240 },
-	  			{ title: 'Quiet Sanctuary', file: 'QuietSanctuary.mp3', duration: 202 },
-	  			{ title: 'Sacred Waters', file: 'SacredWaters.mp3', duration: 169 },
-	  			{ title: 'Peaceful Garden', file: 'PeacefulGarden.mp3', duration: 248 }
-	  		],
-	  		vocals: [
-	  			{ title: 'Rest in His Presence', file: 'RestinHisPresence.mp3', duration: 240 },
-	  			{ title: 'Morning Mercies', file: 'MorningMercies.mp3', duration: 225 },
-	  			{ title: 'Healing Waters', file: 'HealingWaters.mp3', duration: 255 },
-	  			{ title: 'Abide in Me', file: 'AbideinMe.mp3', duration: 210 },
-	  			{ title: 'Peace Be Still', file: 'PeaceBeStill.mp3', duration: 270 },
-	  			{ title: 'Come Away With Me', file: 'ComeAwayWithMe.mp3', duration: 230 }
-	  		]
-	  	};
-	  	
-	  	// Shuffle playlist
-	  	this.radioPlaylist = this.shuffleArray([...playlists[station]]);
-	  	this.radioCurrentIndex = 0;
-	  	this.songsSinceCut = 0;
-	  	
-	  	// Update UI
-	  	this.updateStationButtons(station);
-	}
-	  
-	shuffleArray(array) {
-	  	const newArray = [...array];
-	  	for (let i = newArray.length - 1; i > 0; i--) {
-	  		const j = Math.floor(Math.random() * (i + 1));
-	  		[newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-	  	}
-	  	return newArray;
-	}
-	  
-	updateStationButtons(station) {
-	  	document.querySelectorAll('.station-btn').forEach(btn => {
-	  		btn.classList.remove('active');
-	  	});
-	  	
-	  	const activeBtn = document.querySelector(`.station-btn[onclick*="${station}"]`);
-	  	if (activeBtn) activeBtn.classList.add('active');
-	}
-	  
-	startRadio() {
-	  	if (this.radioPlaylist.length === 0) return;
-	  	
-	  	this.isRadioPlaying = true;
-	  	this.playRadioTrack(0);
-	}
-	  
-	playRadioTrack(index) {
-	  	if (index >= this.radioPlaylist.length) {
-	  		// Reshuffle and start over
-	  		this.radioPlaylist = this.shuffleArray(this.radioPlaylist);
-	  		index = 0;
-	  	}
-	  	
-	  	this.radioCurrentIndex = index;
-	  	
-	  	// Check if we should play a cut/break
-	  	if (this.songsSinceCut >= this.cutInterval) {
-	  		this.playRadioCut();
-	  		return;
-	  	}
-	  	
-	  	const track = this.radioPlaylist[index];
-	  	const audioPath = `/audio/${track.file}`;
-	  	
-	  	// Update UI
-	  	document.getElementById('radio-now-playing').textContent = track.title;
-	  	
-	  	// Update up next
-	  	const nextIndex = (index + 1) % this.radioPlaylist.length;
-	  	document.getElementById('radio-up-next').textContent = this.radioPlaylist[nextIndex].title;
-	  	
-	  	// Play audio
-	  	this.radioAudio.src = audioPath;
-	  	this.radioAudio.play();
-	  	document.getElementById('radio-play-btn').textContent = '⏸️';
-	  	
-	  	this.songsSinceCut++;
-	}
-	  
-	playRadioCut() {
-	  	// Reset cut counter
-	  	this.songsSinceCut = 0;
-	  	
-	  	// Get appropriate cut file
-	  	const cutFiles = {
-	  		mixed: ['Listening_mixed-0001.mp3', 'Listening_mixed-0002.mp3', 'Listening_mixed-0003.mp3'],
-	  		instrumental: ['Listening_instrumentals-0001.mp3', 'Listening_instrumentals-0002.mp3', 'Listening_instrumentals-0003.mp3'],
-	  		vocals: ['Listening_vocals-0001.mp3', 'Listening_vocals-0002.mp3', 'Listening_vocals-0003.mp3']
-	  	};
-	  	
-	  	const cuts = cutFiles[this.radioStation];
-	  	const randomCut = cuts[Math.floor(Math.random() * cuts.length)];
-	  	
-	  	// Update UI
-	  	document.getElementById('radio-now-playing').textContent = '📢 Station Announcement';
-	  	
-	  	// Play cut
-	  	this.radioAudio.src = `/audio/cuts/${randomCut}`;
-	  	this.radioAudio.play();
-	  	
-	  	// After cut ends, play next song
-	  	this.radioAudio.onended = () => {
-	  		this.radioAudio.onended = () => this.playNextRadioTrack();
-	  		this.playRadioTrack(this.radioCurrentIndex);
-	  	};
-	}
-	  
-	playNextRadioTrack() {
-	  	this.playRadioTrack(this.radioCurrentIndex + 1);
-	}
-	  
-	toggleRadioPlayPause() {
-	  	const btn = document.getElementById('radio-play-btn');
-	  	
-	  	if (this.radioAudio.paused) {
-	  		this.radioAudio.play();
-	  		btn.textContent = '⏸️';
-	  		this.isRadioPlaying = true;
-	  	} else {
-	  		this.radioAudio.pause();
-	  		btn.textContent = '▶️';
-	  		this.isRadioPlaying = false;
-	  	}
-	}
-	  
-	skipRadioTrack() {
-	  	this.playNextRadioTrack();
-	}
-	  
-	toggleRadioMute() {
-	  	const btn = document.getElementById('radio-mute-btn');
-	  	
-	  	if (this.radioAudio.muted) {
-	  		this.radioAudio.muted = false;
-	  		btn.textContent = '🔊';
-	  	} else {
-	  		this.radioAudio.muted = true;
-	  		btn.textContent = '🔇';
-	  	}
-	}
-	  
-	setRadioVolume(value) {
-	  	this.radioVolume = value / 100;
-	  	this.radioAudio.volume = this.radioVolume;
-	}
-	  
-	setRadioStation(station) {
-	  	// Stop current playback
-	  	this.radioAudio.pause();
-	  	
-	  	// Load new station
-	  	this.loadRadioPlaylist(station);
-	  	
-	  	// Start playing
-	  	this.startRadio();
-	}
-	  
-	updateRadioProgress() {
-	  	if (!this.radioAudio.duration) return;
-	  	
-	  	const progress = (this.radioAudio.currentTime / this.radioAudio.duration) * 100;
-	  	document.getElementById('radio-progress-bar').style.width = `${progress}%`;
-	  	
-	  	document.getElementById('radio-current-time').textContent = this.formatTime(this.radioAudio.currentTime);
-	}
-	  
-	updateRadioDuration() {
-	  	document.getElementById('radio-total-time').textContent = this.formatTime(this.radioAudio.duration);
-	}
 	
     // String hash function for consistent seeds
     String.prototype.hashCode = function() {
@@ -4175,7 +4175,8 @@
     document.addEventListener('DOMContentLoaded', () => {
       app = new DailyGraceApp();
     });
-  </script>
+	
+    </script>
   
 <!-- Footer -->
 <footer style="background: var(--deep-navy); color: var(--text-light); padding: 3rem 0 2rem 0; margin-top: 3rem;">
