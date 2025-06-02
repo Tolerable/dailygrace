@@ -2651,7 +2651,10 @@
 		Keep it under 50 words. Focus on peaceful, spiritual imagery.`;
 		
 		const descResponse = await fetch(`https://text.pollinations.ai/${encodeURIComponent(descriptionPrompt)}?model=openai`);
-		const visualDescription = await descResponse.text();
+		let visualDescription = await descResponse.text();
+		
+		// Clean up the description - remove quotes and trim
+		visualDescription = visualDescription.replace(/^["']|["']$/g, '').trim();
 		
 		// Now use that description for the image
 		const seed = Date.now();
