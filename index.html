@@ -1261,23 +1261,6 @@
 		Listen to God's Word with AI narration
 	  </p>
 	  
-	  <!-- Loading indicator -->
-	  <div id="bible-loading" class="text-center" style="margin: 2rem 0;">
-		<p>Loading Bible text...</p>
-	  </div>
-	  
-	  <!-- Bible Version Selector -->
-	  <div class="bible-controls" id="bible-controls" style="display: none;">
-		<!-- ... rest of your controls ... -->
-	  </div>
-	  
-	  <!-- Instructions -->
-	  <div class="bible-instructions" id="bible-instructions" style="display: none;">
-		<p class="text-center" style="margin: 2rem 0; padding: 1rem; background: var(--warm-cream); border-radius: 8px;">
-		  📖 Select a book and chapter above, then choose how you'd like to listen!
-		</p>
-	  </div>
-	  
 	  <!-- Bible Version Selector -->
 	  <div class="bible-controls" id="bible-controls">
 		<div class="version-selector">
@@ -1711,6 +1694,7 @@
 			  book, chapter, verse: verseNum
 			});
 		  });
+		  this.saveBiblePosition();
 	  }
 
 	  setReadingMode(mode) {
@@ -1723,7 +1707,7 @@
 		  }
 		  
 		  this.readingMode = mode;
-		  this.autoPlay = true;
+		  this.autoPlay = (mode !== 'verse');
 		  this.currentIndex = 0;
 		  
 		  // Load appropriate passages based on mode
@@ -1758,8 +1742,48 @@
 		  });
 	  }
 
+	  saveBiblePosition() {
+		  const position = {
+			version: document.getElementById('bible-version').value,
+			book: document.getElementById('bible-book').value,
+			chapter: document.getElementById('bible-chapter').value,
+			lastAccessed: Date.now()
+		  };
+		  localStorage.setItem('biblePosition', JSON.stringify(position));
+	  }
+
+	  loadBiblePosition() {
+		  const saved = localStorage.getItem('biblePosition');
+		  if (saved) {
+			const position = JSON.parse(saved);
+			document.getElementById('bible-version').value = position.version || 'kjv';
+			this.loadBibleBooks().then(() => {
+			  if (position.book) {
+				document.getElementById('bible-book').value = position.book;
+				this.loadChapters();
+				if (position.chapter) {
+				  setTimeout(() => {
+					document.getElementById('bible-chapter').value = position.chapter;
+					this.loadVerses();
+				  }, 100);
+				}
+			  }
+			});
+		  }
+	  }
+
 	  async playCurrentPassage() {
 		  if (!this.currentPassages || this.currentPassages.length === 0) return;
+		  
+		  const audio = document.getElementById('bible-audio');
+		  const playBtn = document.getElementById('bible-play-btn');
+		  
+		  // If audio is playing, pause it
+		  if (!audio.paused) {
+			audio.pause();
+			playBtn.textContent = '▶️';
+			return;
+		  }
 		  
 		  const passage = this.currentPassages[this.currentIndex];
 		  
@@ -1769,7 +1793,7 @@
 		  document.getElementById('passage-position').textContent = 
 			`${this.readingMode === 'verse' ? 'Verse' : 'Passage'} ${this.currentIndex + 1} of ${this.currentPassages.length}`;
 		  
-		  // Generate audio using the same method as prayers
+		  // Generate audio URL
 		  const cleanText = passage.text.replace(/\[|\]/g, '').replace(/\s+/g, ' ').trim();
 		  const transcriptionInstruction = "READ THIS TEXT VERBATIM WITHOUT ANY COMMENTARY OR RESPONSE:";
 		  const textToRead = transcriptionInstruction + " " + cleanText;
@@ -1777,18 +1801,19 @@
 		  const encodedText = encodeURIComponent(textToRead);
 		  const audioUrl = `https://text.pollinations.ai/${encodedText}?model=openai-audio&voice=nova`;
 		  
-		  const audio = document.getElementById('bible-audio');
 		  audio.src = audioUrl;
 		  
 		  // Setup audio events
 		  audio.onended = () => {
-			if (this.autoPlay && this.currentIndex < this.currentPassages.length - 1) {
-			  setTimeout(() => this.nextPassage(), 1000); // 1 second pause between verses
+			playBtn.textContent = '▶️';
+			// Only auto-advance if autoPlay is on AND not in verse mode
+			if (this.autoPlay && this.readingMode !== 'verse' && this.currentIndex < this.currentPassages.length - 1) {
+			  setTimeout(() => this.nextPassage(), 1000);
 			}
 		  };
 		  
 		  audio.play();
-		  document.getElementById('bible-play-btn').textContent = '⏸️';
+		  playBtn.textContent = '⏸️';
 	  }
 
 	  nextPassage() {
@@ -2089,8 +2114,9 @@
 		  } else if (sectionName === 'devotions') {
 			this.loadLatestDevotion();
 		  } else if (sectionName === 'bible') {
-			this.loadBibleBooks(); // Add this line
-		  }
+		  this.loadBibleBooks().then(() => {
+			  this.loadBiblePosition();
+		  });
 	  }
 
 	  // Add this new method to load the latest devotion
