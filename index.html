@@ -2706,17 +2706,22 @@
 	    
 	    messageDiv.appendChild(contentDiv);
 	    
-	    // Add listen button for bot messages
-	    if (sender === 'bot') {
-	  	const actionsDiv = document.createElement('div');
-	  	actionsDiv.className = 'message-actions';
-	  	actionsDiv.innerHTML = `
-	  	  <button class="message-action-btn" onclick="app.playMessageAudio('${content.replace(/'/g, "\\'")}')">
-	  		🎧 Listen
-	  	  </button>
-	  	`;
-	  	messageDiv.appendChild(actionsDiv);
-	    }
+		// Add audio controls for bot messages
+		if (sender === 'bot') {
+		  const actionsDiv = document.createElement('div');
+		  actionsDiv.className = 'message-actions';
+		  const audioId = `msg-audio-${Date.now()}`;
+		  actionsDiv.innerHTML = `
+			<button class="message-action-btn play-btn" onclick="app.toggleMessageAudio('${audioId}', '${content.replace(/'/g, "\\'")}', this)">
+			  ▶️ Listen
+			</button>
+			<button class="message-action-btn" onclick="app.regenerateMessageAudio('${audioId}', '${content.replace(/'/g, "\\'")}')">
+			  🔁 Regenerate
+			</button>
+			<audio id="${audioId}" preload="none"></audio>
+		  `;
+		  messageDiv.appendChild(actionsDiv);
+		}
 	    
 	    messagesContainer.appendChild(messageDiv);
 	    
