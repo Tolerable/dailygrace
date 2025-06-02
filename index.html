@@ -676,6 +676,133 @@
       color: var(--text-light);
     }
 
+	/* Bible Section Styles */
+	.bible-controls {
+	  display: grid;
+	  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	  gap: 1rem;
+	  margin-bottom: 2rem;
+	  background: var(--text-light);
+	  padding: 1.5rem;
+	  border-radius: 12px;
+	}
+
+	.bible-controls select {
+	  width: 100%;
+	  padding: 0.75rem;
+	  border: 2px solid var(--soft-blue);
+	  border-radius: 8px;
+	  font-family: inherit;
+	  background: var(--text-light);
+	}
+
+	.reading-mode {
+	  text-align: center;
+	  margin-bottom: 2rem;
+	}
+
+	.mode-buttons {
+	  display: flex;
+	  gap: 1rem;
+	  justify-content: center;
+	  flex-wrap: wrap;
+	  margin-top: 1rem;
+	}
+
+	.bible-player {
+	  background: var(--text-light);
+	  border-radius: 16px;
+	  padding: 2rem;
+	  margin-bottom: 2rem;
+	  box-shadow: 0 4px 16px var(--shadow-light);
+	}
+
+	.current-passage {
+	  text-align: center;
+	  margin-bottom: 2rem;
+	}
+
+	.current-passage h3 {
+	  color: var(--deep-navy);
+	  margin-bottom: 1rem;
+	}
+
+	.current-passage p {
+	  font-size: 1.1rem;
+	  line-height: 1.8;
+	  color: var(--text-dark);
+	  font-style: italic;
+	}
+
+	.bible-audio-controls {
+	  display: flex;
+	  justify-content: center;
+	  gap: 1rem;
+	  margin-bottom: 1.5rem;
+	}
+
+	.bible-btn {
+	  width: 50px;
+	  height: 50px;
+	  border: none;
+	  border-radius: 50%;
+	  background: var(--sage-green);
+	  color: var(--text-light);
+	  font-size: 1.2rem;
+	  cursor: pointer;
+	  transition: all 0.3s ease;
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	}
+
+	.bible-btn:hover {
+	  transform: scale(1.05);
+	}
+
+	.bible-btn.active {
+	  background: var(--gold-accent);
+	  color: var(--deep-navy);
+	}
+
+	.passage-info {
+	  display: flex;
+	  justify-content: space-between;
+	  margin-top: 0.5rem;
+	  font-size: 0.9rem;
+	  color: var(--sage-green);
+	}
+
+	.verse-list {
+	  background: var(--text-light);
+	  border-radius: 12px;
+	  padding: 1.5rem;
+	  max-height: 400px;
+	  overflow-y: auto;
+	}
+
+	.verse-item {
+	  padding: 0.75rem;
+	  border-bottom: 1px solid var(--soft-blue);
+	  cursor: pointer;
+	  transition: background 0.3s ease;
+	}
+
+	.verse-item:hover {
+	  background: var(--warm-cream);
+	}
+
+	.verse-item.playing {
+	  background: var(--soft-blue);
+	  color: var(--deep-navy);
+	}
+
+	.verse-reference {
+	  font-weight: 600;
+	  color: var(--sage-green);
+	  margin-bottom: 0.25rem;
+	}
+
     /* Utility Classes */
     .hidden { display: none !important; }
     .text-center { text-align: center; }
@@ -934,6 +1061,7 @@
 		  <li><a onclick="app.showSection('devotions')">Devotions</a></li>
 		  <li><a onclick="app.showSection('prayers')">Prayers</a></li>
 		  <li><a onclick="app.showSection('music')">Peaceful Music</a></li>
+		  <li><a onclick="app.showSection('bible')">Audio Bible</a></li>
 		  <li><a onclick="app.showSection('history')">My Journey</a></li>
 		</ul>
     </nav>
@@ -1124,6 +1252,83 @@
 		  <audio id="music-audio" preload="none"></audio>
 		</div>
 	  </div>
+	</section>
+
+	<!-- Bible Audio Section -->
+	<section id="bible-section" class="section">
+	  <h2 class="text-center mb-2">Audio Bible</h2>
+	  <p class="text-center" style="margin-bottom: 2rem; opacity: 0.8;">
+		Listen to God's Word with AI narration
+	  </p>
+	  
+	  <!-- Bible Version Selector -->
+	  <div class="bible-controls">
+		<div class="version-selector">
+		  <label class="section-label">Bible Version:</label>
+		  <select id="bible-version" onchange="app.loadBibleBooks()">
+			<option value="kjv">King James Version (KJV)</option>
+			<option value="asv">American Standard Version (ASV)</option>
+			<option value="ylt">Young's Literal Translation (YLT)</option>
+			<option value="lxx">Septuagint (LXX)</option>
+		  </select>
+		</div>
+		
+		<!-- Book Selector -->
+		<div class="book-selector">
+		  <label class="section-label">Book:</label>
+		  <select id="bible-book" onchange="app.loadChapters()">
+			<option value="">Select a Book</option>
+		  </select>
+		</div>
+		
+		<!-- Chapter Selector -->
+		<div class="chapter-selector">
+		  <label class="section-label">Chapter:</label>
+		  <select id="bible-chapter" onchange="app.loadVerses()">
+			<option value="">Select Chapter</option>
+		  </select>
+		</div>
+	  </div>
+	  
+	  <!-- Reading Mode Options -->
+	  <div class="reading-mode">
+		<h3>What would you like to listen to?</h3>
+		<div class="mode-buttons">
+		  <button class="btn btn-secondary" onclick="app.setReadingMode('verse')">Individual Verses</button>
+		  <button class="btn btn-secondary" onclick="app.setReadingMode('chapter')">Entire Chapter</button>
+		  <button class="btn btn-secondary" onclick="app.setReadingMode('book')">Entire Book</button>
+		</div>
+	  </div>
+	  
+	  <!-- Bible Player -->
+	  <div class="bible-player hidden" id="bible-player">
+		<div class="current-passage">
+		  <h3 id="current-reference">Genesis 1:1</h3>
+		  <p id="current-text">In the beginning God created the heaven and the earth.</p>
+		</div>
+		
+		<div class="bible-audio-controls">
+		  <button class="play-button" onclick="app.playCurrentPassage()" id="bible-play-btn">▶️</button>
+		  <button class="bible-btn" onclick="app.previousPassage()">⏮️</button>
+		  <button class="bible-btn" onclick="app.nextPassage()">⏭️</button>
+		  <button class="bible-btn" onclick="app.toggleAutoPlay()" id="auto-play-btn">🔄</button>
+		</div>
+		
+		<div class="progress-section">
+		  <div class="progress-container">
+			<div class="progress-bar" id="bible-progress"></div>
+		  </div>
+		  <div class="passage-info">
+			<span id="passage-position">Verse 1 of 31</span>
+			<span id="bible-time">0:00 / 0:00</span>
+		  </div>
+		</div>
+		
+		<audio id="bible-audio" preload="none"></audio>
+	  </div>
+	  
+	  <!-- Verse List for Individual Mode -->
+	  <div class="verse-list hidden" id="verse-list"></div>
 	</section>
 
     <!-- History Section -->
@@ -1381,6 +1586,153 @@
           request.onerror = () => reject(request.error);
         });
       }
+
+		// Bible Reading Methods
+	  async loadBibleBooks() {
+		  const version = document.getElementById('bible-version').value;
+		  
+		  try {
+			const response = await fetch(`/bible/${version}.txt`);
+			const text = await response.text();
+			
+			// Parse books from the text
+			this.bibleData = this.parseBibleText(text);
+			
+			const bookSelect = document.getElementById('bible-book');
+			bookSelect.innerHTML = '<option value="">Select a Book</option>';
+			
+			Object.keys(this.bibleData).forEach(book => {
+			  const option = document.createElement('option');
+			  option.value = book;
+			  option.textContent = book;
+			  bookSelect.appendChild(option);
+			});
+			
+		  } catch (error) {
+			console.error('Failed to load Bible:', error);
+		  }
+	  }
+
+	  parseBibleText(text) {
+		  const lines = text.split('\n');
+		  const books = {};
+		  
+		  lines.forEach(line => {
+			if (line.trim() && line.includes('\t')) {
+			  const [reference, verse] = line.split('\t');
+			  const [book, chapterVerse] = reference.split(' ');
+			  const [chapter, verseNum] = chapterVerse.split(':');
+			  
+			  if (!books[book]) books[book] = {};
+			  if (!books[book][chapter]) books[book][chapter] = {};
+			  
+			  books[book][chapter][verseNum] = verse;
+			}
+		  });
+		  
+		  return books;
+	  }
+
+	  loadChapters() {
+		  const book = document.getElementById('bible-book').value;
+		  if (!book || !this.bibleData[book]) return;
+		  
+		  const chapterSelect = document.getElementById('bible-chapter');
+		  chapterSelect.innerHTML = '<option value="">Select Chapter</option>';
+		  
+		  Object.keys(this.bibleData[book]).forEach(chapter => {
+			const option = document.createElement('option');
+			option.value = chapter;
+			option.textContent = `Chapter ${chapter}`;
+			chapterSelect.appendChild(option);
+		  });
+	  }
+
+	  loadVerses() {
+		  const book = document.getElementById('bible-book').value;
+		  const chapter = document.getElementById('bible-chapter').value;
+		  
+		  if (!book || !chapter) return;
+		  
+		  this.currentPassages = [];
+		  const verses = this.bibleData[book][chapter];
+		  
+		  Object.keys(verses).forEach(verseNum => {
+			this.currentPassages.push({
+			  reference: `${book} ${chapter}:${verseNum}`,
+			  text: verses[verseNum],
+			  book, chapter, verse: verseNum
+			});
+		  });
+	  }
+
+	  setReadingMode(mode) {
+		  this.readingMode = mode;
+		  this.autoPlay = true;
+		  this.currentIndex = 0;
+		  
+		  // Show player
+		  document.getElementById('bible-player').classList.remove('hidden');
+		  
+		  if (mode === 'verse') {
+			this.showVerseList();
+		  } else {
+			document.getElementById('verse-list').classList.add('hidden');
+		  }
+	  }
+
+	  async playCurrentPassage() {
+		  if (!this.currentPassages || this.currentPassages.length === 0) return;
+		  
+		  const passage = this.currentPassages[this.currentIndex];
+		  
+		  // Update UI
+		  document.getElementById('current-reference').textContent = passage.reference;
+		  document.getElementById('current-text').textContent = passage.text;
+		  document.getElementById('passage-position').textContent = 
+			`${this.readingMode === 'verse' ? 'Verse' : 'Passage'} ${this.currentIndex + 1} of ${this.currentPassages.length}`;
+		  
+		  // Generate audio using the same method as prayers
+		  const cleanText = passage.text.replace(/\[|\]/g, '').replace(/\s+/g, ' ').trim();
+		  const transcriptionInstruction = "READ THIS TEXT VERBATIM WITHOUT ANY COMMENTARY OR RESPONSE:";
+		  const textToRead = transcriptionInstruction + " " + cleanText;
+		  
+		  const encodedText = encodeURIComponent(textToRead);
+		  const audioUrl = `https://text.pollinations.ai/${encodedText}?model=openai-audio&voice=nova`;
+		  
+		  const audio = document.getElementById('bible-audio');
+		  audio.src = audioUrl;
+		  
+		  // Setup audio events
+		  audio.onended = () => {
+			if (this.autoPlay && this.currentIndex < this.currentPassages.length - 1) {
+			  setTimeout(() => this.nextPassage(), 1000); // 1 second pause between verses
+			}
+		  };
+		  
+		  audio.play();
+		  document.getElementById('bible-play-btn').textContent = '⏸️';
+	  }
+
+	  nextPassage() {
+		  if (this.currentIndex < this.currentPassages.length - 1) {
+			this.currentIndex++;
+			this.playCurrentPassage();
+		  }
+	  }
+
+	  previousPassage() {
+		  if (this.currentIndex > 0) {
+			this.currentIndex--;
+			this.playCurrentPassage();
+		  }
+	  }
+
+	  toggleAutoPlay() {
+		  this.autoPlay = !this.autoPlay;
+		  const btn = document.getElementById('auto-play-btn');
+		  btn.classList.toggle('active', this.autoPlay);
+	  }
 
 	  // Music Player Methods
 	  playTrack(trackId) {
