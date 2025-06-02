@@ -3939,7 +3939,7 @@
     }
 
 	  // Radio Station Methods
-	  initRadio() {
+	initRadio() {
 	  	const radioElement = document.getElementById('radio-audio');
 	  	if (!radioElement) {
 	  		console.error('Radio audio element not found!');
@@ -3956,9 +3956,9 @@
 	  	
 	  	// Load initial playlist
 	  	this.loadRadioPlaylist('mixed');
-	  }
+	}
 	  
-	  toggleRadio() {
+	toggleRadio() {
 	  	console.log('Toggle radio clicked'); // Add this
 	  	const radioStation = document.getElementById('radio-station');
 	  	radioStation.classList.toggle('open');
@@ -3968,9 +3968,9 @@
 	  		this.loadRadioPlaylist(this.radioStation);
 	  		setTimeout(() => this.startRadio(), 500);
 	  	}
-	  }
+	}
 	  
-	  loadRadioPlaylist(station) {
+	loadRadioPlaylist(station) {
 	  	this.radioStation = station;
 	  	
 	  	// Define playlists
@@ -4008,34 +4008,34 @@
 	  	
 	  	// Update UI
 	  	this.updateStationButtons(station);
-	  }
+	}
 	  
-	  shuffleArray(array) {
+	shuffleArray(array) {
 	  	const newArray = [...array];
 	  	for (let i = newArray.length - 1; i > 0; i--) {
 	  		const j = Math.floor(Math.random() * (i + 1));
 	  		[newArray[i], newArray[j]] = [newArray[j], newArray[i]];
 	  	}
 	  	return newArray;
-	  }
+	}
 	  
-	  updateStationButtons(station) {
+	updateStationButtons(station) {
 	  	document.querySelectorAll('.station-btn').forEach(btn => {
 	  		btn.classList.remove('active');
 	  	});
 	  	
 	  	const activeBtn = document.querySelector(`.station-btn[onclick*="${station}"]`);
 	  	if (activeBtn) activeBtn.classList.add('active');
-	  }
+	}
 	  
-	  startRadio() {
+	startRadio() {
 	  	if (this.radioPlaylist.length === 0) return;
 	  	
 	  	this.isRadioPlaying = true;
 	  	this.playRadioTrack(0);
-	  }
+	}
 	  
-	  playRadioTrack(index) {
+	playRadioTrack(index) {
 	  	if (index >= this.radioPlaylist.length) {
 	  		// Reshuffle and start over
 	  		this.radioPlaylist = this.shuffleArray(this.radioPlaylist);
@@ -4066,9 +4066,9 @@
 	  	document.getElementById('radio-play-btn').textContent = '⏸️';
 	  	
 	  	this.songsSinceCut++;
-	  }
+	}
 	  
-	  playRadioCut() {
+	playRadioCut() {
 	  	// Reset cut counter
 	  	this.songsSinceCut = 0;
 	  	
@@ -4094,13 +4094,13 @@
 	  		this.radioAudio.onended = () => this.playNextRadioTrack();
 	  		this.playRadioTrack(this.radioCurrentIndex);
 	  	};
-	  }
+	}
 	  
-	  playNextRadioTrack() {
+	playNextRadioTrack() {
 	  	this.playRadioTrack(this.radioCurrentIndex + 1);
-	  }
+	}
 	  
-	  toggleRadioPlayPause() {
+	toggleRadioPlayPause() {
 	  	const btn = document.getElementById('radio-play-btn');
 	  	
 	  	if (this.radioAudio.paused) {
@@ -4112,13 +4112,13 @@
 	  		btn.textContent = '▶️';
 	  		this.isRadioPlaying = false;
 	  	}
-	  }
+	}
 	  
-	  skipRadioTrack() {
+	skipRadioTrack() {
 	  	this.playNextRadioTrack();
-	  }
+	}
 	  
-	  toggleRadioMute() {
+	toggleRadioMute() {
 	  	const btn = document.getElementById('radio-mute-btn');
 	  	
 	  	if (this.radioAudio.muted) {
@@ -4128,14 +4128,14 @@
 	  		this.radioAudio.muted = true;
 	  		btn.textContent = '🔇';
 	  	}
-	  }
+	}
 	  
-	  setRadioVolume(value) {
+	setRadioVolume(value) {
 	  	this.radioVolume = value / 100;
 	  	this.radioAudio.volume = this.radioVolume;
-	  }
+	}
 	  
-	  setRadioStation(station) {
+	setRadioStation(station) {
 	  	// Stop current playback
 	  	this.radioAudio.pause();
 	  	
@@ -4144,20 +4144,19 @@
 	  	
 	  	// Start playing
 	  	this.startRadio();
-	  }
+	}
 	  
-	  updateRadioProgress() {
+	updateRadioProgress() {
 	  	if (!this.radioAudio.duration) return;
 	  	
 	  	const progress = (this.radioAudio.currentTime / this.radioAudio.duration) * 100;
 	  	document.getElementById('radio-progress-bar').style.width = `${progress}%`;
 	  	
 	  	document.getElementById('radio-current-time').textContent = this.formatTime(this.radioAudio.currentTime);
-	  }
+	}
 	  
-	  updateRadioDuration() {
+	updateRadioDuration() {
 	  	document.getElementById('radio-total-time').textContent = this.formatTime(this.radioAudio.duration);
-	  }
 	}
 	
     // String hash function for consistent seeds
