@@ -3330,53 +3330,76 @@
 	  	}
 	  }
 
-      async showDetail(id) {
-        const item = await this.getContentById(id);
-        const modal = document.getElementById('detail-modal');
-        const modalBody = document.getElementById('modal-body');
-        
-        if (item.type === 'devotion') {
-          modalBody.innerHTML = `
-            <div class="devotion-card">
-              <div class="devotion-header">
-                <h3>${item.topic}</h3>
-                <span class="devotion-date">${new Date(item.date).toLocaleDateString()}</span>
-              </div>
-              
-              ${item.imageUrl ? `<img src="${item.imageUrl}" alt="${item.topic}" class="devotion-image" />` : ''}
-              
-              <div class="devotion-content">
-                <p class="devotion-text">${item.content}</p>
-              </div>
-              
-              <div class="audio-player">
-                <div class="audio-controls">
-                  <button class="play-button" onclick="app.toggleAudio(${item.id}, 'devotion')">▶️</button>
-                  <div class="progress-container" onclick="app.seekAudio(event, ${item.id})">
-                    <div class="progress-bar" id="progress-${item.id}"></div>
-                  </div>
-                  <span class="time-display" id="time-${item.id}">0:00 / 0:00</span>
-                </div>
-                <audio id="audio-${item.id}" preload="none"></audio>
-              </div>
-            </div>
-          `;
-        } else {
-          modalBody.innerHTML = `
-            <div class="prayer-creator">
-              <h3>Your Prayer</h3>
-              <p class="devotion-date">${new Date(item.date).toLocaleDateString()}</p>
-              <p class="devotion-text" style="margin-top: 1rem;">${item.content}</p>
-              
-              <button class="btn btn-accent mt-2" onclick="app.playPrayerAudio('${item.content}')">
-                🎧 Listen to Prayer
-              </button>
-            </div>
-          `;
-        }
-        
-        modal.classList.add('active');
-      }
+	  async showDetail(id) {
+		   const item = await this.getContentById(id);
+		   const modal = document.getElementById('detail-modal');
+		   const modalBody = document.getElementById('modal-body');
+		   
+		   if (item.type === 'devotion') {
+			   modalBody.innerHTML = `
+				   <div class="devotion-card">
+					   <div class="devotion-header">
+						   <h3>${item.topic}</h3>
+						   <span class="devotion-date">${new Date(item.date).toLocaleDateString()}</span>
+					   </div>
+					   
+					   ${item.imageUrl ? `<img src="${item.imageUrl}" alt="${item.topic}" class="devotion-image" />` : ''}
+					   
+					   <div class="devotion-content">
+						   <p class="devotion-text">${item.content}</p>
+					   </div>
+					   
+					   <div class="audio-player">
+						   <div class="audio-controls">
+							   <button class="play-button" onclick="app.toggleAudio(${item.id}, 'devotion')">▶️</button>
+							   <div class="progress-container" onclick="app.seekAudio(event, ${item.id})">
+								   <div class="progress-bar" id="progress-${item.id}"></div>
+							   </div>
+							   <span class="time-display" id="time-${item.id}">0:00 / 0:00</span>
+						   </div>
+						   <audio id="audio-${item.id}" preload="none"></audio>
+					   </div>
+				   </div>
+			   `;
+		   } else if (item.type === 'guidance') {
+			   modalBody.innerHTML = `
+				   <div class="guidance-interface">
+					   <h3>Spiritual Guidance Session</h3>
+					   <p class="devotion-date">${new Date(item.date).toLocaleDateString()}</p>
+					   
+					   <div style="margin: 1.5rem 0;">
+						   <h4 style="color: var(--sage-green); margin-bottom: 0.5rem;">What you shared:</h4>
+						   <p style="background: var(--warm-cream); padding: 1rem; border-radius: 8px; font-style: italic;">
+							   "${item.question}"
+						   </p>
+					   </div>
+					   
+					   <div>
+						   <h4 style="color: var(--sage-green); margin-bottom: 0.5rem;">Biblical encouragement:</h4>
+						   <div class="response-content">${item.response}</div>
+					   </div>
+					   
+					   <button class="btn btn-accent mt-2" onclick="app.playGuidanceAudio(\`${item.response.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`)">
+						   🎧 Listen to Response
+					   </button>
+				   </div>
+			   `;
+		   } else {
+			   modalBody.innerHTML = `
+				   <div class="prayer-creator">
+					   <h3>Your Prayer</h3>
+					   <p class="devotion-date">${new Date(item.date).toLocaleDateString()}</p>
+					   <p class="devotion-text" style="margin-top: 1rem;">${item.content}</p>
+					   
+					   <button class="btn btn-accent mt-2" onclick="app.playPrayerAudio('${item.content}')">
+						   🎧 Listen to Prayer
+					   </button>
+				   </div>
+			   `;
+		   }
+		   
+		   modal.classList.add('active');
+	  }
 
       async playPrayerAudio(text) {
           // Clean up text
