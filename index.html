@@ -2644,8 +2644,8 @@
       }
 
       async generateDevotionImage(topic) {
-        const visualPrompt = `Christian devotional art depicting ${topic}, peaceful spiritual scene, 
-        soft watercolor style, warm light, serene atmosphere, no text`;
+        const visualPrompt = `Christian devotional art image only depicting ${topic}, peaceful spiritual scene, 
+        soft watercolor style, warm light, serene atmosphere, remember include no text within the image description`;
         
         const seed = Date.now();
         return `https://image.pollinations.ai/prompt/${encodeURIComponent(visualPrompt)}?model=flux&width=1200&height=675&seed=${seed}&nologo=true`;
