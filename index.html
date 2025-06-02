@@ -1986,7 +1986,6 @@
       
       <div id="history-container" class="history-grid"></div>
     </section>
-  </main>
 
   <!-- Radio Station Panel -->
   <div id="radio-station" class="radio-station">
@@ -2091,7 +2090,7 @@
           </div>
       </div>
   </div>
-
+  </main>
   <script>
     // Enhanced Daily Grace App
     class DailyGraceApp {
@@ -3622,37 +3621,6 @@
 			  <p class="history-item-date">${new Date(session.date).toLocaleDateString()}</p>
 			</div>
 		  `).join('');
-	  }
-
-	  async showGuidanceDetail(id) {
-		  const session = await this.getContentById(id);
-		  const modal = document.getElementById('detail-modal');
-		  const modalBody = document.getElementById('modal-body');
-		  
-		  modalBody.innerHTML = `
-			<div class="guidance-interface">
-			  <h3>Spiritual Guidance Session</h3>
-			  <p class="devotion-date">${new Date(session.date).toLocaleDateString()}</p>
-			  
-			  <div style="margin: 1.5rem 0;">
-				<h4 style="color: var(--sage-green); margin-bottom: 0.5rem;">What you shared:</h4>
-				<p style="background: var(--warm-cream); padding: 1rem; border-radius: 8px; font-style: italic;">
-				  "${session.question}"
-				</p>
-			  </div>
-			  
-			  <div>
-				<h4 style="color: var(--sage-green); margin-bottom: 0.5rem;">Biblical encouragement:</h4>
-				<div class="response-content">${session.response}</div>
-			  </div>
-			  
-			  <button class="btn btn-accent mt-2" onclick="app.playGuidanceAudio('${session.response.replace(/'/g, "\\'")}')">
-				🎧 Listen to Response
-			  </button>
-			</div>
-		  `;
-		  
-		  modal.classList.add('active');
 	  }
 
 	  async showGuidanceDetail(id) {
