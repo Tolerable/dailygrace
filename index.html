@@ -2123,55 +2123,55 @@
 	  }
 
 	  showPrivacyPolicy() {
-		  const modal = document.getElementById('detail-modal');
-		  const modalBody = document.getElementById('modal-body');
+		const modal = document.getElementById('detail-modal');
+		const modalBody = document.getElementById('modal-body');
 		  
-		  modalBody.innerHTML = `
-			<div style="max-width: 600px;">
-			  <h2 style="color: var(--deep-navy); margin-bottom: 2rem;">Privacy Policy</h2>
-			  
-			  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Information We Collect</h3>
-			  <p style="line-height: 1.6; margin-bottom: 1rem;">
-				DailyGrace.Online stores your devotions and prayers locally on your device using your browser's storage. 
-				We do not collect personal information or transmit your spiritual content to external servers.
-			  </p>
-			  
-			  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Analytics and Tracking</h3>
-			  <p style="line-height: 1.6; margin-bottom: 1rem;">
-				We use Google Analytics to understand how visitors use our website. This service collects 
-				anonymous data about page views, session duration, and general location (country/city level). 
-				We've configured Google Analytics to operate without cookies for your privacy. 
-				No personal information is collected or stored by this service.
-			  </p>
-			  
-				<h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">How We Use Information</h3>
-				<p style="line-height: 1.6; margin-bottom: 1rem;">
-				  Your devotions and prayers are stored locally on your device. When you request AI-generated 
-				  prayers, guidance, or audio, we send your requests to Pollinations.ai for processing. 
-				  We have no control over how long Pollinations.ai caches or stores these requests. 
-				  Please be mindful of what personal information you share.
-				</p>
-			  
-			  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Cookies</h3>
-			  <p style="line-height: 1.6; margin-bottom: 1rem;">
-				We use minimal browser storage to save your content locally. No tracking cookies are used.
-			  </p>
-			  
-			  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Contact</h3>
-			  <p style="line-height: 1.6;">
-				For questions about privacy, contact us at 
-				<a href="mailto:contact@dailygrace.online" style="color: var(--primary-blue);">contact@dailygrace.online</a>
-			  </p>
-			  
-			  <p style="font-size: 0.9rem; color: var(--sage-green); margin-top: 2rem;">
-				Last updated: June 2025
-			  </p>
-			</div>
-	  `;
+	    modalBody.innerHTML = `
+		<div style="max-width: 600px;">
+		  <h2 style="color: var(--deep-navy); margin-bottom: 2rem;">Privacy Policy</h2>
+		  
+		  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Information We Collect</h3>
+		  <p style="line-height: 1.6; margin-bottom: 1rem;">
+			DailyGrace.Online stores your devotions and prayers locally on your device using your browser's storage. 
+			We do not collect personal information or transmit your spiritual content to external servers.
+		  </p>
+		  
+		  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Analytics and Tracking</h3>
+		  <p style="line-height: 1.6; margin-bottom: 1rem;">
+			We use Google Analytics to understand how visitors use our website. This service collects 
+			anonymous data about page views, session duration, and general location (country/city level). 
+			We've configured Google Analytics to operate without cookies for your privacy. 
+			No personal information is collected or stored by this service.
+		  </p>
+		  
+			<h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">How We Use Information</h3>
+			<p style="line-height: 1.6; margin-bottom: 1rem;">
+			  Your devotions and prayers are stored locally on your device. When you request AI-generated 
+			  prayers, guidance, or audio, we send your requests to Pollinations.ai for processing. 
+			  We have no control over how long Pollinations.ai caches or stores these requests. 
+			  Please be mindful of what personal information you share.
+			</p>
+		  
+		  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Cookies</h3>
+		  <p style="line-height: 1.6; margin-bottom: 1rem;">
+			We use minimal browser storage to save your content locally. No tracking cookies are used.
+		  </p>
+		  
+		  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Contact</h3>
+		  <p style="line-height: 1.6;">
+			For questions about privacy, contact us at 
+			<a href="mailto:contact@dailygrace.online" style="color: var(--primary-blue);">contact@dailygrace.online</a>
+		  </p>
+		  
+		  <p style="font-size: 0.9rem; color: var(--sage-green); margin-top: 2rem;">
+			Last updated: June 2025
+		  </p>
+		</div>
+		`;
 	    
 	    modal.classList.add('active');
 	  }
-	  
+			  
 	  showTermsOfService() {
 	    const modal = document.getElementById('detail-modal');
 	    const modalBody = document.getElementById('modal-body');
@@ -2334,7 +2334,7 @@
         });
       }
 
-		// Bible Reading Methods
+	  // Bible Reading Methods
 	  async loadBibleBooks() {
 		const version = document.getElementById('bible-version').value;
 		
@@ -2871,29 +2871,31 @@
       }
 
       // Daily Verse
-      async loadDailyVerse() {
-        const verseContainer = document.getElementById('daily-verse');
-        const seed = new Date().toDateString();
-        
-        try {
-          const prompt = `Generate a brief, encouraging Bible verse for today. Include the verse reference. Keep it under 50 words. Focus on comfort, hope, or strength. Output only the verse and reference, no commentary.`;
-          
-          const response = await fetch(`https://text.pollinations.ai/${encodeURIComponent(prompt)}?model=openai&seed=${seed.hashCode()}`);
-          const text = await response.text();
-          
-          const parts = text.match(/"([^"]+)"\s*-?\s*(.+)/);
-          if (parts) {
-            verseContainer.innerHTML = `
-              <p class="scripture-reference">${parts[2]}</p>
-              <p class="devotion-text">"${parts[1]}"</p>
-            `;
-          } else {
-            verseContainer.innerHTML = `<p class="devotion-text">${text}</p>`;
-          }
-        } catch (error) {
-          console.error('Failed to load daily verse:', error);
-        }
-      }
+	  async loadDailyVerse() {
+	    const verseContainer = document.getElementById('daily-verse');
+	    const seed = new Date().toDateString();
+	    
+	    try {
+	  	const prompt = `Generate a brief, encouraging Bible verse for today. Include the verse reference. Keep it under 50 words. Focus on comfort, hope, or strength. Output only the verse and reference, no commentary.`;
+	  	
+	  	const response = await fetch(`https://text.pollinations.ai/${encodeURIComponent(prompt)}?model=openai&seed=${seed.hashCode()}`);
+	  	const text = await response.text();
+	  	
+	  	const parts = text.match(/(.+?):\s*"([^"]+)"/);
+	  	if (parts) {
+	  	  verseContainer.innerHTML = `
+	  		<p class="scripture-reference">${parts[1]}</p>
+	  		<p class="devotion-text">"${parts[2]}"</p>
+	  	  `;
+	  	} else {
+	  	  verseContainer.innerHTML = `<p class="devotion-text">${text}</p>`;
+	  	}
+	    } catch (error) {
+	  	console.error('Failed to load daily verse:', error);
+	    }
+	  }
+      
+	
 
       // Navigation
 	  showSection(sectionName) {
@@ -3457,7 +3459,7 @@
 	    tempAudio.play();
 	  }
 
-	  // Audio Management - FIXED based on working transcribe.html
+	  // Audio Management 
       async preloadAudio(item) {
           try {
               // Clean up text - normalize spaces, etc.
@@ -3938,7 +3940,7 @@
 	  }
     }
 
-	  // Radio Station Methods
+	// Radio Station Methods
 	initRadio() {
 	  	const radioElement = document.getElementById('radio-audio');
 	  	if (!radioElement) {
