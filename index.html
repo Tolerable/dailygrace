@@ -673,6 +673,193 @@
     .mt-2 { margin-top: 2rem; }
     .mb-2 { margin-bottom: 2rem; }
 
+	/* Music Section Styles */
+	.music-grid {
+	  display: grid;
+	  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	  gap: 1.5rem;
+	  margin: 2rem 0;
+	}
+
+	.music-card {
+	  background: var(--text-light);
+	  border-radius: 16px;
+	  padding: 2rem;
+	  text-align: center;
+	  cursor: pointer;
+	  transition: all 0.3s ease;
+	  box-shadow: 0 4px 16px var(--shadow-light);
+	  position: relative;
+	  overflow: hidden;
+	}
+
+	.music-card::before {
+	  content: '';
+	  position: absolute;
+	  top: 0;
+	  left: -100%;
+	  width: 100%;
+	  height: 100%;
+	  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+	  transition: left 0.6s ease;
+	}
+
+	.music-card:hover::before {
+	  left: 100%;
+	}
+
+	.music-card:hover {
+	  transform: translateY(-4px);
+	  box-shadow: 0 8px 24px var(--shadow-medium);
+	}
+
+	.music-icon {
+	  font-size: 3rem;
+	  margin-bottom: 1rem;
+	  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+	}
+
+	.music-title {
+	  font-size: 1.3rem;
+	  color: var(--deep-navy);
+	  margin-bottom: 0.5rem;
+	  font-weight: 600;
+	}
+
+	.music-description {
+	  color: var(--sage-green);
+	  opacity: 0.9;
+	  margin-bottom: 0.5rem;
+	  font-style: italic;
+	}
+
+	.music-duration {
+	  color: var(--text-dark);
+	  opacity: 0.7;
+	  font-size: 0.9rem;
+	  font-weight: 500;
+	}
+
+	/* Music Player Modal */
+	.music-player-modal {
+	  display: none;
+	  position: fixed;
+	  top: 0;
+	  left: 0;
+	  right: 0;
+	  bottom: 0;
+	  background: rgba(0, 0, 0, 0.8);
+	  z-index: 1000;
+	  backdrop-filter: blur(10px);
+	}
+
+	.music-player-modal.active {
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  animation: fadeIn 0.3s ease;
+	}
+
+	.music-player-content {
+	  background: var(--text-light);
+	  border-radius: 24px;
+	  padding: 2.5rem;
+	  max-width: 450px;
+	  width: 90%;
+	  position: relative;
+	  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+	}
+
+	.current-track-info {
+	  text-align: center;
+	  margin-bottom: 2rem;
+	}
+
+	.track-icon {
+	  font-size: 4rem;
+	  margin-bottom: 1rem;
+	}
+
+	.music-controls {
+	  display: flex;
+	  justify-content: center;
+	  gap: 1rem;
+	  margin-bottom: 2rem;
+	}
+
+	.music-btn {
+	  width: 60px;
+	  height: 60px;
+	  border: none;
+	  border-radius: 50%;
+	  background: var(--gradient-primary);
+	  color: var(--text-light);
+	  font-size: 1.5rem;
+	  cursor: pointer;
+	  transition: all 0.3s ease;
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	}
+
+	.music-btn:hover {
+	  transform: scale(1.05);
+	  box-shadow: 0 4px 16px rgba(46, 134, 171, 0.4);
+	}
+
+	.music-btn.active {
+	  background: var(--gold-accent);
+	  color: var(--deep-navy);
+	}
+
+	.progress-section {
+	  margin-bottom: 1.5rem;
+	}
+
+	.time-info {
+	  display: flex;
+	  justify-content: space-between;
+	  margin-top: 0.5rem;
+	  font-size: 0.9rem;
+	  color: var(--sage-green);
+	}
+
+	.timer-section {
+	  text-align: center;
+	  padding-top: 1.5rem;
+	  border-top: 1px solid var(--soft-blue);
+	}
+
+	.timer-options {
+	  display: flex;
+	  gap: 0.5rem;
+	  justify-content: center;
+	  flex-wrap: wrap;
+	  margin: 1rem 0;
+	}
+
+	.timer-btn {
+	  padding: 0.5rem 1rem;
+	  border: 2px solid var(--primary-blue);
+	  background: var(--text-light);
+	  color: var(--primary-blue);
+	  border-radius: 20px;
+	  cursor: pointer;
+	  transition: all 0.3s ease;
+	  font-size: 0.9rem;
+	}
+
+	.timer-btn:hover {
+	  background: var(--primary-blue);
+	  color: var(--text-light);
+	}
+
+	#timer-display {
+	  color: var(--sage-green);
+	  font-weight: 500;
+	  margin-top: 1rem;
+	}
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -733,12 +920,13 @@
         <div class="logo-icon">✝</div>
         Daily Grace
       </div>
-      <ul class="nav-menu">
-        <li><a onclick="app.showSection('home')">Home</a></li>
-        <li><a onclick="app.showSection('devotions')">Devotions</a></li>
-        <li><a onclick="app.showSection('prayers')">Prayers</a></li>
-        <li><a onclick="app.showSection('history')">My Journey</a></li>
-      </ul>
+		<ul class="nav-menu">
+		  <li><a onclick="app.showSection('home')">Home</a></li>
+		  <li><a onclick="app.showSection('devotions')">Devotions</a></li>
+		  <li><a onclick="app.showSection('prayers')">Prayers</a></li>
+		  <li><a onclick="app.showSection('music')">Peaceful Music</a></li>
+		  <li><a onclick="app.showSection('history')">My Journey</a></li>
+		</ul>
     </nav>
   </header>
 
@@ -772,6 +960,13 @@
             <h3 class="action-title">My Journey</h3>
             <p class="action-description">Revisit past devotions and prayers</p>
           </div>
+		  
+		  <div class="action-card" onclick="app.showSection('music')">
+		    <div class="action-icon">🎵</div>
+		    <h3 class="action-title">Peaceful Music</h3>
+		    <p class="action-description">Soothing sounds for prayer and meditation</p>
+		  </div>
+		  
         </div>
       </div>
     </section>
@@ -825,6 +1020,86 @@
         
         <div id="saved-prayers" class="history-grid mt-2"></div>
     </section>
+
+	<!-- Peaceful Music Section -->
+	<section id="music-section" class="section">
+	  <h2 class="text-center mb-2">Peaceful Music for Prayer & Meditation</h2>
+	  <p class="text-center" style="margin-bottom: 2rem; opacity: 0.8;">
+		Soothing instrumental tracks to enhance your spiritual time
+	  </p>
+	  
+	  <div class="music-grid">
+		<div class="music-card" onclick="app.playTrack('gentle-streams')">
+		  <div class="music-icon">🌊</div>
+		  <h3 class="music-title">Gentle Streams</h3>
+		  <p class="music-description">Soft piano with nature sounds</p>
+		  <p class="music-duration">8:00</p>
+		</div>
+		
+		<div class="music-card" onclick="app.playTrack('heavenly-peace')">
+		  <div class="music-icon">☁️</div>
+		  <h3 class="music-title">Heavenly Peace</h3>
+		  <p class="music-description">Ambient choir and strings</p>
+		  <p class="music-duration">10:00</p>
+		</div>
+		
+		<div class="music-card" onclick="app.playTrack('morning-light')">
+		  <div class="music-icon">🌅</div>
+		  <h3 class="music-title">Morning Light</h3>
+		  <p class="music-description">Uplifting acoustic guitar</p>
+		  <p class="music-duration">6:30</p>
+		</div>
+		
+		<div class="music-card" onclick="app.playTrack('quiet-sanctuary')">
+		  <div class="music-icon">🕊️</div>
+		  <h3 class="music-title">Quiet Sanctuary</h3>
+		  <p class="music-description">Meditative bells and pads</p>
+		  <p class="music-duration">12:00</p>
+		</div>
+	  </div>
+	  
+	  <!-- Music Player Modal -->
+	  <div class="music-player-modal" id="music-player-modal">
+		<div class="music-player-content">
+		  <button class="modal-close" onclick="app.closeMusicPlayer()">×</button>
+		  
+		  <div class="current-track-info">
+			<div class="track-icon" id="current-track-icon">🌊</div>
+			<h3 id="current-track-title">Track Title</h3>
+			<p id="current-track-description">Track Description</p>
+		  </div>
+		  
+		  <div class="music-controls">
+			<button class="music-btn" onclick="app.togglePlayPause()" id="play-pause-btn">▶️</button>
+			<button class="music-btn" onclick="app.toggleLoop()" id="loop-btn">🔁</button>
+			<button class="music-btn" onclick="app.showTimer()" id="timer-btn">⏰</button>
+		  </div>
+		  
+		  <div class="progress-section">
+			<div class="progress-container" onclick="app.seekTrack(event)">
+			  <div class="progress-bar" id="music-progress"></div>
+			</div>
+			<div class="time-info">
+			  <span id="current-time">0:00</span>
+			  <span id="total-time">0:00</span>
+			</div>
+		  </div>
+		  
+		  <div class="timer-section hidden" id="timer-section">
+			<h4>Sleep Timer</h4>
+			<div class="timer-options">
+			  <button class="timer-btn" onclick="app.setTimer(15)">15 min</button>
+			  <button class="timer-btn" onclick="app.setTimer(30)">30 min</button>
+			  <button class="timer-btn" onclick="app.setTimer(60)">1 hour</button>
+			  <button class="timer-btn" onclick="app.cancelTimer()">Cancel</button>
+			</div>
+			<p id="timer-display" class="hidden">Timer: <span id="timer-countdown"></span></p>
+		  </div>
+		  
+		  <audio id="music-audio" preload="none"></audio>
+		</div>
+	  </div>
+	</section>
 
     <!-- History Section -->
     <section id="history-section" class="section">
@@ -1076,6 +1351,188 @@
           request.onerror = () => reject(request.error);
         });
       }
+
+	  // Music Player Methods
+	  playTrack(trackId) {
+	    const tracks = {
+	  	'gentle-streams': {
+	  	  title: 'Gentle Streams',
+	  	  description: 'Soft piano with nature sounds',
+	  	  icon: '🌊',
+	  	  url: 'https://www.dailygrace.online/audio/GentleStreams.mp3', // Replace with actual Suno URLs
+	  	  duration: 480 // 8:00 in seconds
+	  	},
+	  	'heavenly-peace': {
+	  	  title: 'Heavenly Peace',
+	  	  description: 'Ambient choir and strings',
+	  	  icon: '☁️',
+	  	  url: 'https://www.dailygrace.online/audio/HeavenlyPeace.mp3',
+	  	  duration: 600 // 10:00
+	  	},
+	  	'morning-light': {
+	  	  title: 'Morning Light',
+	  	  description: 'Uplifting acoustic guitar',
+	  	  icon: '🌅',
+	  	  url: 'https://www.dailygrace.online/audio/MorningLight.mp3',
+	  	  duration: 390 // 6:30
+	  	},
+	  	'quiet-sanctuary': {
+	  	  title: 'Quiet Sanctuary',
+	  	  description: 'Meditative bells and pads',
+	  	  icon: '🕊️',
+	  	  url: 'https://www.dailygrace.online/audio/QuietSanctuary.mp3',
+	  	  duration: 720 // 12:00
+	  	}
+	    };
+	  
+	    this.currentTrack = tracks[trackId];
+	    this.isLooping = false;
+	    this.timerMinutes = 0;
+	    this.timerInterval = null;
+	  
+	    // Update UI
+	    document.getElementById('current-track-icon').textContent = this.currentTrack.icon;
+	    document.getElementById('current-track-title').textContent = this.currentTrack.title;
+	    document.getElementById('current-track-description').textContent = this.currentTrack.description;
+	    document.getElementById('total-time').textContent = this.formatTime(this.currentTrack.duration);
+	  
+	    // Setup audio
+	    const audio = document.getElementById('music-audio');
+	    audio.src = this.currentTrack.url;
+	    audio.loop = false;
+	  
+	    // Show modal
+	    document.getElementById('music-player-modal').classList.add('active');
+	  
+	    // Setup listeners
+	    this.setupMusicListeners();
+	  }
+	  
+	  setupMusicListeners() {
+	    const audio = document.getElementById('music-audio');
+	    
+	    audio.addEventListener('timeupdate', () => {
+	  	if (audio.duration) {
+	  	  const progress = (audio.currentTime / audio.duration) * 100;
+	  	  document.getElementById('music-progress').style.width = `${progress}%`;
+	  	  document.getElementById('current-time').textContent = this.formatTime(audio.currentTime);
+	  	}
+	    });
+	  
+	    audio.addEventListener('ended', () => {
+	  	if (!this.isLooping) {
+	  	  document.getElementById('play-pause-btn').textContent = '▶️';
+	  	}
+	    });
+	  }
+	  
+	  togglePlayPause() {
+	    const audio = document.getElementById('music-audio');
+	    const btn = document.getElementById('play-pause-btn');
+	  
+	    if (audio.paused) {
+	  	audio.play();
+	  	btn.textContent = '⏸️';
+	    } else {
+	  	audio.pause();
+	  	btn.textContent = '▶️';
+	    }
+	  }
+	  
+	  toggleLoop() {
+	    const audio = document.getElementById('music-audio');
+	    const btn = document.getElementById('loop-btn');
+	  
+	    this.isLooping = !this.isLooping;
+	    audio.loop = this.isLooping;
+	    btn.classList.toggle('active', this.isLooping);
+	  }
+	  
+	  showTimer() {
+	    const timerSection = document.getElementById('timer-section');
+	    timerSection.classList.toggle('hidden');
+	  }
+	  
+	  setTimer(minutes) {
+	    this.timerMinutes = minutes;
+	    this.startTimer();
+	    document.getElementById('timer-display').classList.remove('hidden');
+	    this.updateTimerDisplay();
+	  }
+	  
+	  startTimer() {
+	    if (this.timerInterval) clearInterval(this.timerInterval);
+	    
+	    let seconds = this.timerMinutes * 60;
+	    
+	    this.timerInterval = setInterval(() => {
+	  	seconds--;
+	  	
+	  	if (seconds <= 0) {
+	  	  this.fadeOutAndStop();
+	  	  clearInterval(this.timerInterval);
+	  	  this.timerInterval = null;
+	  	} else {
+	  	  const mins = Math.floor(seconds / 60);
+	  	  const secs = seconds % 60;
+	  	  document.getElementById('timer-countdown').textContent = 
+	  		`${mins}:${secs.toString().padStart(2, '0')}`;
+	  	}
+	    }, 1000);
+	  }
+	  
+	  updateTimerDisplay() {
+	    document.getElementById('timer-countdown').textContent = `${this.timerMinutes}:00`;
+	  }
+	  
+	  cancelTimer() {
+	    if (this.timerInterval) {
+	  	clearInterval(this.timerInterval);
+	  	this.timerInterval = null;
+	    }
+	    document.getElementById('timer-display').classList.add('hidden');
+	  }
+	  
+	  fadeOutAndStop() {
+	    const audio = document.getElementById('music-audio');
+	    const fadeInterval = setInterval(() => {
+	  	if (audio.volume > 0.1) {
+	  	  audio.volume -= 0.1;
+	  	} else {
+	  	  audio.pause();
+	  	  audio.volume = 1.0;
+	  	  clearInterval(fadeInterval);
+	  	  this.closeMusicPlayer();
+	  	}
+	    }, 200);
+	  }
+	  
+	  seekTrack(event) {
+	    const audio = document.getElementById('music-audio');
+	    if (!audio.duration) return;
+	  
+	    const progressContainer = event.currentTarget;
+	    const clickX = event.offsetX;
+	    const width = progressContainer.offsetWidth;
+	    const percentage = clickX / width;
+	  
+	    audio.currentTime = percentage * audio.duration;
+	  }
+	  
+	  closeMusicPlayer() {
+	    const audio = document.getElementById('music-audio');
+	    audio.pause();
+	    audio.src = '';
+	    
+	    if (this.timerInterval) {
+	  	clearInterval(this.timerInterval);
+	  	this.timerInterval = null;
+	    }
+	    
+	    document.getElementById('music-player-modal').classList.remove('active');
+	    document.getElementById('timer-section').classList.add('hidden');
+	    document.getElementById('timer-display').classList.add('hidden');
+	  }
 
       // Time-based Features
       updateTimeGreeting() {
