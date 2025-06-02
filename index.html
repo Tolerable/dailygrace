@@ -1589,10 +1589,10 @@
 
 		// Bible Reading Methods
 	  async loadBibleBooks() {
-		  const version = document.getElementById('bible-version').value;
-		  
-		  try {
-			document.getElementById('bible-loading').style.display = 'block';
+		const version = document.getElementById('bible-version').value;
+		
+		try {
+			// REMOVE THIS LINE: document.getElementById('bible-loading').style.display = 'block';
 			
 			const response = await fetch(`/bible/${version}.txt`);
 			const text = await response.text();
@@ -1604,21 +1604,20 @@
 			bookSelect.innerHTML = '<option value="">Select a Book</option>';
 			
 			Object.keys(this.bibleData).forEach(book => {
-			  const option = document.createElement('option');
-			  option.value = book;
-			  option.textContent = book;
-			  bookSelect.appendChild(option);
+				const option = document.createElement('option');
+				option.value = book;
+				option.textContent = book;
+				bookSelect.appendChild(option);
 			});
 			
-			// Show controls and hide loading
-			document.getElementById('bible-loading').style.display = 'none';
+			// REMOVE THIS LINE: document.getElementById('bible-loading').style.display = 'none';
 			document.getElementById('bible-controls').style.display = 'grid';
 			document.getElementById('bible-instructions').style.display = 'block';
 			
-		  } catch (error) {
+		} catch (error) {
 			console.error('Failed to load Bible:', error);
-			document.getElementById('bible-loading').innerHTML = '<p style="color: red;">Failed to load Bible. Please try again.</p>';
-		  }
+			// REMOVE THIS LINE: document.getElementById('bible-loading').innerHTML = '<p style="color: red;">Failed to load Bible. Please try again.</p>';
+		}
 	  }
 
 	  showVerseList() {
@@ -2112,9 +2111,7 @@
 		} else if (sectionName === 'devotions') {
 			this.loadLatestDevotion();
 		} else if (sectionName === 'bible') {
-			this.loadBibleBooks().then(() => {
-				this.loadBiblePosition();
-			});
+			this.loadBibleBooks();
 		}
 	  }
 
