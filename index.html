@@ -996,6 +996,76 @@
 	  margin-top: 1rem;
 	}
 
+	/* Spiritual Guidance Styles */
+	.guidance-interface {
+	  background: var(--text-light);
+	  border-radius: 16px;
+	  padding: 2rem;
+	  margin-bottom: 2rem;
+	  box-shadow: 0 4px 16px var(--shadow-light);
+	}
+
+	.guidance-input-section {
+	  margin-bottom: 2rem;
+	}
+
+	.guidance-input {
+	  width: 100%;
+	  min-height: 120px;
+	  padding: 1rem;
+	  border: 2px solid var(--soft-blue);
+	  border-radius: 12px;
+	  font-family: inherit;
+	  font-size: 1rem;
+	  resize: vertical;
+	  transition: border-color 0.3s ease;
+	  background: var(--warm-cream);
+	  margin-bottom: 1rem;
+	}
+
+	.guidance-input:focus {
+	  outline: none;
+	  border-color: var(--primary-blue);
+	}
+
+	.guidance-controls {
+	  display: flex;
+	  gap: 1rem;
+	  flex-wrap: wrap;
+	}
+
+	.guidance-response {
+	  background: var(--gradient-soft);
+	  border-radius: 12px;
+	  padding: 1.5rem;
+	  margin-top: 1.5rem;
+	}
+
+	.response-header {
+	  display: flex;
+	  justify-content: space-between;
+	  align-items: center;
+	  margin-bottom: 1rem;
+	  padding-bottom: 0.5rem;
+	  border-bottom: 1px solid var(--soft-blue);
+	}
+
+	.response-header h4 {
+	  color: var(--deep-navy);
+	  margin: 0;
+	}
+
+	.response-date {
+	  color: var(--sage-green);
+	  font-size: 0.9rem;
+	}
+
+	.response-content {
+	  line-height: 1.7;
+	  color: var(--text-dark);
+	  white-space: pre-wrap;
+	}
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -1075,10 +1145,49 @@
 		  <li><a onclick="app.showSection('prayers')">Prayers</a></li>
 		  <li><a onclick="app.showSection('music')">Peaceful Music</a></li>
 		  <li><a onclick="app.showSection('bible')">Audio Bible</a></li>
+  		  <li><a onclick="app.showSection('guidance')">Guidance</a></li>
 		  <li><a onclick="app.showSection('history')">My Journey</a></li>
 		</ul>
     </nav>
   </header>
+
+  <!-- Spiritual Guidance Section -->
+  <section id="guidance-section" class="section">
+	  <h2 class="text-center mb-2">Spiritual Guidance</h2>
+	  <p class="text-center" style="margin-bottom: 2rem; opacity: 0.8;">
+		Share what's on your heart and receive biblical wisdom and encouragement
+	  </p>
+	  
+	  <div class="guidance-interface">
+		<div class="guidance-input-section">
+		  <label class="section-label">What's on your heart today?</label>
+		  <textarea 
+			class="guidance-input" 
+			id="guidance-input" 
+			placeholder="Share your struggles, doubts, questions, or any burden you're carrying. This is a safe space..."
+		  ></textarea>
+		  
+		  <div class="guidance-controls">
+			<button class="btn btn-primary" onclick="app.seekGuidance()">
+			  🕊️ Seek Guidance
+			</button>
+			<button class="btn btn-secondary" onclick="app.listenToGuidance()" id="guidance-listen-btn" style="display: none;">
+			  🎧 Listen to Response
+			</button>
+		  </div>
+		</div>
+		
+		<div class="guidance-response" id="guidance-response" style="display: none;">
+		  <div class="response-header">
+			<h4>Biblical Encouragement</h4>
+			<span class="response-date" id="guidance-date"></span>
+		  </div>
+		  <div class="response-content" id="guidance-content"></div>
+		</div>
+	  </div>
+	  
+	  <div id="guidance-history" class="history-grid mt-2"></div>
+  </section>
 
   <main class="container">
     <!-- Home Section -->
@@ -1121,6 +1230,12 @@
 			<div class="action-icon">📖</div>
 			<h3 class="action-title">Audio Bible</h3>
 			<p class="action-description">Listen to God's Word with AI narration</p>
+		  </div>
+
+		  <div class="action-card" onclick="app.showSection('guidance')">
+			<div class="action-icon">🤝</div>
+			<h3 class="action-title">Spiritual Guidance</h3>
+			<p class="action-description">Share your heart and receive biblical wisdom</p>
 		  </div>
 		  
         </div>
@@ -1355,11 +1470,12 @@
     <section id="history-section" class="section">
       <h2 class="text-center mb-2">My Spiritual Journey</h2>
       
-      <div class="btn-group text-center">
-        <button class="btn btn-secondary" onclick="app.filterHistory('all')">All</button>
-        <button class="btn btn-secondary" onclick="app.filterHistory('devotion')">Devotions</button>
-        <button class="btn btn-secondary" onclick="app.filterHistory('prayer')">Prayers</button>
-      </div>
+		<div class="btn-group text-center">
+		  <button class="btn btn-secondary" onclick="app.filterHistory('all')">All</button>
+		  <button class="btn btn-secondary" onclick="app.filterHistory('devotion')">Devotions</button>
+		  <button class="btn btn-secondary" onclick="app.filterHistory('prayer')">Prayers</button>
+		  <button class="btn btn-secondary" onclick="app.filterHistory('guidance')">Guidance</button>
+		</div>
       
       <div id="history-container" class="history-grid"></div>
     </section>
@@ -2146,10 +2262,11 @@
 			this.loadLatestDevotion();
 		} else if (sectionName === 'bible') {
 			this.loadBibleBooks();
+		} else if (sectionName === 'guidance') {
+		  this.loadGuidanceHistory();			
 		}
 	  }
 
-	  // Add this new method to load the latest devotion
 	  async loadLatestDevotion() {
 	    const devotions = await this.getAllContent('devotion');
 	    
@@ -2186,7 +2303,6 @@
 	    }
 	  }
 	  
-	  // Add method to display recent devotion cards
 	  displayRecentDevotions(devotions) {
 	  	let recentSection = document.getElementById('recent-devotions');
 	  	
@@ -2213,7 +2329,6 @@
 	  	`).join('');
 	  }
 	  
-	  // Add method to update the current devotion when a card is clicked
 	  async updateCurrentDevotion(id) {
 	  	const devotion = await this.getContentById(id);
 	  	this.displayDevotion(devotion);
@@ -2222,7 +2337,6 @@
 	  	// Scroll to top of devotion
 	  	document.getElementById('devotion-container').scrollIntoView({ behavior: 'smooth' });
 	  }
-
 
       // Devotion Creation
       async createNewDevotion() {
@@ -2303,7 +2417,7 @@
         const container = document.getElementById('devotion-container');
         container.innerHTML = `
           <div class="devotion-card">
-<div class="devotion-header">
+			<div class="devotion-header">
               <h3>${devotion.topic}</h3>
               <span class="devotion-date">${new Date(devotion.date).toLocaleDateString()}</span>
             </div>
@@ -2327,6 +2441,170 @@
           </div>
         `;
       }
+
+	  // Spiritual Guidance Methods
+	  async seekGuidance() {
+		  const userInput = document.getElementById('guidance-input').value.trim();
+		  
+		  if (!userInput) {
+			this.showError('Please share what\'s on your heart first');
+			return;
+		  }
+		  
+		  this.showLoading('Seeking biblical wisdom...');
+		  
+		  try {
+			const prompt = `You are a compassionate Christian spiritual companion. Someone has shared: "${userInput}" Respond with: 1. Gentle acknowledgment of their situation 2. Relevant Bible verse(s) that speak to their need 3. Biblical wisdom and encouragement (not personal advice) 4. A brief, loving prayer or blessing Keep it warm, conversational, and Christ-centered. About 200-250 words. Focus on God's love, grace, and truth rather than giving direct personal advice.`;
+			
+			const response = await fetch(`https://text.pollinations.ai/${encodeURIComponent(prompt)}?model=openai`);
+			const guidanceText = await response.text();
+			
+			// Save the guidance session
+			const guidance = {
+			  type: 'guidance',
+			  question: userInput,
+			  response: guidanceText,
+			  date: Date.now(),
+			  title: this.generateGuidanceTitle(userInput)
+			};
+			
+			await this.saveContent(guidance);
+			
+			// Display the response
+			this.displayGuidanceResponse(guidanceText);
+			
+			// Clear input and show listen button
+			document.getElementById('guidance-input').value = '';
+			document.getElementById('guidance-listen-btn').style.display = 'inline-flex';
+			
+			// Store current response for audio
+			this.currentGuidanceResponse = guidanceText;
+			
+			this.loadGuidanceHistory();
+			
+		  } catch (error) {
+			console.error('Failed to get guidance:', error);
+			this.showError('Unable to provide guidance right now. Please try again.');
+		  } finally {
+			this.hideLoading();
+		  }
+	  }
+
+	  displayGuidanceResponse(text) {
+		  const responseDiv = document.getElementById('guidance-response');
+		  const contentDiv = document.getElementById('guidance-content');
+		  const dateSpan = document.getElementById('guidance-date');
+		  
+		  contentDiv.textContent = text;
+		  dateSpan.textContent = new Date().toLocaleString();
+		  responseDiv.style.display = 'block';
+		  
+		  // Scroll to response
+		  responseDiv.scrollIntoView({ behavior: 'smooth' });
+	  }
+
+	  async listenToGuidance() {
+		  if (!this.currentGuidanceResponse) {
+			this.showError('No guidance to listen to');
+			return;
+		  }
+		  
+		  this.showLoading('Preparing audio...');
+		  
+		  try {
+			let cleanText = this.currentGuidanceResponse
+			  .replace(/\n/g, ' ')
+			  .replace(/\s+/g, ' ')
+			  .replace(/([.!?])\s+/g, '$1\n')
+			  .trim();
+			
+			const transcriptionInstruction = "READ THIS TEXT VERBATIM WITHOUT ANY COMMENTARY OR RESPONSE:";
+			const textToRead = transcriptionInstruction + " " + cleanText;
+			
+			const encodedText = encodeURIComponent(textToRead);
+			const audioUrl = `https://text.pollinations.ai/${encodedText}?model=openai-audio&voice=nova`;
+			
+			const tempAudio = new Audio(audioUrl);
+			tempAudio.play();
+			
+			this.hideLoading();
+		  } catch (error) {
+			this.showError('Unable to create audio');
+			this.hideLoading();
+		  }
+	  }
+
+	  generateGuidanceTitle(text) {
+		  const words = text.split(' ').slice(0, 6).join(' ');
+		  return words + (text.split(' ').length > 6 ? '...' : '');
+	  }
+
+	  async loadGuidanceHistory() {
+		  const guidanceSessions = await this.getAllContent('guidance');
+		  const container = document.getElementById('guidance-history');
+		  
+		  if (guidanceSessions.length === 0) {
+			container.innerHTML = '';
+			return;
+		  }
+		  
+		  container.innerHTML = guidanceSessions.slice(0, 6).map(session => `
+			<div class="history-item" onclick="app.showGuidanceDetail(${session.id})">
+			  <button class="delete-button" onclick="event.stopPropagation(); app.deleteItem(${session.id})">×</button>
+			  <span class="history-item-type">Guidance</span>
+			  <h4 class="history-item-title">${session.title}</h4>
+			  <p class="history-item-date">${new Date(session.date).toLocaleDateString()}</p>
+			</div>
+		  `).join('');
+	  }
+
+	  async showGuidanceDetail(id) {
+		  const session = await this.getContentById(id);
+		  const modal = document.getElementById('detail-modal');
+		  const modalBody = document.getElementById('modal-body');
+		  
+		  modalBody.innerHTML = `
+			<div class="guidance-interface">
+			  <h3>Spiritual Guidance Session</h3>
+			  <p class="devotion-date">${new Date(session.date).toLocaleDateString()}</p>
+			  
+			  <div style="margin: 1.5rem 0;">
+				<h4 style="color: var(--sage-green); margin-bottom: 0.5rem;">What you shared:</h4>
+				<p style="background: var(--warm-cream); padding: 1rem; border-radius: 8px; font-style: italic;">
+				  "${session.question}"
+				</p>
+			  </div>
+			  
+			  <div>
+				<h4 style="color: var(--sage-green); margin-bottom: 0.5rem;">Biblical encouragement:</h4>
+				<div class="response-content">${session.response}</div>
+			  </div>
+			  
+			  <button class="btn btn-accent mt-2" onclick="app.playGuidanceAudio('${session.response.replace(/'/g, "\\'")}')">
+				🎧 Listen to Response
+			  </button>
+			</div>
+		  `;
+		  
+		  modal.classList.add('active');
+	  }
+
+	  async playGuidanceAudio(text) {
+		  let cleanText = text
+			.replace(/\n/g, ' ')
+			.replace(/\s+/g, ' ')
+			.replace(/([.!?])\s+/g, '$1\n')
+			.trim();
+		  
+		  const transcriptionInstruction = "READ THIS TEXT VERBATIM WITHOUT ANY COMMENTARY OR RESPONSE:";
+		  const textToRead = transcriptionInstruction + " " + cleanText;
+		  
+		  const encodedText = encodeURIComponent(textToRead);
+		  const audioUrl = `https://text.pollinations.ai/${encodedText}?model=openai-audio&voice=nova`;
+		  
+		  const tempAudio = new Audio(audioUrl);
+		  tempAudio.play();
+	  }
 
 	  // Audio Management - FIXED based on working transcribe.html
       async preloadAudio(item) {
