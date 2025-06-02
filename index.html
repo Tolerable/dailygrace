@@ -2097,26 +2097,27 @@
 
       // Navigation
 	  showSection(sectionName) {
-		  // Hide all sections
-		  document.querySelectorAll('.section').forEach(section => {
+		// Hide all sections
+		document.querySelectorAll('.section').forEach(section => {
 			section.classList.remove('active');
-		  });
-		  
-		  // Show selected section
-		  document.getElementById(`${sectionName}-section`).classList.add('active');
-		  this.currentSection = sectionName;
-		  
-		  // Load section-specific content
-		  if (sectionName === 'history') {
+		});
+		
+		// Show selected section
+		document.getElementById(`${sectionName}-section`).classList.add('active');
+		this.currentSection = sectionName;
+		
+		// Load section-specific content
+		if (sectionName === 'history') {
 			this.loadHistory();
-		  } else if (sectionName === 'prayers') {
+		} else if (sectionName === 'prayers') {
 			this.loadSavedPrayers();
-		  } else if (sectionName === 'devotions') {
+		} else if (sectionName === 'devotions') {
 			this.loadLatestDevotion();
-		  } else if (sectionName === 'bible') {
-		  this.loadBibleBooks().then(() => {
-			  this.loadBiblePosition();
-		  });
+		} else if (sectionName === 'bible') {
+			this.loadBibleBooks().then(() => {
+				this.loadBiblePosition();
+			});
+		}
 	  }
 
 	  // Add this new method to load the latest devotion
