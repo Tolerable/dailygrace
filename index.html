@@ -1246,12 +1246,11 @@
 	/* Radio Station Styles */
 	.radio-station {
 	  position: fixed;
-	  right: -320px;
+	  right: -260px;  /* Hide panel but show 60px tab */
 	  top: 50%;
 	  transform: translateY(-50%);
 	  z-index: 1002;
 	  transition: right 0.3s ease;
-	  overflow: visible;  /* ADD THIS! */
 	}
 
 	.radio-station.open {
@@ -1259,8 +1258,8 @@
 	}
 
 	.radio-toggle {
-	  position: absolute;
-	  left: -60px;
+	  position: absolute;  /* ABSOLUTE to stay with panel */
+	  left: -60px;  /* Position to the LEFT of panel */
 	  top: 50%;
 	  transform: translateY(-50%) rotate(-90deg);
 	  background: var(--gradient-primary);
@@ -1289,10 +1288,10 @@
 	  background: var(--text-light);
 	  border-radius: 16px 0 0 16px;
 	  box-shadow: -4px 0 16px var(--shadow-medium);
-	  height: 500px;
+	  height: 520px;
 	  display: flex;
 	  flex-direction: column;
-	  overflow: visible;  /* CHANGE from hidden if it exists */
+	  position: relative;  /* Add this for absolute positioning context */
 	}
 
 	.radio-header {
