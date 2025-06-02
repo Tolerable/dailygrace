@@ -1643,23 +1643,29 @@
 	  }
 
 	  parseBibleText(text) {
-		  const lines = text.split('\n');
-		  const books = {};
-		  
-		  lines.forEach(line => {
+		const lines = text.split('\n');
+		const books = {};
+		
+		lines.forEach(line => {
 			if (line.trim() && line.includes('\t')) {
-			  const [reference, verse] = line.split('\t');
-			  const [book, chapterVerse] = reference.split(' ');
-			  const [chapter, verseNum] = chapterVerse.split(':');
-			  
-			  if (!books[book]) books[book] = {};
-			  if (!books[book][chapter]) books[book][chapter] = {};
-			  
-			  books[book][chapter][verseNum] = verse;
+				const [reference, verse] = line.split('\t');
+				
+				// Match book name (everything before the last space and numbers)
+				const match = reference.match(/^(.+)\s+(\d+):(\d+)$/);
+				if (match) {
+					const book = match[1];
+					const chapter = match[2];
+					const verseNum = match[3];
+					
+					if (!books[book]) books[book] = {};
+					if (!books[book][chapter]) books[book][chapter] = {};
+					
+					books[book][chapter][verseNum] = verse;
+				}
 			}
-		  });
-		  
-		  return books;
+		});
+		
+		return books;
 	  }
 
 	  loadChapters() {
