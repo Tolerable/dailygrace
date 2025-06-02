@@ -1664,32 +1664,39 @@
 
 	  // Add this new method to load the latest devotion
 	  async loadLatestDevotion() {
-	  	const devotions = await this.getAllContent('devotion');
+	    const devotions = await this.getAllContent('devotion');
+	    
+	    if (devotions.length > 0) {
+	  	// Display the most recent devotion
+	  	const latestDevotion = devotions[0];
+	  	this.displayDevotion(latestDevotion);
+	  	this.preloadAudio(latestDevotion);
 	  	
-	  	if (devotions.length > 0) {
-	  		// Display the most recent devotion
-	  		const latestDevotion = devotions[0];
-	  		this.displayDevotion(latestDevotion);
-	  		this.preloadAudio(latestDevotion);
-	  		
-	  		// Show recent devotions below if there are more
-	  		if (devotions.length > 1) {
-	  			this.displayRecentDevotions(devotions.slice(1, 5));
-	  		}
-	  	} else {
-	  		// No devotions yet, show welcome message with create button
-	  		document.getElementById('devotion-container').innerHTML = `
-	  			<div class="devotion-card" style="text-align: center; padding: 3rem;">
-	  				<h2 style="color: var(--deep-navy); margin-bottom: 1rem;">Welcome to Your Devotions</h2>
-	  				<p style="font-size: 1.1rem; margin-bottom: 2rem;">
-	  					Begin your spiritual journey with a personalized devotion created just for you.
-	  				</p>
-	  				<button class="btn btn-primary" onclick="app.createNewDevotion()" style="font-size: 1.1rem;">
-	  					🌅 Create Your First Devotion
-	  				</button>
-	  			</div>
-	  		`;
+	  	// Show recent devotions below if there are more
+	  	if (devotions.length > 1) {
+	  	  this.displayRecentDevotions(devotions.slice(1, 5));
 	  	}
+	  	
+	  	// Show the "New Devotion" button since devotions exist
+	  	document.querySelector('.text-center.mt-2').style.display = 'block';
+	  	
+	    } else {
+	  	// No devotions yet, show welcome message with create button
+	  	document.getElementById('devotion-container').innerHTML = `
+	  	  <div class="devotion-card" style="text-align: center; padding: 3rem;">
+	  		<h2 style="color: var(--deep-navy); margin-bottom: 1rem;">Welcome to Your Devotions</h2>
+	  		<p style="font-size: 1.1rem; margin-bottom: 2rem;">
+	  		  Begin your spiritual journey with a personalized devotion created just for you.
+	  		</p>
+	  		<button class="btn btn-primary" onclick="app.createNewDevotion()" style="font-size: 1.1rem;">
+	  		  🌅 Create Your First Devotion
+	  		</button>
+	  	  </div>
+	  	`;
+	  	
+	  	// Hide the "New Devotion" button since no devotions exist yet
+	  	document.querySelector('.text-center.mt-2').style.display = 'none';
+	    }
 	  }
 	  
 	  // Add method to display recent devotion cards
