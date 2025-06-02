@@ -1749,43 +1749,50 @@
 	  	setInterval(() => this.updateTimeGreeting(), 60000);
 	  }
 
-	  // Legal Policy Modals
 	  showPrivacyPolicy() {
-	    const modal = document.getElementById('detail-modal');
-	    const modalBody = document.getElementById('modal-body');
-	    
-	    modalBody.innerHTML = `
-	  	<div style="max-width: 600px;">
-	  	  <h2 style="color: var(--deep-navy); margin-bottom: 2rem;">Privacy Policy</h2>
-	  	  
-	  	  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Information We Collect</h3>
-	  	  <p style="line-height: 1.6; margin-bottom: 1rem;">
-	  		Daily Grace stores your devotions and prayers locally on your device using your browser's storage. 
-	  		We do not collect personal information or transmit your spiritual content to external servers.
-	  	  </p>
-	  	  
-	  	  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">How We Use Information</h3>
-	  	  <p style="line-height: 1.6; margin-bottom: 1rem;">
-	  		Your devotions and prayers remain private and are only accessible to you on your device. 
-	  		We use AI services (Pollinations.ai) to generate content, but your personal prayers and requests are not stored by these services.
-	  	  </p>
-	  	  
-	  	  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Cookies</h3>
-	  	  <p style="line-height: 1.6; margin-bottom: 1rem;">
-	  		We use minimal browser storage to save your content locally. No tracking cookies are used.
-	  	  </p>
-	  	  
-	  	  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Contact</h3>
-	  	  <p style="line-height: 1.6;">
-	  		For questions about privacy, contact us at 
-	  		<a href="mailto:contact@dailygrace.online" style="color: var(--primary-blue);">contact@dailygrace.online</a>
-	  	  </p>
-	  	  
-	  	  <p style="font-size: 0.9rem; color: var(--sage-green); margin-top: 2rem;">
-	  		Last updated: June 2025
-	  	  </p>
-	  	</div>
-	    `;
+		  const modal = document.getElementById('detail-modal');
+		  const modalBody = document.getElementById('modal-body');
+		  
+		  modalBody.innerHTML = `
+			<div style="max-width: 600px;">
+			  <h2 style="color: var(--deep-navy); margin-bottom: 2rem;">Privacy Policy</h2>
+			  
+			  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Information We Collect</h3>
+			  <p style="line-height: 1.6; margin-bottom: 1rem;">
+				Daily Grace stores your devotions and prayers locally on your device using your browser's storage. 
+				We do not collect personal information or transmit your spiritual content to external servers.
+			  </p>
+			  
+			  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Analytics and Tracking</h3>
+			  <p style="line-height: 1.6; margin-bottom: 1rem;">
+				We use Google Analytics to understand how visitors use our website. This service collects 
+				anonymous data about page views, session duration, and general location (country/city level). 
+				We've configured Google Analytics to operate without cookies for your privacy. 
+				No personal information is collected or stored by this service.
+			  </p>
+			  
+			  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">How We Use Information</h3>
+			  <p style="line-height: 1.6; margin-bottom: 1rem;">
+				Your devotions and prayers remain private and are only accessible to you on your device. 
+				We use AI services (Pollinations.ai) to generate content, but your personal prayers and requests are not stored by these services.
+			  </p>
+			  
+			  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Cookies</h3>
+			  <p style="line-height: 1.6; margin-bottom: 1rem;">
+				We use minimal browser storage to save your content locally. No tracking cookies are used.
+			  </p>
+			  
+			  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Contact</h3>
+			  <p style="line-height: 1.6;">
+				For questions about privacy, contact us at 
+				<a href="mailto:contact@dailygrace.online" style="color: var(--primary-blue);">contact@dailygrace.online</a>
+			  </p>
+			  
+			  <p style="font-size: 0.9rem; color: var(--sage-green); margin-top: 2rem;">
+				Last updated: June 2025
+			  </p>
+			</div>
+	  `;
 	    
 	    modal.classList.add('active');
 	  }
@@ -1831,45 +1838,52 @@
 	  }
 	  
 	  showCookiePolicy() {
-	    const modal = document.getElementById('detail-modal');
-	    const modalBody = document.getElementById('modal-body');
-	    
-	    modalBody.innerHTML = `
-	  	<div style="max-width: 600px;">
-	  	  <h2 style="color: var(--deep-navy); margin-bottom: 2rem;">Cookie Policy</h2>
-	  	  
-	  	  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">What Are Cookies</h3>
-	  	  <p style="line-height: 1.6; margin-bottom: 1rem;">
-	  		Daily Grace uses your browser's local storage (not traditional cookies) to save your devotions 
-	  		and prayers on your device. This data never leaves your device.
-	  	  </p>
-	  	  
-	  	  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">How We Use Local Storage</h3>
-	  	  <ul style="line-height: 1.6; margin-bottom: 1rem; padding-left: 1.5rem;">
-	  		<li>Store your personal devotions and prayers</li>
-	  		<li>Remember your preferences (if any)</li>
-	  		<li>Enable offline functionality</li>
-	  	  </ul>
-	  	  
-	  	  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Managing Storage</h3>
-	  	  <p style="line-height: 1.6; margin-bottom: 1rem;">
-	  		You can clear your stored data through your browser settings. This will remove all saved 
-	  		devotions and prayers from your device.
-	  	  </p>
-	  	  
-	  	  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Third-Party Services</h3>
-	  	  <p style="line-height: 1.6;">
-	  		We use Pollinations.ai for content generation. They may have their own data policies 
-	  		for the requests we send (which don't include your personal prayers).
-	  	  </p>
-	  	  
-	  	  <p style="font-size: 0.9rem; color: var(--sage-green); margin-top: 2rem;">
-	  		Last updated: June 2025
-	  	  </p>
-	  	</div>
-	    `;
-	    
-	    modal.classList.add('active');
+		  const modal = document.getElementById('detail-modal');
+		  const modalBody = document.getElementById('modal-body');
+		  
+		  modalBody.innerHTML = `
+			<div style="max-width: 600px;">
+			  <h2 style="color: var(--deep-navy); margin-bottom: 2rem;">Cookie Policy</h2>
+			  
+			  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">What Are Cookies</h3>
+			  <p style="line-height: 1.6; margin-bottom: 1rem;">
+				Daily Grace uses your browser's local storage (not traditional cookies) to save your devotions 
+				and prayers on your device. This data never leaves your device.
+			  </p>
+			  
+			  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Analytics</h3>
+			  <p style="line-height: 1.6; margin-bottom: 1rem;">
+				While we use Google Analytics to improve our service, we've configured it to run in a 
+				cookieless mode. This means no tracking cookies are placed on your device for analytics purposes. 
+				Only anonymous, aggregated data about site usage is collected.
+			  </p>
+			  
+			  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">How We Use Local Storage</h3>
+			  <ul style="line-height: 1.6; margin-bottom: 1rem; padding-left: 1.5rem;">
+				<li>Store your personal devotions and prayers</li>
+				<li>Remember your preferences (if any)</li>
+				<li>Enable offline functionality</li>
+			  </ul>
+			  
+			  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Managing Storage</h3>
+			  <p style="line-height: 1.6; margin-bottom: 1rem;">
+				You can clear your stored data through your browser settings. This will remove all saved 
+				devotions and prayers from your device.
+			  </p>
+			  
+			  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Third-Party Services</h3>
+			  <p style="line-height: 1.6;">
+				We use Pollinations.ai for content generation. They may have their own data policies 
+				for the requests we send (which don't include your personal prayers).
+			  </p>
+			  
+			  <p style="font-size: 0.9rem; color: var(--sage-green); margin-top: 2rem;">
+				Last updated: June 2025
+			  </p>
+			</div>
+		  `;
+		  
+		  modal.classList.add('active');
 	  }
 	  
 	  sendEmail() {
