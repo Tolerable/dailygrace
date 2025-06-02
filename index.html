@@ -1033,28 +1033,28 @@
 		  <div class="music-icon">🌊</div>
 		  <h3 class="music-title">Gentle Streams</h3>
 		  <p class="music-description">Soft piano with nature sounds</p>
-		  <p class="music-duration">8:00</p>
+		  <p class="music-duration">4:49</p>
 		</div>
-		
+
 		<div class="music-card" onclick="app.playTrack('heavenly-peace')">
 		  <div class="music-icon">☁️</div>
 		  <h3 class="music-title">Heavenly Peace</h3>
 		  <p class="music-description">Ambient choir and strings</p>
-		  <p class="music-duration">10:00</p>
+		  <p class="music-duration">3:59</p>
 		</div>
-		
+
 		<div class="music-card" onclick="app.playTrack('morning-light')">
 		  <div class="music-icon">🌅</div>
 		  <h3 class="music-title">Morning Light</h3>
 		  <p class="music-description">Uplifting acoustic guitar</p>
-		  <p class="music-duration">6:30</p>
+		  <p class="music-duration">4:00</p>
 		</div>
-		
+
 		<div class="music-card" onclick="app.playTrack('quiet-sanctuary')">
 		  <div class="music-icon">🕊️</div>
 		  <h3 class="music-title">Quiet Sanctuary</h3>
 		  <p class="music-description">Meditative bells and pads</p>
-		  <p class="music-duration">12:00</p>
+		  <p class="music-duration">3:22</p>
 		</div>
 	  </div>
 	  
@@ -1072,7 +1072,7 @@
 		  <div class="music-controls">
 			<button class="music-btn" onclick="app.togglePlayPause()" id="play-pause-btn">▶️</button>
 			<button class="music-btn" onclick="app.toggleLoop()" id="loop-btn">🔁</button>
-			<button class="music-btn" onclick="app.showTimer()" id="timer-btn">⏰</button>
+			<button class="music-btn" onclick="app.showTimer()" id="timer-btn" title="Set meditation timer">⏰</button>
 		  </div>
 		  
 		  <div class="progress-section">
@@ -1085,16 +1085,17 @@
 			</div>
 		  </div>
 		  
-		  <div class="timer-section hidden" id="timer-section">
-			<h4>Sleep Timer</h4>
-			<div class="timer-options">
-			  <button class="timer-btn" onclick="app.setTimer(15)">15 min</button>
-			  <button class="timer-btn" onclick="app.setTimer(30)">30 min</button>
-			  <button class="timer-btn" onclick="app.setTimer(60)">1 hour</button>
-			  <button class="timer-btn" onclick="app.cancelTimer()">Cancel</button>
+			<div class="timer-section hidden" id="timer-section">
+			  <h4>Meditation Timer</h4>
+			  <div class="timer-options">
+				<button class="timer-btn" onclick="app.setTimer(5)">5 min</button>
+				<button class="timer-btn" onclick="app.setTimer(10)">10 min</button>
+				<button class="timer-btn" onclick="app.setTimer(15)">15 min</button>
+				<button class="timer-btn" onclick="app.setTimer(30)">30 min</button>
+				<button class="timer-btn" onclick="app.cancelTimer()">Cancel</button>
+			  </div>
+			  <p id="timer-display" class="hidden">Timer: <span id="timer-countdown"></span></p>
 			</div>
-			<p id="timer-display" class="hidden">Timer: <span id="timer-countdown"></span></p>
-		  </div>
 		  
 		  <audio id="music-audio" preload="none"></audio>
 		</div>
@@ -1359,29 +1360,29 @@
 	  	  title: 'Gentle Streams',
 	  	  description: 'Soft piano with nature sounds',
 	  	  icon: '🌊',
-	  	  url: 'https://www.dailygrace.online/audio/GentleStreams.mp3', // Replace with actual Suno URLs
-	  	  duration: 480 // 8:00 in seconds
+	  	  url: 'https://www.dailygrace.online/audio/GentleStreams.mp3',
+	  	  duration: 289 // 4:49 in seconds
 	  	},
 	  	'heavenly-peace': {
 	  	  title: 'Heavenly Peace',
 	  	  description: 'Ambient choir and strings',
 	  	  icon: '☁️',
 	  	  url: 'https://www.dailygrace.online/audio/HeavenlyPeace.mp3',
-	  	  duration: 600 // 10:00
+	  	  duration: 239 // 3:59 in seconds
 	  	},
 	  	'morning-light': {
 	  	  title: 'Morning Light',
 	  	  description: 'Uplifting acoustic guitar',
 	  	  icon: '🌅',
 	  	  url: 'https://www.dailygrace.online/audio/MorningLight.mp3',
-	  	  duration: 390 // 6:30
+	  	  duration: 240 // 4:00 in seconds
 	  	},
 	  	'quiet-sanctuary': {
 	  	  title: 'Quiet Sanctuary',
 	  	  description: 'Meditative bells and pads',
 	  	  icon: '🕊️',
 	  	  url: 'https://www.dailygrace.online/audio/QuietSanctuary.mp3',
-	  	  duration: 720 // 12:00
+	  	  duration: 202 // 3:22 in seconds
 	  	}
 	    };
 	  
