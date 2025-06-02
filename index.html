@@ -2723,6 +2723,109 @@
 	    // Scroll to bottom
 	    messagesContainer.scrollTop = messagesContainer.scrollHeight;
 	  }
+
+	  async toggleMessageAudio(audioId, text, buttonElement) {
+	    const audio = document.getElementById(audioId);
+	    
+	    // If audio is playing, pause it
+	    if (!audio.paused) {
+	  	audio.pause();
+	  	buttonElement.innerHTML = '▶️ Listen';
+	  	return;
+	    }
+	    
+	    // If no source, generate it first
+	    if (!audio.src) {
+	  	await this.generateMessageAudio(audioId, text);
+	    }
+	    
+	    // Stop any other playing message audio
+	    document.querySelectorAll('[id^="msg-audio-"]').forEach(otherAudio => {
+	  	if (otherAudio !== audio && !otherAudio.paused) {
+	  	  otherAudio.pause();
+	  	  const otherButton = otherAudio.parentElement.querySelector('.play-btn');
+	  	  if (otherButton) otherButton.innerHTML = '▶️ Listen';
+	  	}
+	    });
+	    
+	    // Play this audio
+	    try {
+	  	await audio.play();
+	  	buttonElement.innerHTML = '⏸️ Pause';
+	  	
+	  	// Setup event listeners
+	  	audio.onended = () => {
+	  	  buttonElement.innerHTML = '▶️ Listen';
+	  	};
+	  	
+	  	audio.onerror = () => {
+	  	  buttonElement.innerHTML = '❌ Error';
+	  	  setTimeout(() => {
+	  		buttonElement.innerHTML = '▶️ Listen';
+	  	  }, 2000);
+	  	};
+	  	
+	    } catch (error) {
+	  	console.error('Audio play failed:', error);
+	  	buttonElement.innerHTML = '❌ Failed';
+	  	setTimeout(() => {
+	  	  buttonElement.innerHTML = '▶️ Listen';
+	  	}, 2000);
+	    }
+	  }
+	  
+	  async generateMessageAudio(audioId, text) {
+	    const audio = document.getElementById(audioId);
+	    
+	    let cleanText = text
+	  	.replace(/\n/g, ' ')
+	  	.replace(/\s+/g, ' ')
+	  	.replace(/([.!?])\s+/g, '$1\n')
+	  	.trim();
+	    
+	    const transcriptionInstruction = "READ THIS TEXT VERBATIM WITHOUT ANY COMMENTARY OR RESPONSE:";
+	    const textToRead = transcriptionInstruction + " " + cleanText;
+	    
+	    const seed = Math.floor(Math.random() * 10000);
+	    const encodedText = encodeURIComponent(textToRead);
+	    const audioUrl = `https://text.pollinations.ai/${encodedText}?model=openai-audio&voice=nova&seed=${seed}`;
+	    
+	    audio.src = audioUrl;
+	    return audioUrl;
+	  }
+	  
+	  async regenerateMessageAudio(audioId, text) {
+	    const audio = document.getElementById(audioId);
+	    const playButton = audio.parentElement.querySelector('.play-btn');
+	    
+	    // Stop current audio if playing
+	    if (!audio.paused) {
+	  	audio.pause();
+	  	playButton.innerHTML = '▶️ Listen';
+	    }
+	    
+	    // Show regenerating status
+	    const regenerateBtn = event.target;
+	    const originalText = regenerateBtn.innerHTML;
+	    regenerateBtn.innerHTML = '🔄 Regenerating...';
+	    regenerateBtn.disabled = true;
+	    
+	    try {
+	  	// Generate new audio with different seed
+	  	await this.generateMessageAudio(audioId, text);
+	  	
+	  	// Reset button
+	  	regenerateBtn.innerHTML = originalText;
+	  	regenerateBtn.disabled = false;
+	  	
+	    } catch (error) {
+	  	regenerateBtn.innerHTML = '❌ Failed';
+	  	setTimeout(() => {
+	  	  regenerateBtn.innerHTML = originalText;
+	  	  regenerateBtn.disabled = false;
+	  	}, 2000);
+	    }
+	  }
 	  
 	  showTypingIndicator() {
 	    const messagesContainer = document.getElementById('chat-messages');
