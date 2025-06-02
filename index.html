@@ -1279,7 +1279,7 @@
 	  </div>
 	  
 	  <!-- Bible Version Selector -->
-	  <div class="bible-controls">
+	  <div class="bible-controls" id="bible-controls" style="display: none;">
 		<div class="version-selector">
 		  <label class="section-label">Bible Version:</label>
 		  <select id="bible-version" onchange="app.loadBibleBooks()">
@@ -1308,7 +1308,7 @@
 	  </div>
 	  
 	  <!-- Reading Mode Options -->
-	  <div class="reading-mode">
+	  <div class="reading-mode" id="bible-instructions" style="display: none;">
 		<h3>What would you like to listen to?</h3>
 		<div class="mode-buttons">
 		  <button class="btn btn-secondary" onclick="app.setReadingMode('verse')">Individual Verses</button>
