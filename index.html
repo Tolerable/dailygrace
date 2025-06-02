@@ -2124,7 +2124,13 @@
 
 	  // Radio Station Methods
 	  initRadio() {
-	  	this.radioAudio = document.getElementById('radio-audio');
+	  	const radioElement = document.getElementById('radio-audio');
+	  	if (!radioElement) {
+	  		console.error('Radio audio element not found!');
+	  		return;
+	  	}
+	  	
+	  	this.radioAudio = radioElement;
 	  	this.radioAudio.volume = this.radioVolume;
 	  	
 	  	// Setup radio audio listeners
@@ -2137,6 +2143,7 @@
 	  }
 	  
 	  toggleRadio() {
+	  	console.log('Toggle radio clicked'); // Add this
 	  	const radioStation = document.getElementById('radio-station');
 	  	radioStation.classList.toggle('open');
 	  	
