@@ -1860,6 +1860,49 @@
 			<p class="music-description">Jesus' gentle invitation</p>
 			<p class="music-duration">3:50</p>
 		  </div>
+		  
+		  <div class="music-card" onclick="app.playTrack('breathe-on-me', true)">
+		    <img src="/img/BreatheonMe.jpg" alt="Breathe on Me" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem;">
+		    <h3 class="music-title">Breathe on Me</h3>
+		    <p class="music-description">Holy Spirit's gentle touch</p>
+		    <p class="music-duration">3:35</p>
+		  </div>
+		  
+		  <div class="music-card" onclick="app.playTrack('in-the-quiet', true)">
+		    <img src="/img/IntheQuiet.jpg" alt="In the Quiet" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem;">
+		    <h3 class="music-title">In the Quiet</h3>
+		    <p class="music-description">Finding God in stillness</p>
+		    <p class="music-duration">4:10</p>
+		  </div>
+		  
+		  <div class="music-card" onclick="app.playTrack('everlasting-arms', true)">
+		    <img src="/img/EverlastingArms.jpg" alt="Everlasting Arms" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem;">
+		    <h3 class="music-title">Everlasting Arms</h3>
+		    <p class="music-description">Held by His eternal love</p>
+		    <p class="music-duration">3:55</p>
+		  </div>
+		  
+		  <div class="music-card" onclick="app.playTrack('light-of-my-path', true)">
+		    <img src="/img/LightOfMyPath.jpg" alt="Light of My Path" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem;">
+		    <h3 class="music-title">Light of My Path</h3>
+		    <p class="music-description">Divine guidance through darkness</p>
+		    <p class="music-duration">4:25</p>
+		  </div>
+		  
+		  <div class="music-card" onclick="app.playTrack('still-waters', true)">
+		    <img src="/img/StillWaters.jpg" alt="Still Waters" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem;">
+		    <h3 class="music-title">Still Waters</h3>
+		    <p class="music-description">Psalm 23's peaceful promise</p>
+		    <p class="music-duration">3:40</p>
+		  </div>
+		  
+		  <div class="music-card" onclick="app.playTrack('anchor-for-my-soul', true)">
+		    <img src="/img/AnchorforMySoul.jpg" alt="Anchor for My Soul" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem;">
+		    <h3 class="music-title">Anchor for My Soul</h3>
+		    <p class="music-description">Hope that holds us steady</p>
+		    <p class="music-duration">4:00</p>
+		  </div>
+		  
 		</div>
 	  
 	  <!-- Music Player Modal -->
@@ -2756,7 +2799,49 @@
 		  icon: '✨',
 		  url: 'https://www.dailygrace.online/audio/ComeAwayWithMe.mp3',
 		  duration: 230
-		}				
+		},
+		'breathe-on-me': {
+		  title: 'Breathe on Me',
+		  description: 'Holy Spirit\'s gentle touch',
+		  icon: '🕊️',
+		  url: 'https://www.dailygrace.online/audio/BreatheonMe.mp3',
+		  duration: 215
+		},
+		'in-the-quiet': {
+		  title: 'In the Quiet',
+		  description: 'Finding God in stillness',
+		  icon: '🤫',
+		  url: 'https://www.dailygrace.online/audio/IntheQuiet.mp3',
+		  duration: 250
+		},
+		'everlasting-arms': {
+		  title: 'Everlasting Arms',
+		  description: 'Held by His eternal love',
+		  icon: '🤗',
+		  url: 'https://www.dailygrace.online/audio/EverlastingArms.mp3',
+		  duration: 235
+		},
+		'light-of-my-path': {
+		  title: 'Light of My Path',
+		  description: 'Divine guidance through darkness',
+		  icon: '💡',
+		  url: 'https://www.dailygrace.online/audio/LightOfMyPath.mp3',
+		  duration: 265
+		},
+		'still-waters': {
+		  title: 'Still Waters',
+		  description: 'Psalm 23\'s peaceful promise',
+		  icon: '🌊',
+		  url: 'https://www.dailygrace.online/audio/StillWaters.mp3',
+		  duration: 220
+		},
+		'anchor-for-my-soul': {
+		  title: 'Anchor for My Soul',
+		  description: 'Hope that holds us steady',
+		  icon: '⚓',
+		  url: 'https://www.dailygrace.online/audio/AnchorforMySoul.mp3',
+		  duration: 240
+		}		
 	    };
 	  
 	    this.currentTrack = tracks[trackId];
