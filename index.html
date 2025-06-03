@@ -2297,7 +2297,12 @@
 			console.error('Radio audio element not found!');
 			return;
 		  }
-		  
+
+		  if (!document.getElementById('radio-now-playing')) {
+			setTimeout(() => this.initRadio(), 100);
+			return;
+		  }
+  
 		  this.radioStation.init(radioElement);
 		  
 		  // Set up UI callbacks
