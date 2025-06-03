@@ -2353,10 +2353,8 @@
 	    this.radioStation.setStation(station);
 	    this.updateStationButtons(station);
 	    
-	    // Start playing if not already
-	    if (!this.radioStation.isPlaying) {
-	  	this.radioStation.play();
-	    }
+	    // Always start playing the new station
+	    this.radioStation.play();
 	  }
 	  
 	  updateStationButtons(station) {
