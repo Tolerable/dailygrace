@@ -92,23 +92,27 @@ class RadioStation {
   }
 
   setStation(station) {
-   if (!this.playlists[station]) return;
-   
-   this.currentStation = station;
-   this.currentPlaylist = this.shufflePlaylist([...this.playlists[station]]);
-   this.currentIndex = 0;
-   this.songsSinceCut = 0;
-   
-   // Get the current track FIRST before calling callbacks
-   const currentTrack = this.getCurrentTrack();
-   
-   // Update UI
-   if (this.onTrackChange) {
-     this.onTrackChange(currentTrack, this.getUpNext());
-   }
-   
-   // Update album artwork AFTER getting the track
-   this.updateAlbumArt(currentTrack);
+	 if (!this.playlists[station]) return;
+	 
+	 this.currentStation = station;
+	 this.currentPlaylist = this.shufflePlaylist([...this.playlists[station]]);
+	 this.currentIndex = 0;
+	 this.songsSinceCut = 0;
+	 
+	 // Ensure we have a valid playlist before getting tracks
+	 if (this.currentPlaylist.length === 0) return;
+	 
+	 // Get the current track AFTER playlist is set
+	 const currentTrack = this.getCurrentTrack();
+	 const upNext = this.getUpNext();
+	 
+	 // Update UI
+	 if (this.onTrackChange) {
+	   this.onTrackChange(currentTrack, upNext);
+	 }
+	 
+	 // Update album artwork
+	 this.updateAlbumArt(currentTrack);
   }
 
   shufflePlaylist(array) {
@@ -304,7 +308,10 @@ class RadioStation {
   }
 
   getCurrentTrack() {
-    return this.currentPlaylist[this.currentIndex] || { title: 'Loading...', file: '' };
+	  if (!this.currentPlaylist || this.currentPlaylist.length === 0) {
+		return { title: 'Loading...', file: '' };
+	  }
+	  return this.currentPlaylist[this.currentIndex] || { title: 'Loading...', file: '' };
   }
 
   getUpNext() {
