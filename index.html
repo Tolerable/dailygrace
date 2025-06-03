@@ -3955,24 +3955,38 @@
       }
 
       // History Management
-      async loadHistory() {
-          const content = await this.getAllContent(this.currentFilter === 'all' ? null : this.currentFilter);
-          const container = document.getElementById('history-container');
-          
-          if (content.length === 0) {
-              container.innerHTML = '<p class="text-center">No content yet. Start your spiritual journey today!</p>';
-              return;
-          }
-          
-          container.innerHTML = content.map(item => `
-              <div class="history-item" onclick="app.showDetail(${item.id})">
-                  <button class="delete-button" onclick="event.stopPropagation(); app.deleteItem(${item.id})">×</button>
-                  <span class="history-item-type">${item.type === 'devotion' ? 'Devotion' : 'Prayer'}</span>
-                  <h4 class="history-item-title">${item.topic || item.title}</h4>
-                  <p class="history-item-date">${new Date(item.date).toLocaleDateString()}</p>
-              </div>
-          `).join('');
-      }
+	  async loadHistory() {
+	  	const content = await this.getAllContent(this.currentFilter === 'all' ? null : this.currentFilter);
+	  	const container = document.getElementById('history-container');
+	  	
+	  	if (content.length === 0) {
+	  		container.innerHTML = '<p class="text-center">No content yet. Start your spiritual journey today!</p>';
+	  		return;
+	  	}
+	  	
+	  	container.innerHTML = content.map(item => {
+	  		// Fix the type display logic
+	  		let displayType;
+	  		if (item.type === 'devotion') {
+	  			displayType = 'Devotion';
+	  		} else if (item.type === 'prayer') {
+	  			displayType = 'Prayer';
+	  		} else if (item.type === 'guidance') {
+	  			displayType = 'Guidance';
+	  		} else {
+	  			displayType = item.type; // fallback for any other types
+	  		}
+	  		
+	  		return `
+	  			<div class="history-item" onclick="app.showDetail(${item.id})">
+	  				<button class="delete-button" onclick="event.stopPropagation(); app.deleteItem(${item.id})">×</button>
+	  				<span class="history-item-type">${displayType}</span>
+	  				<h4 class="history-item-title">${item.topic || item.title}</h4>
+	  				<p class="history-item-date">${new Date(item.date).toLocaleDateString()}</p>
+	  			</div>
+	  		`;
+	  	}).join('');
+	  }
 
 	  async deleteItem(id) {
 	  	// Store the ID for deletion and show custom modal
