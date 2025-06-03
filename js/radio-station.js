@@ -112,29 +112,38 @@ class RadioStation {
   }
 
   playTrack(index) {
+    // Handle playlist wraparound
     if (index >= this.currentPlaylist.length) {
-      // Reshuffle and start over
       this.currentPlaylist = this.shufflePlaylist([...this.playlists[this.currentStation]]);
       index = 0;
+      this.songsSinceCut = 0; // Reset counter on playlist restart
     }
     
     this.currentIndex = index;
     
-    // Check if we should play a cut
-    if (this.songsSinceCut >= this.cutInterval) {
+    // Only check for cuts on natural progression (not skips)
+    if (this.songsSinceCut >= this.cutInterval && !this.audio.src.includes('/cuts/')) {
       this.playCut();
       return;
     }
     
     const track = this.currentPlaylist[index];
+    if (!track) {
+      console.error('No track at index:', index);
+      return;
+    }
+    
     const audioPath = `/audio/${track.file}`;
     
     this.audio.src = audioPath;
     this.audio.play();
     this.isPlaying = true;
-    this.songsSinceCut++;
     
-    // Update UI
+    // Only increment counter for actual songs, not cuts
+    if (!this.audio.src.includes('/cuts/')) {
+      this.songsSinceCut++;
+    }
+    
     if (this.onTrackChange) {
       this.onTrackChange(track, this.getUpNext());
     }
@@ -162,13 +171,14 @@ class RadioStation {
   }
 
   playNext() {
-    // If we just played a cut, play the current song
-    // Otherwise, advance to next song
+    // Check if we just played a cut
     const currentTrack = this.audio.src;
     if (currentTrack.includes('/cuts/')) {
-      this.playTrack(this.currentIndex); // Play the actual song after cut
+      // After a cut, play the actual song (don't increment counter)
+      this.playTrack(this.currentIndex);
     } else {
-      this.playTrack(this.currentIndex + 1); // Normal progression
+      // Normal song progression
+      this.playTrack(this.currentIndex + 1);
     }
   }
 
@@ -189,7 +199,9 @@ class RadioStation {
   }
 
   skip() {
-    this.playNext();
+    // Reset cut counter when manually skipping to avoid unwanted cuts
+    this.songsSinceCut = 0;
+    this.playTrack(this.currentIndex + 1);
   }
 
   setVolume(value) {
