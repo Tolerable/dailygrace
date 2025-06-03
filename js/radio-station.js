@@ -348,6 +348,98 @@ class RadioStation {
   setOnProgressUpdate(callback) {
     this.onProgressUpdate = callback;
   }
+  
+  // Radio Station Methods
+  initRadio() {
+    const radioElement = document.getElementById('radio-audio');
+    if (!radioElement) {
+      console.error('Radio audio element not found!');
+      return;
+    }
+  
+    if (!document.getElementById('radio-now-playing')) {
+      setTimeout(() => this.initRadio(), 100);
+      return;
+    }
+  
+    this.radioStation.init(radioElement);
+    
+    // Set up UI callbacks
+    this.radioStation.setOnTrackChange((current, next) => {
+      document.getElementById('radio-now-playing').textContent = current.title;
+      document.getElementById('radio-up-next').textContent = next.title;
+    });
+    
+    this.radioStation.setOnPlayStateChange((isPlaying) => {
+      document.getElementById('radio-play-btn').textContent = isPlaying ? '⏸️' : '▶️';
+    });
+    
+    this.radioStation.setOnProgressUpdate((progress, currentTime, duration) => {
+      document.getElementById('radio-progress-bar').style.width = `${progress}%`;
+      document.getElementById('radio-current-time').textContent = this.formatTime(currentTime);
+      document.getElementById('radio-total-time').textContent = this.formatTime(duration);
+    });
+    this.radioStation.setupProgressClick();
+  }
+  
+  formatTime(seconds) {
+    if (isNaN(seconds)) return '0:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  }
+  
+  toggleRadio() {
+    const radioStation = document.getElementById('radio-station');
+    radioStation.classList.toggle('open');
+  }
+	
+  playNextRadioTrack() {
+	this.playRadioTrack(this.radioCurrentIndex + 1);
+  }
+  
+  toggleRadioPlayPause() {
+	this.radioStation.togglePlayPause();
+  }
+  
+  skipRadioTrack() {
+	this.radioStation.skip();
+  }
+  
+  toggleRadioMute() {
+	const isMuted = this.radioStation.toggleMute();
+	document.getElementById('radio-mute-btn').textContent = isMuted ? '🔇' : '🔊';
+  }
+  
+  setRadioVolume(value) {
+	this.radioStation.setVolume(value);
+  }
+  
+  setRadioStation(station) {
+	if (!this.radioStation) return;
+	
+	this.radioStation.setStation(station);
+	this.updateStationButtons(station);
+	
+	// Always start playing the new station
+	this.radioStation.play();
+  }
+  
+  updateStationButtons(station) {
+    const dropdown = document.querySelector('.station-dropdown');
+    if (dropdown) {
+      dropdown.value = station;
+    }
+    
+    // Update any station buttons if they exist
+    const buttons = document.querySelectorAll('.station-btn');
+    buttons.forEach(btn => {
+      btn.classList.remove('active');
+      if (btn.dataset.station === station) {
+        btn.classList.add('active');
+      }
+    });
+  } 
 }
 
 // Export for use in main app
