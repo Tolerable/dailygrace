@@ -1361,16 +1361,32 @@
 	/* Compact artwork container */
 	.radio-artwork {
 	  text-align: center;
-	  margin-bottom: 0.5rem; /* Reduced margin */
+	  margin: 0 0 0.5rem 0;
+	  /* Ensure it takes precedence over any bleeding content */
+	  position: relative;
+	  z-index: 10;
 	}
 
-	.radio-artwork img,
+	.radio-artwork img {
+	  width: 160px !important;
+	  height: 120px !important;
+	  border-radius: 12px;
+	  margin: 0 auto 0.5rem auto !important;
+	  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+	  object-fit: cover;
+	  /* Ensure image is on top */
+	  position: relative;
+	  z-index: 11;
+	}
+
 	.radio-artwork > div {
-	  width: 100px !important; /* Slightly larger image */
-	  height: 100px !important;
+	  width: 120px !important;
+	  height: 90px !important;
 	  border-radius: 8px;
-	  margin: 0 auto 0.5rem auto !important; /* Reduced bottom margin */
+	  margin: 0 auto 0.5rem auto !important;
 	  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+	  position: relative;
+	  z-index: 11;
 	}
 
 	/* Hide the "Station:" label and compact the selector */
