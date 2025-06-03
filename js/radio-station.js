@@ -160,11 +160,10 @@ class RadioStation {
       );
     }
     
-    // After cut ends, play next song
-    this.audio.onended = () => {
-      this.audio.onended = () => this.playNext();
+    // FIXED: Use a one-time event listener instead of overwriting onended
+    this.audio.addEventListener('ended', () => {
       this.playTrack(this.currentIndex);
-    };
+    }, { once: true });
   }
 
   playNext() {
