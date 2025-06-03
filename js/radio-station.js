@@ -159,15 +159,17 @@ class RadioStation {
         this.currentPlaylist[this.currentIndex]
       );
     }
-    
-    // FIXED: Use a one-time event listener instead of overwriting onended
-    this.audio.addEventListener('ended', () => {
-      this.playTrack(this.currentIndex);
-    }, { once: true });
   }
 
   playNext() {
-    this.playTrack(this.currentIndex + 1);
+    // If we just played a cut, play the current song
+    // Otherwise, advance to next song
+    const currentTrack = this.audio.src;
+    if (currentTrack.includes('/cuts/')) {
+      this.playTrack(this.currentIndex); // Play the actual song after cut
+    } else {
+      this.playTrack(this.currentIndex + 1); // Normal progression
+    }
   }
 
   pause() {
