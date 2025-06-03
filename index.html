@@ -1369,6 +1369,17 @@
 	  margin-bottom: 0.75rem;
 	}
 
+	.station-dropdown {
+	  width: 100%;
+	  padding: 0.75rem;
+	  border: 2px solid var(--soft-blue);
+	  border-radius: 8px;
+	  font-family: inherit;
+	  background: var(--text-light);
+	  font-size: 0.95rem;
+	  margin-top: 0.5rem;
+	}
+
 	.station-buttons {
 	  display: flex;
 	  flex-direction: column;
@@ -2061,20 +2072,13 @@
 			<div class="now-playing-title" id="radio-now-playing">Loading...</div>
 		</div>
 		
-		<!-- Station Selector -->
 		<div class="station-selector">
-			<label>Choose Station:</label>
-			<div class="station-buttons">
-			<button class="station-btn active" onclick="app.setRadioStation('mixed')">
-				🎵 Mixed Worship
-			</button>
-			<button class="station-btn" onclick="app.setRadioStation('instrumental')">
-				🎹 Instrumental Only
-			</button>
-			<button class="station-btn" onclick="app.setRadioStation('vocals')">
-				🎤 Vocals Only
-			</button>
-			</div>
+		  <label>Station:</label>
+		  <select class="station-dropdown" onchange="app.setRadioStation(this.value)">
+			<option value="mixed">🎵 Mixed Worship</option>
+			<option value="instrumental">🎹 Instrumental Only</option>
+			<option value="vocals">🎤 Vocals Only</option>
+		  </select>
 		</div>
 		
 		<!-- Radio Controls -->
@@ -2231,14 +2235,12 @@
 	  	this.radioStation.play();
 	    }
 	  }
-
+	  
 	  updateStationButtons(station) {
-	    	document.querySelectorAll('.station-btn').forEach(btn => {
-	    		btn.classList.remove('active');
-	    	});
-	    	
-	    	const activeBtn = document.querySelector(`.station-btn[onclick*="${station}"]`);
-	    	if (activeBtn) activeBtn.classList.add('active');
+	    const dropdown = document.querySelector('.station-dropdown');
+	    if (dropdown) {
+	  	dropdown.value = station;
+	    }
 	  }
 	
 	  showPrivacyPolicy() {
