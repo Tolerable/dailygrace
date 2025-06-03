@@ -92,20 +92,23 @@ class RadioStation {
   }
 
   setStation(station) {
-    if (!this.playlists[station]) return;
-    
-    this.currentStation = station;
-    this.currentPlaylist = this.shufflePlaylist([...this.playlists[station]]);
-    this.currentIndex = 0;
-    this.songsSinceCut = 0;
-    
-    // Update UI
-    if (this.onTrackChange) {
-      this.onTrackChange(this.getCurrentTrack(), this.getUpNext());
-    }
-    
-    // Update album artwork
-    this.updateAlbumArt(this.getCurrentTrack());
+   if (!this.playlists[station]) return;
+   
+   this.currentStation = station;
+   this.currentPlaylist = this.shufflePlaylist([...this.playlists[station]]);
+   this.currentIndex = 0;
+   this.songsSinceCut = 0;
+   
+   // Get the current track FIRST before calling callbacks
+   const currentTrack = this.getCurrentTrack();
+   
+   // Update UI
+   if (this.onTrackChange) {
+     this.onTrackChange(currentTrack, this.getUpNext());
+   }
+   
+   // Update album artwork AFTER getting the track
+   this.updateAlbumArt(currentTrack);
   }
 
   shufflePlaylist(array) {
@@ -190,11 +193,10 @@ class RadioStation {
     this.updateAlbumArt(track);
   }
 
-  // NEW METHOD: Update album artwork
   updateAlbumArt(track) {
     // Find the entire now-playing section and REPLACE its content
     const nowPlaying = document.querySelector('.now-playing');
-    if (!nowPlaying) return;
+    if (!nowPlaying || !track) return;
     
     if (track.image) {
       // COMPLETELY REPLACE the now-playing content with just image + title
