@@ -4233,7 +4233,7 @@
 <footer style="background: var(--deep-navy); color: var(--text-light); padding: 3rem 0 2rem 0; margin-top: 3rem;">
     <div style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
         <!-- Main Footer Content -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 2rem;">
             
 			<!-- About Section -->
 			<div>
@@ -4243,15 +4243,20 @@
 					Connecting hearts to God through technology and faith.
 				</p>
 			</div>
-            
-			<!-- Support Section -->
+
+			<!-- Mission Section -->
 			<div>
 				<h4 style="color: var(--gold-accent); margin-bottom: 1rem; font-size: 1.1rem;">Our Mission</h4>
-				<p style="font-size: 0.9rem; opacity: 0.9; line-height: 1.6; margin-bottom: 1rem;">
+				<p style="font-size: 0.9rem; opacity: 0.9; line-height: 1.6;">
 					DailyGrace.Online is free to use because communing with God should never cost money. 
 					If you've been blessed by this ministry and would like to help, 
 					any contribution is gratefully received and appreciated.
 				</p>
+			</div>
+
+			<!-- Support Section -->
+			<div>
+				<h4 style="color: var(--gold-accent); margin-bottom: 1rem; font-size: 1.1rem;">Support</h4>
 				<p style="font-size: 0.85rem; opacity: 0.8; line-height: 1.5; margin-bottom: 1rem;">
 					Donations are processed through our parent ministry, 
 					<a href="https://ai-ministries.com" target="_blank" rel="noopener" 
@@ -4264,6 +4269,40 @@
 						  border-radius: 25px; font-weight: 600; transition: all 0.3s ease;">
 					💝 Donate to DailyGrace.Online
 				</a>
+			</div>
+
+			<!-- Second Row - Links Section -->
+			<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 2rem;">
+				
+				<!-- Legal & Privacy -->
+				<div>
+					<h4 style="color: var(--gold-accent); margin-bottom: 1rem; font-size: 1.1rem;">Legal & Privacy</h4>
+					<div style="display: flex; flex-direction: column; gap: 0.5rem;">
+						<a href="#" onclick="app.showPrivacyPolicy()" style="color: var(--soft-blue); text-decoration: none; font-size: 0.9rem;">Privacy Policy</a>
+						<a href="#" onclick="app.showTermsOfService()" style="color: var(--soft-blue); text-decoration: none; font-size: 0.9rem;">Terms of Service</a>
+						<a href="#" onclick="app.showCookiePolicy()" style="color: var(--soft-blue); text-decoration: none; font-size: 0.9rem;">Cookie Policy</a>
+						<a href="#" onclick="app.sendEmail()" style="color: var(--soft-blue); text-decoration: none; font-size: 0.9rem;">Contact Us</a>
+					</div>
+				</div>
+
+				<!-- Social Media -->
+				<div>
+					<h4 style="color: var(--gold-accent); margin-bottom: 1rem; font-size: 1.1rem;">Follow Us</h4>
+					<div style="display: flex; flex-direction: column; gap: 0.5rem;">
+						<a href="https://discord.gg/DcT9HX22vD" target="_blank" rel="noopener" style="color: var(--soft-blue); text-decoration: none; font-size: 0.9rem;">🎮 Discord Community</a>
+						<a href="#" target="_blank" rel="noopener" style="color: var(--soft-blue); text-decoration: none; font-size: 0.9rem;">📘 Facebook</a>
+						<a href="#" target="_blank" rel="noopener" style="color: var(--soft-blue); text-decoration: none; font-size: 0.9rem;">📷 Instagram</a>
+					</div>
+				</div>
+
+				<!-- Friends & Partners -->
+				<div>
+					<h4 style="color: var(--gold-accent); margin-bottom: 1rem; font-size: 1.1rem;">Friends & Partners</h4>
+					<div style="display: flex; flex-direction: column; gap: 0.5rem;">
+						<a href="https://ai-ministries.com" target="_blank" rel="noopener" style="color: var(--soft-blue); text-decoration: none; font-size: 0.9rem;">AI-Ministries.com</a>
+						<a href="https://pollinations.ai" target="_blank" rel="noopener" style="color: var(--soft-blue); text-decoration: none; font-size: 0.9rem;">Pollinations.ai</a>
+					</div>
+				</div>
 			</div>
             
             <!-- Legal & Policies -->
@@ -4281,8 +4320,7 @@
         <!-- Bottom Bar -->
         <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; text-align: center;">
             <p style="margin-bottom: 0.5rem; font-size: 0.9rem;">
-                © <span id="copyright-year"></span> DailyGrace.online - All rights reserved | <a href="https://discord.gg/DcT9HX22vD" target="_blank" rel="noopener" 
-                style="color: var(--white-accent); text-decoration: none;">Visit our DISCORD</a>
+                © <span id="copyright-year"></span> DailyGrace.online - All rights reserved
             </p>
             <p style="font-size: 0.8rem; opacity: 0.7;">
                 AI content generation powered by <a href="https://pollinations.ai" target="_blank" rel="noopener" 
