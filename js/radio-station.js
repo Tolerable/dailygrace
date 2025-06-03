@@ -192,57 +192,41 @@ class RadioStation {
 
   // NEW METHOD: Update album artwork
   updateAlbumArt(track) {
-    let artworkContainer = document.getElementById('radio-artwork');
-    
-    if (!artworkContainer) {
-      // Create artwork container if it doesn't exist
-      const nowPlaying = document.querySelector('.now-playing');
-      if (nowPlaying) {
-        // FIRST - Clear any existing content that might be bleeding
-        const existingIcon = nowPlaying.querySelector('.now-playing-label');
-        if (existingIcon) existingIcon.remove();
-        
-        // Remove any loose text nodes or icons
-        Array.from(nowPlaying.childNodes).forEach(node => {
-          if (node.nodeType === Node.TEXT_NODE && node.textContent.includes('🎵')) {
-            node.remove();
-          }
-        });
-        
-        artworkContainer = document.createElement('div');
-        artworkContainer.id = 'radio-artwork';
-        artworkContainer.className = 'radio-artwork';
-        nowPlaying.insertBefore(artworkContainer, nowPlaying.firstChild);
-      }
-    }
-    
-    if (!artworkContainer) return; // Safety check
-    
-    // COMPLETELY CLEAR the container first
-    artworkContainer.innerHTML = '';
+    // Find the entire now-playing section and REPLACE its content
+    const nowPlaying = document.querySelector('.now-playing');
+    if (!nowPlaying) return;
     
     if (track.image) {
-      // ONLY show the image - nothing else
-      artworkContainer.innerHTML = `
+      // COMPLETELY REPLACE the now-playing content with just image + title
+      nowPlaying.innerHTML = `
         <img src="${track.image}" alt="${track.title}" 
-             style="width: 180px; height: 135px; border-radius: 12px; object-fit: cover; 
-                    display: block; margin: 0 auto 0.5rem auto; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+             style="width: 280px; height: 180px; border-radius: 12px; object-fit: cover; 
+                    display: block; margin: 0 auto 0.75rem auto; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+        <div class="now-playing-title" style="font-weight: 600; color: var(--deep-navy); font-size: 1.1rem; margin: 0; text-align: center;">
+          ${track.title}
+        </div>
       `;
     } else if (track.isCut) {
-      artworkContainer.innerHTML = `
+      nowPlaying.innerHTML = `
         <div style="width: 120px; height: 90px; border-radius: 8px; background: var(--gold-accent); 
-                    display: flex; align-items: center; justify-content: center; margin: 0 auto 0.5rem auto;
+                    display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem auto;
                     box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
           <span style="font-size: 2rem;">📢</span>
         </div>
+        <div class="now-playing-title" style="font-weight: 600; color: var(--deep-navy); font-size: 1.1rem; margin: 0; text-align: center;">
+          ${track.title}
+        </div>
       `;
     } else {
-      // For instrumentals - show music note
-      artworkContainer.innerHTML = `
+      // For instrumentals
+      nowPlaying.innerHTML = `
         <div style="width: 120px; height: 90px; border-radius: 8px; background: var(--soft-blue); 
-                    display: flex; align-items: center; justify-content: center; margin: 0 auto 0.5rem auto;
+                    display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem auto;
                     box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
           <span style="font-size: 2rem;">🎵</span>
+        </div>
+        <div class="now-playing-title" style="font-weight: 600; color: var(--deep-navy); font-size: 1.1rem; margin: 0; text-align: center;">
+          ${track.title}
         </div>
       `;
     }
