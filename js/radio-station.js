@@ -22,7 +22,13 @@ class RadioStation {
 		{ title: 'Everlasting Arms', file: 'EverlastingArms.mp3', duration: 197 },
 		{ title: 'Light of My Path', file: 'LightofMyPath.mp3', duration: 190 },
 		{ title: 'Still Waters', file: 'StillWaters.mp3', duration: 195 },
-		{ title: 'Anchor for My Soul', file: 'AnchorforMySoul.mp3', duration: 190 }
+		{ title: 'Anchor for My Soul', file: 'AnchorforMySoul.mp3', duration: 190 },
+		{ title: 'Upon the Mountain', file: 'UpontheMountain.mp3', duration: 193 },
+		{ title: 'Breath of Heaven', file: 'BreathofHeaven.mp3', duration: 193 },
+		{ title: 'New Every Morning', file: 'NewEveryMorning.mp3', duration: 240 },
+		{ title: 'Shelter in the Storm', file: 'ShelterintheStorm.mp3', duration: 199 },
+		{ title: 'Draw Me Near', file: 'DrawMeNear.mp3', duration: 191 },
+		{ title: 'Shining in the Darkness', file: 'ShiningintheDarkness.mp3', duration: 203 }		
 		],
       mixed: [] // Will be populated in constructor
     };
