@@ -111,6 +111,20 @@ class RadioStation {
     this.playTrack(this.currentIndex);
   }
 
+  setupProgressClick() {
+    const progressContainer = document.querySelector('.radio-progress .progress-container');
+    if (progressContainer) {
+      progressContainer.onclick = (e) => {
+        if (this.audio.duration) {
+          const rect = progressContainer.getBoundingClientRect();
+          const clickX = e.clientX - rect.left;
+          const percentage = clickX / rect.width;
+          this.audio.currentTime = percentage * this.audio.duration;
+        }
+      };
+    }
+  }
+
   playTrack(index) {
     // Handle playlist wraparound
     if (index >= this.currentPlaylist.length) {
