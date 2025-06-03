@@ -308,10 +308,10 @@ class RadioStation {
   }
 
   getCurrentTrack() {
-	  if (!this.currentPlaylist || this.currentPlaylist.length === 0) {
-		return { title: 'Loading...', file: '' };
-	  }
-	  return this.currentPlaylist[this.currentIndex] || { title: 'Loading...', file: '' };
+    if (!this.currentPlaylist || this.currentPlaylist.length === 0 || this.currentIndex < 0) {
+      return { title: 'Loading...', file: '', image: null };
+    }
+    return this.currentPlaylist[this.currentIndex] || { title: 'Loading...', file: '', image: null };
   }
 
   getUpNext() {
