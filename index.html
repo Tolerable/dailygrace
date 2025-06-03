@@ -2350,6 +2350,8 @@
 	  }
 	  
 	  setRadioStation(station) {
+	    if (!this.radioStation) return;
+	    
 	    this.radioStation.setStation(station);
 	    this.updateStationButtons(station);
 	    
@@ -2360,8 +2362,17 @@
 	  updateStationButtons(station) {
 	    const dropdown = document.querySelector('.station-dropdown');
 	    if (dropdown) {
-	  	dropdown.value = station;
+	  	  dropdown.value = station;
 	    }
+	    
+	    // Update any station buttons if they exist
+	    const buttons = document.querySelectorAll('.station-btn');
+	    buttons.forEach(btn => {
+	  	btn.classList.remove('active');
+	  	  if (btn.dataset.station === station) {
+	  	    btn.classList.add('active');
+	  	  }
+	    });
 	  }
 	
 	  showPrivacyPolicy() {
