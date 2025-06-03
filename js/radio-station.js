@@ -11,18 +11,18 @@ class RadioStation {
         { title: 'Peaceful Garden', file: 'PeacefulGarden.mp3', duration: 248 }
       ],
 		vocals: [
-		  { title: 'Rest in His Presence', file: 'RestinHisPresence.mp3', duration: 240 },
-		  { title: 'Morning Mercies', file: 'MorningMercies.mp3', duration: 225 },
-		  { title: 'Healing Waters', file: 'HealingWaters.mp3', duration: 255 },
-		  { title: 'Abide in Me', file: 'AbideinMe.mp3', duration: 210 },
-		  { title: 'Peace Be Still', file: 'PeaceBeStill.mp3', duration: 270 },
-		  { title: 'Come Away With Me', file: 'ComeAwayWithMe.mp3', duration: 230 },
-		  { title: 'Breathe on Me', file: 'BreatheonMe.mp3', duration: 215 },
-		  { title: 'In the Quiet', file: 'IntheQuiet.mp3', duration: 250 },
-		  { title: 'Everlasting Arms', file: 'EverlastingArms.mp3', duration: 235 },
-		  { title: 'Light of My Path', file: 'LightofMyPath.mp3', duration: 265 },
-		  { title: 'Still Waters', file: 'StillWaters.mp3', duration: 220 },
-		  { title: 'Anchor for My Soul', file: 'AnchorforMySoul.mp3', duration: 240 }
+		{ title: 'Rest in His Presence', file: 'RestinHisPresence.mp3', duration: 147 },
+		{ title: 'Morning Mercies', file: 'MorningMercies.mp3', duration: 190 },
+		{ title: 'Healing Waters', file: 'HealingWaters.mp3', duration: 236 },
+		{ title: 'Abide in Me', file: 'AbideinMe.mp3', duration: 207 },
+		{ title: 'Peace Be Still', file: 'PeaceBeStill.mp3', duration: 240 },
+		{ title: 'Come Away With Me', file: 'ComeAwayWithMe.mp3', duration: 185 },
+		{ title: 'Breathe on Me', file: 'BreatheonMe.mp3', duration: 190 },
+		{ title: 'In the Quiet', file: 'IntheQuiet.mp3', duration: 190 },
+		{ title: 'Everlasting Arms', file: 'EverlastingArms.mp3', duration: 197 },
+		{ title: 'Light of My Path', file: 'LightofMyPath.mp3', duration: 190 },
+		{ title: 'Still Waters', file: 'StillWaters.mp3', duration: 195 },
+		{ title: 'Anchor for My Soul', file: 'AnchorforMySoul.mp3', duration: 190 }
 		],
       mixed: [] // Will be populated in constructor
     };
