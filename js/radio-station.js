@@ -1,4 +1,4 @@
-// Radio Station Manager for DailyGrace.Online
+// Radio Station Manager for DailyGrace.Online - ENHANCED VERSION
 class RadioStation {
   constructor() {
     this.playlists = {
@@ -10,26 +10,27 @@ class RadioStation {
         { title: 'Sacred Waters', file: 'SacredWaters.mp3', duration: 169 },
         { title: 'Peaceful Garden', file: 'PeacefulGarden.mp3', duration: 248 }
       ],
-		vocals: [
-		{ title: 'Rest in His Presence', file: 'RestinHisPresence.mp3', duration: 147 },
-		{ title: 'Morning Mercies', file: 'MorningMercies.mp3', duration: 190 },
-		{ title: 'Healing Waters', file: 'HealingWaters.mp3', duration: 236 },
-		{ title: 'Abide in Me', file: 'AbideinMe.mp3', duration: 207 },
-		{ title: 'Peace Be Still', file: 'PeaceBeStill.mp3', duration: 240 },
-		{ title: 'Come Away With Me', file: 'ComeAwayWithMe.mp3', duration: 185 },
-		{ title: 'Breathe on Me', file: 'BreatheonMe.mp3', duration: 190 },
-		{ title: 'In the Quiet', file: 'IntheQuiet.mp3', duration: 190 },
-		{ title: 'Everlasting Arms', file: 'EverlastingArms.mp3', duration: 197 },
-		{ title: 'Light of My Path', file: 'LightofMyPath.mp3', duration: 190 },
-		{ title: 'Still Waters', file: 'StillWaters.mp3', duration: 195 },
-		{ title: 'Anchor for My Soul', file: 'AnchorforMySoul.mp3', duration: 190 },
-		{ title: 'Upon the Mountain', file: 'UpontheMountain.mp3', duration: 193 },
-		{ title: 'Breath of Heaven', file: 'BreathofHeaven.mp3', duration: 193 },
-		{ title: 'New Every Morning', file: 'NewEveryMorning.mp3', duration: 240 },
-		{ title: 'Shelter in the Storm', file: 'ShelterintheStorm.mp3', duration: 199 },
-		{ title: 'Draw Me Near', file: 'DrawMeNear.mp3', duration: 191 },
-		{ title: 'Shining in the Darkness', file: 'ShiningintheDarkness.mp3', duration: 203 }		
-		],
+      vocals: [
+        // Added image property to vocal tracks
+        { title: 'Rest in His Presence', file: 'RestinHisPresence.mp3', duration: 147, image: '/img/RestinHisPresence.jpg' },
+        { title: 'Morning Mercies', file: 'MorningMercies.mp3', duration: 190, image: '/img/MorningMercies.jpg' },
+        { title: 'Healing Waters', file: 'HealingWaters.mp3', duration: 236, image: '/img/HealingWaters.jpg' },
+        { title: 'Abide in Me', file: 'AbideinMe.mp3', duration: 207, image: '/img/AbideinMe.jpg' },
+        { title: 'Peace Be Still', file: 'PeaceBeStill.mp3', duration: 240, image: '/img/PeaceBeStill.jpg' },
+        { title: 'Come Away With Me', file: 'ComeAwayWithMe.mp3', duration: 185, image: '/img/ComeAwayWithMe.jpg' },
+        { title: 'Breathe on Me', file: 'BreatheonMe.mp3', duration: 190, image: '/img/BreatheonMe.jpg' },
+        { title: 'In the Quiet', file: 'IntheQuiet.mp3', duration: 190, image: '/img/IntheQuiet.jpg' },
+        { title: 'Everlasting Arms', file: 'EverlastingArms.mp3', duration: 197, image: '/img/EverlastingArms.jpg' },
+        { title: 'Light of My Path', file: 'LightofMyPath.mp3', duration: 190, image: '/img/LightofMyPath.jpg' },
+        { title: 'Still Waters', file: 'StillWaters.mp3', duration: 195, image: '/img/StillWaters.jpg' },
+        { title: 'Anchor for My Soul', file: 'AnchorforMySoul.mp3', duration: 190, image: '/img/AnchorforMySoul.jpg' },
+        { title: 'Upon the Mountain', file: 'UpontheMountain.mp3', duration: 193, image: '/img/UpontheMountain.jpg' },
+        { title: 'Breath of Heaven', file: 'BreathofHeaven.mp3', duration: 193, image: '/img/BreathofHeaven.jpg' },
+        { title: 'New Every Morning', file: 'NewEveryMorning.mp3', duration: 240, image: '/img/NewEveryMorning.jpg' },
+        { title: 'Shelter in the Storm', file: 'ShelterintheStorm.mp3', duration: 199, image: '/img/ShelterintheStorm.jpg' },
+        { title: 'Draw Me Near', file: 'DrawMeNear.mp3', duration: 191, image: '/img/DrawMeNear.jpg' },
+        { title: 'Shining in the Darkness', file: 'ShiningintheDarkness.mp3', duration: 203, image: '/img/ShiningintheDarkness.jpg' }		
+      ],
       mixed: [] // Will be populated in constructor
     };
 
@@ -77,10 +78,14 @@ class RadioStation {
     this.audio = audioElement;
     this.audio.volume = this.volume;
     
-    // Set up event listeners
+    // Set up event listeners with error handling
     this.audio.addEventListener('ended', () => this.playNext());
     this.audio.addEventListener('timeupdate', () => this.updateProgress());
     this.audio.addEventListener('loadedmetadata', () => this.updateDuration());
+    this.audio.addEventListener('error', (e) => {
+      console.warn('Audio error, skipping track:', e);
+      this.playNext(); // Auto-skip on error
+    });
     
     // Load initial playlist
     this.setStation(this.currentStation);
@@ -98,6 +103,9 @@ class RadioStation {
     if (this.onTrackChange) {
       this.onTrackChange(this.getCurrentTrack(), this.getUpNext());
     }
+    
+    // Update album artwork
+    this.updateAlbumArt(this.getCurrentTrack());
   }
 
   shufflePlaylist(array) {
@@ -156,7 +164,14 @@ class RadioStation {
     const audioPath = `/audio/${track.file}`;
     
     this.audio.src = audioPath;
-    this.audio.play();
+    
+    // Try to play with error handling
+    this.audio.play().catch(error => {
+      console.warn('Failed to play track, skipping:', error);
+      this.playNext();
+      return;
+    });
+    
     this.isPlaying = true;
     
     // Only increment counter for actual songs, not cuts
@@ -170,6 +185,53 @@ class RadioStation {
     if (this.onPlayStateChange) {
       this.onPlayStateChange(true);
     }
+    
+    // Update album artwork for the current track
+    this.updateAlbumArt(track);
+  }
+
+  // NEW METHOD: Update album artwork
+  updateAlbumArt(track) {
+    let artworkContainer = document.getElementById('radio-artwork');
+    
+    if (!artworkContainer) {
+      // Create artwork container if it doesn't exist
+      const nowPlaying = document.querySelector('.now-playing');
+      if (nowPlaying) {
+        artworkContainer = document.createElement('div');
+        artworkContainer.id = 'radio-artwork';
+        artworkContainer.className = 'radio-artwork';
+        nowPlaying.insertBefore(artworkContainer, nowPlaying.firstChild);
+      }
+    }
+    
+    if (!artworkContainer) return; // Safety check
+    
+    // Don't show artwork for cuts
+    if (track.isCut) {
+      artworkContainer.innerHTML = `
+        <div style="width: 80px; height: 80px; border-radius: 8px; background: var(--gold-accent); 
+                    display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem auto;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+          <span style="font-size: 2rem;">📢</span>
+        </div>
+      `;
+    } else if (track.image) {
+      artworkContainer.innerHTML = `
+        <img src="${track.image}" alt="${track.title}" 
+             style="width: 80px; height: 80px; border-radius: 8px; object-fit: cover; 
+                    display: block; margin: 0 auto 0.75rem auto; box-shadow: 0 2px 8px rgba(0,0,0,0.2);"
+             onerror="this.parentElement.innerHTML='<div style=\\"width: 80px; height: 80px; border-radius: 8px; background: var(--soft-blue); display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem auto; box-shadow: 0 2px 8px rgba(0,0,0,0.2);\\"><span style=\\"font-size: 2rem;\\">🎵</span></div>';">
+      `;
+    } else {
+      artworkContainer.innerHTML = `
+        <div style="width: 80px; height: 80px; border-radius: 8px; background: var(--soft-blue); 
+                    display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem auto;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+          <span style="font-size: 2rem;">🎵</span>
+        </div>
+      `;
+    }
   }
 
   playCut() {
@@ -179,7 +241,11 @@ class RadioStation {
     const randomCut = cuts[Math.floor(Math.random() * cuts.length)];
     
     this.audio.src = `/audio/cuts/${randomCut.file}`;
-    this.audio.play();
+    this.audio.play().catch(error => {
+      console.warn('Failed to play cut, continuing with music:', error);
+      this.playTrack(this.currentIndex);
+      return;
+    });
     
     // Update UI for cut
     if (this.onTrackChange) {
@@ -188,6 +254,9 @@ class RadioStation {
         this.currentPlaylist[this.currentIndex]
       );
     }
+    
+    // Update artwork for cut
+    this.updateAlbumArt({ title: randomCut.title, isCut: true });
   }
 
   playNext() {
