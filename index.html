@@ -1291,11 +1291,11 @@
 	  background: var(--text-light);
 	  border-radius: 16px 0 0 16px;
 	  box-shadow: -4px 0 16px var(--shadow-medium);
-	  height: 560px;
+	  height: 570px; /* Keep original height */
 	  display: flex;
 	  flex-direction: column;
-	  position: relative;  /* For tab positioning */
-	  overflow: visible;  /* Allow tab to show */
+	  position: relative;
+	  overflow: hidden; /* Remove scrollbar */
 	}
 
 	.radio-header {
@@ -1340,44 +1340,57 @@
 
 	.now-playing {
 	  background: var(--gradient-soft);
-	  padding: 1rem;
+	  padding: 1rem 1rem 0.75rem 1rem; /* Reduced bottom padding */
 	  border-radius: 12px;
-	  margin-bottom: 1.5rem;
+	  margin-bottom: 1rem; /* Reduced margin */
 	  text-align: center;
 	}
 
+	/* Remove the "Now Playing:" label */
 	.now-playing-label {
-	  font-size: 0.8rem;
-	  color: var(--sage-green);
-	  margin-bottom: 0.25rem;
+	  display: none;
 	}
 
 	.now-playing-title {
 	  font-weight: 600;
 	  color: var(--deep-navy);
 	  font-size: 1.1rem;
+	  margin: 0; /* Remove extra margins */
 	}
 
+	/* Compact artwork container */
+	.radio-artwork {
+	  text-align: center;
+	  margin-bottom: 0.5rem; /* Reduced margin */
+	}
+
+	.radio-artwork img,
+	.radio-artwork > div {
+	  width: 100px !important; /* Slightly larger image */
+	  height: 100px !important;
+	  border-radius: 8px;
+	  margin: 0 auto 0.5rem auto !important; /* Reduced bottom margin */
+	  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+	}
+
+	/* Hide the "Station:" label and compact the selector */
 	.station-selector {
-	  margin-bottom: 1.5rem;
+	  margin-bottom: 1rem; /* Reduced margin */
 	}
 
 	.station-selector label {
-	  display: block;
-	  font-weight: 600;
-	  color: var(--deep-navy);
-	  margin-bottom: 0.75rem;
+	  display: none; /* Hide "Station:" label */
 	}
 
 	.station-dropdown {
 	  width: 100%;
-	  padding: 0.75rem;
+	  padding: 0.6rem; /* Slightly smaller padding */
 	  border: 2px solid var(--soft-blue);
 	  border-radius: 8px;
 	  font-family: inherit;
 	  background: var(--text-light);
-	  font-size: 0.95rem;
-	  margin-top: 0.5rem;
+	  font-size: 0.9rem; /* Slightly smaller font */
+	  margin-top: 0; /* Remove top margin since label is hidden */
 	}
 
 	.station-buttons {
@@ -1411,17 +1424,17 @@
 	  display: flex;
 	  justify-content: center;
 	  gap: 1rem;
-	  margin-bottom: 1rem;
+	  margin-bottom: 1rem; /* Reduced margin */
 	}
 
 	.radio-btn {
-	  width: 50px;
-	  height: 50px;
+	  width: 45px; /* Slightly smaller buttons */
+	  height: 45px;
 	  border: none;
 	  border-radius: 50%;
 	  background: var(--sage-green);
 	  color: var(--text-light);
-	  font-size: 1.2rem;
+	  font-size: 1.1rem; /* Slightly smaller font */
 	  cursor: pointer;
 	  transition: all 0.3s ease;
 	  display: flex;
@@ -1494,27 +1507,48 @@
 
 	.up-next {
 	  background: var(--warm-cream);
-	  padding: 0.75rem;
+	  padding: 0.6rem; /* Reduced padding */
 	  border-radius: 8px;
-	  font-size: 0.9rem;
+	  font-size: 0.85rem; /* Slightly smaller font */
+	  margin-top: auto; /* Push to bottom */
 	}
 
 	.up-next-label {
-	  font-size: 0.8rem;
+	  font-size: 0.75rem; /* Smaller label */
 	  color: var(--sage-green);
-	  margin-bottom: 0.25rem;
+	  margin-bottom: 0.2rem; /* Reduced margin */
 	}
 
 	.up-next-title {
 	  color: var(--deep-navy);
+	  margin: 0;
+	}
+
+	.radio-content {
+	  flex: 1;
+	  padding: 1rem; /* Reduced padding */
+	  overflow: hidden; /* Prevent scrolling */
+	  display: flex;
+	  flex-direction: column;
 	}
 
 	/* Mobile adjustments */
 	@media (max-width: 768px) {
 	  .radio-panel {
 		width: 280px;
+		height: 540px; /* Slightly smaller on mobile */
+	  }
+
+	  .radio-artwork img,
+	  .radio-artwork > div {
+		width: 80px !important;
+		height: 80px !important;
 	  }
 	  
+	  .radio-content {
+		padding: 0.75rem;
+	  }
+  
 	  .radio-station {
 		right: -220px;  /* Hide it off-screen on mobile too */
 	  }
