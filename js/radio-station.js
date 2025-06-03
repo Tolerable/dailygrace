@@ -20,7 +20,7 @@ class RadioStation {
 		  { title: 'Breathe on Me', file: 'BreatheonMe.mp3', duration: 215 },
 		  { title: 'In the Quiet', file: 'IntheQuiet.mp3', duration: 250 },
 		  { title: 'Everlasting Arms', file: 'EverlastingArms.mp3', duration: 235 },
-		  { title: 'Light of My Path', file: 'LightOfMyPath.mp3', duration: 265 },
+		  { title: 'Light of My Path', file: 'LightofMyPath.mp3', duration: 265 },
 		  { title: 'Still Waters', file: 'StillWaters.mp3', duration: 220 },
 		  { title: 'Anchor for My Soul', file: 'AnchorforMySoul.mp3', duration: 240 }
 		],
