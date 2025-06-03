@@ -1937,6 +1937,48 @@
 		    <p class="music-description">Hope that holds us steady</p>
 		    <p class="music-duration">3:10</p>
 		  </div>
+
+		  <div class="music-card" onclick="app.playTrack('upon-the-mountain', true)">
+		    <img src="/img/UpontheMountain.jpg" alt="Upon the Mountain" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem;">
+		    <h3 class="music-title">Upon the Mountain</h3>
+		    <p class="music-description">Acoustic/electric guitars, mandolin or dulcimer, steady hand drum</p>
+		    <p class="music-duration">3:13</p>
+		  </div>
+		  
+		  <div class="music-card" onclick="app.playTrack('breath-of-heaven', true)">
+		    <img src="/img/BreathofHeaven.jpg" alt="Breath of Heaven" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem;">
+		    <h3 class="music-title">Breath of Heaven</h3>
+		    <p class="music-description">Ambient synths, ethereal pads, breathy vocal layers</p>
+		    <p class="music-duration">3:13</p>
+		  </div>
+		  
+		  <div class="music-card" onclick="app.playTrack('new-every-morning', true)">
+		    <img src="/img/NewEveryMorning.jpg" alt="New Every Morning" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem;">
+		    <h3 class="music-title">New Every Morning</h3>
+		    <p class="music-description">Fingerpicked acoustic guitar, soft piano, upright bass</p>
+		    <p class="music-duration">4:00</p>
+		  </div>
+		  
+		  <div class="music-card" onclick="app.playTrack('shelter-in-the-storm', true)">
+		    <img src="/img/ShelterintheStorm.jpg" alt="Shelter in the Storm" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem;">
+		    <h3 class="music-title">Shelter in the Storm</h3>
+		    <p class="music-description">Layered strings, piano, ambient synths, distant choral background</p>
+		    <p class="music-duration">3:19</p>
+		  </div>
+		  
+		  <div class="music-card" onclick="app.playTrack('draw-me-near', true)">
+		    <img src="/img/DrawMeNear.jpg" alt="Draw Me Near" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem;">
+		    <h3 class="music-title">Draw Me Near</h3>
+		    <p class="music-description">Acoustic guitar, soft brushes/percussion, light organ</p>
+		    <p class="music-duration">3:11</p>
+		  </div>
+		  
+		  <div class="music-card" onclick="app.playTrack('shining-in-the-darkness', true)">
+		    <img src="/img/ShiningintheDarkness.jpg" alt="Shining in the Darkness" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem;">
+		    <h3 class="music-title">Shining in the Darkness</h3>
+		    <p class="music-description">Soft piano, gentle synth pads, subtle cello</p>
+		    <p class="music-duration">3:23</p>
+		  </div>
 		  
 		</div>
 	  
@@ -2868,7 +2910,49 @@
 		  icon: '⚓',
 		  url: 'https://www.dailygrace.online/audio/AnchorforMySoul.mp3',
 		  duration: 190 // 3:10 in seconds
-		}	
+		},
+		'upon-the-mountain': {
+		  title: 'Upon the Mountain',
+		  description: 'Acoustic/electric guitars, mandolin or dulcimer, steady hand drum',
+		  icon: '⛰️',
+		  url: 'https://www.dailygrace.online/audio/UpontheMountain.mp3',
+		  duration: 193 // 3:13 in seconds
+		},
+		'breath-of-heaven': {
+		  title: 'Breath of Heaven',
+		  description: 'Ambient synths, ethereal pads, breathy vocal layers',
+		  icon: '☁️',
+		  url: 'https://www.dailygrace.online/audio/BreathofHeaven.mp3',
+		  duration: 193 // 3:13 in seconds
+		},
+		'new-every-morning': {
+		  title: 'New Every Morning',
+		  description: 'Fingerpicked acoustic guitar, soft piano, upright bass',
+		  icon: '🌅',
+		  url: 'https://www.dailygrace.online/audio/NewEveryMorning.mp3',
+		  duration: 240 // 4:00 in seconds
+		},
+		'shelter-in-the-storm': {
+		  title: 'Shelter in the Storm',
+		  description: 'Layered strings, piano, ambient synths, distant choral background',
+		  icon: '🏠',
+		  url: 'https://www.dailygrace.online/audio/ShelterintheStorm.mp3',
+		  duration: 199 // 3:19 in seconds
+		},
+		'draw-me-near': {
+		  title: 'Draw Me Near',
+		  description: 'Acoustic guitar, soft brushes/percussion, light organ',
+		  icon: '🤲',
+		  url: 'https://www.dailygrace.online/audio/DrawMeNear.mp3',
+		  duration: 191 // 3:11 in seconds
+		},
+		'shining-in-the-darkness': {
+		  title: 'Shining in the Darkness',
+		  description: 'Soft piano, gentle synth pads, subtle cello',
+		  icon: '✨',
+		  url: 'https://www.dailygrace.online/audio/ShiningintheDarkness.mp3',
+		  duration: 203 // 3:23 in seconds
+		}		
 	    };
 	  
 	    this.currentTrack = tracks[trackId];
