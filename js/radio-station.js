@@ -198,6 +198,17 @@ class RadioStation {
       // Create artwork container if it doesn't exist
       const nowPlaying = document.querySelector('.now-playing');
       if (nowPlaying) {
+        // FIRST - Clear any existing content that might be bleeding
+        const existingIcon = nowPlaying.querySelector('.now-playing-label');
+        if (existingIcon) existingIcon.remove();
+        
+        // Remove any loose text nodes or icons
+        Array.from(nowPlaying.childNodes).forEach(node => {
+          if (node.nodeType === Node.TEXT_NODE && node.textContent.includes('🎵')) {
+            node.remove();
+          }
+        });
+        
         artworkContainer = document.createElement('div');
         artworkContainer.id = 'radio-artwork';
         artworkContainer.className = 'radio-artwork';
@@ -207,26 +218,29 @@ class RadioStation {
     
     if (!artworkContainer) return; // Safety check
     
-    // Don't show artwork for cuts
-    if (track.isCut) {
+    // COMPLETELY CLEAR the container first
+    artworkContainer.innerHTML = '';
+    
+    if (track.image) {
+      // ONLY show the image - nothing else
       artworkContainer.innerHTML = `
-        <div style="width: 80px; height: 80px; border-radius: 8px; background: var(--gold-accent); 
-                    display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem auto;
+        <img src="${track.image}" alt="${track.title}" 
+             style="width: 180px; height: 135px; border-radius: 12px; object-fit: cover; 
+                    display: block; margin: 0 auto 0.5rem auto; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+      `;
+    } else if (track.isCut) {
+      artworkContainer.innerHTML = `
+        <div style="width: 120px; height: 90px; border-radius: 8px; background: var(--gold-accent); 
+                    display: flex; align-items: center; justify-content: center; margin: 0 auto 0.5rem auto;
                     box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
           <span style="font-size: 2rem;">📢</span>
         </div>
       `;
-    } else if (track.image) {
-      artworkContainer.innerHTML = `
-        <img src="${track.image}" alt="${track.title}" 
-             style="width: 80px; height: 80px; border-radius: 8px; object-fit: cover; 
-                    display: block; margin: 0 auto 0.75rem auto; box-shadow: 0 2px 8px rgba(0,0,0,0.2);"
-             onerror="this.parentElement.innerHTML='<div style=\\"width: 80px; height: 80px; border-radius: 8px; background: var(--soft-blue); display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem auto; box-shadow: 0 2px 8px rgba(0,0,0,0.2);\\"><span style=\\"font-size: 2rem;\\">🎵</span></div>';">
-      `;
     } else {
+      // For instrumentals - show music note
       artworkContainer.innerHTML = `
-        <div style="width: 80px; height: 80px; border-radius: 8px; background: var(--soft-blue); 
-                    display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem auto;
+        <div style="width: 120px; height: 90px; border-radius: 8px; background: var(--soft-blue); 
+                    display: flex; align-items: center; justify-content: center; margin: 0 auto 0.5rem auto;
                     box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
           <span style="font-size: 2rem;">🎵</span>
         </div>
