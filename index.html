@@ -141,7 +141,7 @@
 	}
 	</script>
 
-	<script src="https://www.dailygrace.online/js/radio-station.js"></script>
+	<script src="https://www.dailygrace.online/js/radio-station.js" defer></script>
   
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
@@ -2286,9 +2286,11 @@
 	    this.bindEvents();
 	    this.setCopyrightYear();
 	    
-	    // CHANGE THIS SHIT:
-	    this.radioStation = new RadioStation(); // CREATE IT HERE
-	    this.initRadio(); // THEN INIT IT
+	    // DEFER THE RADIO INIT TO AFTER PAGE LOAD
+	    window.addEventListener('load', () => {
+	  	this.radioStation = new RadioStation();
+	  	this.initRadio();
+	    });
 	    
 	    setInterval(() => this.updateTimeGreeting(), 60000);
 	  }
