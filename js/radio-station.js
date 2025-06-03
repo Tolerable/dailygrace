@@ -107,7 +107,8 @@ class RadioStation {
 	 const upNext = this.getUpNext();
 	 
 	 // Update UI
-	 if (this.onTrackChange) {
+	 if (this.onTrackChange && currentTrack) {
+	   const upNext = this.getUpNext();
 	   this.onTrackChange(currentTrack, upNext);
 	 }
 	 
@@ -315,6 +316,9 @@ class RadioStation {
   }
 
   getUpNext() {
+    if (!this.currentPlaylist || this.currentPlaylist.length === 0) {
+      return { title: '...', file: '' };
+    }
     const nextIndex = (this.currentIndex + 1) % this.currentPlaylist.length;
     return this.currentPlaylist[nextIndex] || { title: '...', file: '' };
   }
