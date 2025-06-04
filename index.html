@@ -66,47 +66,30 @@
   <meta name="apple-mobile-web-app-title" content="DailyGrace.Online">
   <meta name="msapplication-TileColor" content="#2E86AB">
   
-  <!-- Structured Data for Search Engines -->
+	<!-- Structured Data for Search Engines -->
 	<script type="application/ld+json">
 	{
 	  "@context": "https://schema.org",
 	  "@type": "WebSite",
 	  "name": "DailyGrace.Online",
 	  "alternateName": "Daily Grace Devotional",
-	  "description": "Free daily Christian devotions, AI-powered prayers, and spiritual guidance. Personal devotional companion for your faith journey.",
+	  "description": "Free daily Christian devotions, AI-powered prayers, spiritual guidance, and peaceful meditation music. Personal devotional companion for your faith journey.",
 	  "url": "https://www.dailygrace.online",
 	  "image": "https://www.dailygrace.online/img/DailyGrace.jpg",
-	  "sameAs": [
-		"https://ai-ministries.com"
-	  ],
 	  "publisher": {
 		"@type": "Organization",
 		"name": "DailyGrace.Online",
-		"url": "https://www.dailygrace.online"
+		"url": "https://www.dailygrace.online",
+		"contactPoint": {
+		  "@type": "ContactPoint",
+		  "email": "contact@dailygrace.online",
+		  "contactType": "Customer Service"
+		}
 	  },
 	  "potentialAction": {
 		"@type": "SearchAction",
 		"target": "https://www.dailygrace.online/?q={search_term_string}",
 		"query-input": "required name=search_term_string"
-	  }
-	}
-	</script>
-
-	<script type="application/ld+json">
-	{
-	  "@context": "https://schema.org",
-	  "@type": "ReligiousOrganization",
-	  "name": "DailyGrace.Online",
-	  "description": "AI-powered Christian devotional and prayer companion providing free daily spiritual guidance",
-	  "url": "https://www.dailygrace.online",
-	  "logo": "https://www.dailygrace.online/img/DailyGrace.jpg",
-	  "sameAs": [
-		"https://ai-ministries.com"
-	  ],
-	  "contactPoint": {
-		"@type": "ContactPoint",
-		"email": "contact@dailygrace.online",
-		"contactType": "Customer Service"
 	  },
 	  "hasOfferCatalog": {
 		"@type": "OfferCatalog",
@@ -117,14 +100,14 @@
 			"itemOffered": {
 			  "@type": "Service",
 			  "name": "Daily Devotions",
-			  "description": "AI-generated Christian devotions"
+			  "description": "AI-generated Christian devotions and Bible verses"
 			}
 		  },
 		  {
 			"@type": "Offer",
 			"itemOffered": {
 			  "@type": "Service",
-			  "name": "Prayer Assistance",
+			  "name": "Prayer Writing",
 			  "description": "Interactive prayer creation and guidance"
 			}
 		  },
@@ -132,8 +115,24 @@
 			"@type": "Offer",
 			"itemOffered": {
 			  "@type": "Service",
-			  "name": "Meditation Music",
-			  "description": "Peaceful instrumental and vocal tracks for prayer and meditation"
+			  "name": "Audio Bible",
+			  "description": "AI narrated Bible readings and verses"
+			}
+		  },
+		  {
+			"@type": "Offer",
+			"itemOffered": {
+			  "@type": "Service",
+			  "name": "Peaceful Music & Radio",
+			  "description": "24/7 Christian music streaming and meditation tracks"
+			}
+		  },
+		  {
+			"@type": "Offer",
+			"itemOffered": {
+			  "@type": "Service",
+			  "name": "Spiritual Guidance",
+			  "description": "Biblical wisdom and personal faith journey tracking"
 			}
 		  }
 		]
