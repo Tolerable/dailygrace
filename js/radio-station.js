@@ -2,14 +2,14 @@
 class RadioStation {
   constructor() {
     this.playlists = {
-      instrumental: [
-        { title: 'Gentle Streams', file: 'GentleStreams.mp3', duration: 289 },
-        { title: 'Heavenly Peace', file: 'HeavenlyPeace.mp3', duration: 239 },
-        { title: 'Morning Light', file: 'MorningLight.mp3', duration: 240 },
-        { title: 'Quiet Sanctuary', file: 'QuietSanctuary.mp3', duration: 202 },
-        { title: 'Sacred Waters', file: 'SacredWaters.mp3', duration: 169 },
-        { title: 'Peaceful Garden', file: 'PeacefulGarden.mp3', duration: 248 }
-      ],
+		instrumental: [
+		  { title: 'Gentle Streams', file: 'GentleStreams.mp3', duration: 289, image: '/img/GentleStreams.jpg' },
+		  { title: 'Heavenly Peace', file: 'HeavenlyPeace.mp3', duration: 239, image: '/img/HeavenlyPeace.jpg' },
+		  { title: 'Morning Light', file: 'MorningLight.mp3', duration: 240, image: '/img/MorningLight.jpg' },
+		  { title: 'Quiet Sanctuary', file: 'QuietSanctuary.mp3', duration: 202, image: '/img/QuietSanctuary.jpg' },
+		  { title: 'Sacred Waters', file: 'SacredWaters.mp3', duration: 169, image: '/img/SacredWaters.jpg' },
+		  { title: 'Peaceful Garden', file: 'PeacefulGarden.mp3', duration: 248, image: '/img/PeacefulGarden.jpg' }
+		],
       vocals: [
         // Added image property to vocal tracks
         { title: 'Rest in His Presence', file: 'RestinHisPresence.mp3', duration: 147, image: '/img/RestinHisPresence.jpg' },
