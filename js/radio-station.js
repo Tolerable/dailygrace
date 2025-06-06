@@ -199,44 +199,41 @@ class RadioStation {
   }
 
   updateAlbumArt(track) {
-    // Find the entire now-playing section and REPLACE its content
-    const nowPlaying = document.querySelector('.now-playing');
-    if (!nowPlaying || !track) return;
-    
-    if (track.image) {
-      // COMPLETELY REPLACE the now-playing content with just image + title
-      nowPlaying.innerHTML = `
-        <img src="${track.image}" alt="${track.title}" 
-             style="width: 280px; height: 180px; border-radius: 12px; object-fit: cover; 
-                    display: block; margin: 0 auto 0.75rem auto; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
-        <div class="now-playing-title" style="font-weight: 600; color: var(--deep-navy); font-size: 1.1rem; margin: 0; text-align: center;">
-          ${track.title}
-        </div>
-      `;
-    } else if (track.isCut) {
-      nowPlaying.innerHTML = `
-        <div style="width: 120px; height: 90px; border-radius: 8px; background: var(--gold-accent); 
-                    display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem auto;
-                    box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
-          <span style="font-size: 2rem;">📢</span>
-        </div>
-        <div class="now-playing-title" style="font-weight: 600; color: var(--deep-navy); font-size: 1.1rem; margin: 0; text-align: center;">
-          ${track.title}
-        </div>
-      `;
-    } else {
-      // For instrumentals
-      nowPlaying.innerHTML = `
-        <div style="width: 120px; height: 90px; border-radius: 8px; background: var(--soft-blue); 
-                    display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem auto;
-                    box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
-          <span style="font-size: 2rem;">🎵</span>
-        </div>
-        <div class="now-playing-title" style="font-weight: 600; color: var(--deep-navy); font-size: 1.1rem; margin: 0; text-align: center;">
-          ${track.title}
-        </div>
-      `;
-    }
+	  // Find the now-playing-title element specifically, not the whole container
+	  const nowPlayingTitle = document.querySelector('.now-playing-title');
+	  const nowPlaying = document.querySelector('.now-playing');
+	  if (!nowPlaying || !track) return;
+	  
+	  // Remove any existing image in the now-playing section
+	  const existingImg = nowPlaying.querySelector('img');
+	  const existingIcon = nowPlaying.querySelector('div[style*="width: 120px"]');
+	  if (existingImg) existingImg.remove();
+	  if (existingIcon) existingIcon.remove();
+	  
+	  // Insert the new image/icon BEFORE the title
+	  if (track.image) {
+		const img = document.createElement('img');
+		img.src = track.image;
+		img.alt = track.title;
+		img.style = 'width: 280px; height: 180px; border-radius: 12px; object-fit: cover; display: block; margin: 0 auto 0.75rem auto; box-shadow: 0 4px 12px rgba(0,0,0,0.3);';
+		nowPlaying.insertBefore(img, nowPlayingTitle);
+	  } else if (track.isCut) {
+		const cutDiv = document.createElement('div');
+		cutDiv.style = 'width: 120px; height: 90px; border-radius: 8px; background: var(--gold-accent); display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem auto; box-shadow: 0 2px 8px rgba(0,0,0,0.2);';
+		cutDiv.innerHTML = '<span style="font-size: 2rem;">📢</span>';
+		nowPlaying.insertBefore(cutDiv, nowPlayingTitle);
+	  } else {
+		// For instrumentals
+		const instrDiv = document.createElement('div');
+		instrDiv.style = 'width: 120px; height: 90px; border-radius: 8px; background: var(--soft-blue); display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem auto; box-shadow: 0 2px 8px rgba(0,0,0,0.2);';
+		instrDiv.innerHTML = '<span style="font-size: 2rem;">🎵</span>';
+		nowPlaying.insertBefore(instrDiv, nowPlayingTitle);
+	  }
+	  
+	  // Update the title text
+	  if (nowPlayingTitle) {
+		nowPlayingTitle.textContent = track.title;
+	  }
   }
 
   playCut() {
