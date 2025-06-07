@@ -210,40 +210,51 @@ class RadioStation {
   }
 
   updateAlbumArt(track) {
-  	  const nowPlaying = document.querySelector('.now-playing');
-  	  if (!nowPlaying || !track) return;
-  	  
-  	  // Remove any existing image/icon
-  	  const existingImg = nowPlaying.querySelector('img');
-  	  const existingIcon = nowPlaying.querySelector('div[style*="width:"]');
-  	  if (existingImg) existingImg.remove();
-  	  if (existingIcon) existingIcon.remove();
-  	  
-  	  // Find where to insert (after the label, before the title)
-  	  const label = nowPlaying.querySelector('.now-playing-label');
-  	  const title = nowPlaying.querySelector('.now-playing-title');
-  	  
-  	  let element;
-  	  if (track.image) {
-  		element = document.createElement('img');
-  		element.src = track.image;
-  		element.alt = track.title;
-  		element.style = 'width: 200px; height: 200px; border-radius: 12px; object-fit: cover; display: block; margin: 0.75rem auto; box-shadow: 0 4px 12px rgba(0,0,0,0.3);';
-  	  } else if (track.isCut) {
-  		element = document.createElement('div');
-  		element.style = 'width: 120px; height: 90px; border-radius: 8px; background: var(--gold-accent); display: flex; align-items: center; justify-content: center; margin: 0.75rem auto; box-shadow: 0 2px 8px rgba(0,0,0,0.2);';
-  		element.innerHTML = '<span style="font-size: 2rem;">📢</span>';
-  	  } else {
-  		element = document.createElement('div');
-  		element.style = 'width: 120px; height: 90px; border-radius: 8px; background: var(--soft-blue); display: flex; align-items: center; justify-content: center; margin: 0.75rem auto; box-shadow: 0 2px 8px rgba(0,0,0,0.2);';
-  		element.innerHTML = '<span style="font-size: 2rem;">🎵</span>';
-  	  }
-  	  
-  	  // Insert between label and title
-  	  nowPlaying.insertBefore(element, title);
-  	  
-  	  // Update the title text
-  	  title.textContent = track.title;
+	  const nowPlaying = document.querySelector('.now-playing');
+	  if (!nowPlaying || !track) return;
+	  
+	  // Remove any existing image/icon
+	  const existingImg = nowPlaying.querySelector('img');
+	  const existingIcon = nowPlaying.querySelector('div[style*="width:"]');
+	  if (existingImg) existingImg.remove();
+	  if (existingIcon) existingIcon.remove();
+	  
+	  // Find where to insert (after the label, before the title)
+	  const label = nowPlaying.querySelector('.now-playing-label');
+	  const title = nowPlaying.querySelector('.now-playing-title');
+	  
+	  let element;
+	  // Check for valid image path first
+	  if (track.image && !track.isCut) {
+		element = document.createElement('img');
+		element.src = track.image;
+		element.alt = track.title;
+		element.style = 'width: 200px; height: 200px; border-radius: 12px; object-fit: cover; display: block; margin: 0.75rem auto; box-shadow: 0 4px 12px rgba(0,0,0,0.3);';
+		
+		// Add error handler for broken images
+		element.onerror = function() {
+		  this.style.display = 'none';
+		  const fallback = document.createElement('div');
+		  fallback.style = 'width: 120px; height: 90px; border-radius: 8px; background: var(--soft-blue); display: flex; align-items: center; justify-content: center; margin: 0.75rem auto; box-shadow: 0 2px 8px rgba(0,0,0,0.2);';
+		  fallback.innerHTML = '<span style="font-size: 2rem;">🎵</span>';
+		  this.parentNode.insertBefore(fallback, this.nextSibling);
+		};
+	  } else if (track.isCut) {
+		element = document.createElement('div');
+		element.style = 'width: 120px; height: 90px; border-radius: 8px; background: var(--gold-accent); display: flex; align-items: center; justify-content: center; margin: 0.75rem auto; box-shadow: 0 2px 8px rgba(0,0,0,0.2);';
+		element.innerHTML = '<span style="font-size: 2rem;">📢</span>';
+	  } else {
+		element = document.createElement('div');
+		element.style = 'width: 120px; height: 90px; border-radius: 8px; background: var(--soft-blue); display: flex; align-items: center; justify-content: center; margin: 0.75rem auto; box-shadow: 0 2px 8px rgba(0,0,0,0.2);';
+		element.innerHTML = '<span style="font-size: 2rem;">🎵</span>';
+	  }
+	  
+	  // Insert between label and title
+	  if (title) {
+		nowPlaying.insertBefore(element, title);
+		// Update the title text
+		title.textContent = track.title;
+	  }
   }
 
   playCut() {
