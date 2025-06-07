@@ -92,28 +92,39 @@ class RadioStation {
   }
 
   setStation(station) {
-	 if (!this.playlists[station]) return;
-	 
-	 this.currentStation = station;
-	 this.currentPlaylist = this.shufflePlaylist([...this.playlists[station]]);
-	 this.currentIndex = 0;
-	 this.songsSinceCut = 0;
-	 
-	 // Ensure we have a valid playlist before getting tracks
-	 if (this.currentPlaylist.length === 0) return;
-	 
-	 // Get the current track AFTER playlist is set
-	 const currentTrack = this.getCurrentTrack();
-	 const upNext = this.getUpNext();
-	 
-	 // Update UI
-	 if (this.onTrackChange && currentTrack) {
-	   const upNext = this.getUpNext();
-	   this.onTrackChange(currentTrack, upNext);
-	 }
-	 
-	 // Update album artwork
-	 this.updateAlbumArt(currentTrack);
+    if (!this.playlists[station]) return;
+    
+    // Stop current playback if playing
+    const wasPlaying = this.isPlaying;
+    if (this.isPlaying && this.audio) {
+      this.audio.pause();
+      this.isPlaying = false;
+    }
+    
+    this.currentStation = station;
+    this.currentPlaylist = this.shufflePlaylist([...this.playlists[station]]);
+    this.currentIndex = 0;
+    this.songsSinceCut = 0;
+    
+    // Ensure we have a valid playlist before getting tracks
+    if (this.currentPlaylist.length === 0) return;
+    
+    // Get the current track AFTER playlist is set
+    const currentTrack = this.getCurrentTrack();
+    const upNext = this.getUpNext();
+    
+    // Update UI
+    if (this.onTrackChange && currentTrack) {
+      this.onTrackChange(currentTrack, upNext);
+    }
+    
+    // Update album artwork
+    this.updateAlbumArt(currentTrack);
+    
+    // If it was playing, start playing the new station
+    if (wasPlaying) {
+      this.play();
+    }
   }
 
   shufflePlaylist(array) {
