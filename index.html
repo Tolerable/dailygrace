@@ -3687,28 +3687,28 @@
 	    const modal = document.getElementById('detail-modal');
 	    const modalBody = document.getElementById('modal-body');
 	    
-	    modalBody.innerHTML = `
-	  	<div class="guidance-interface">
-	  	  <h3>Spiritual Guidance Session</h3>
-	  	  <p class="devotion-date">${new Date(session.date).toLocaleDateString()}</p>
-	  	  
-	  	  <div style="margin: 1.5rem 0;">
-	  		<h4 style="color: var(--sage-green); margin-bottom: 0.5rem;">What you shared:</h4>
-	  		<p style="background: var(--warm-cream); padding: 1rem; border-radius: 8px; font-style: italic;">
-	  		  "${session.question}"
-	  		</p>
-	  	  </div>
-	  	  
-	  	  <div>
-	  		<h4 style="color: var(--sage-green); margin-bottom: 0.5rem;">Biblical encouragement:</h4>
-	  		<div class="response-content">${session.response}</div>
-	  	  </div>
-	  	  
-	  	  <button class="btn btn-accent mt-2" onclick="app.playGuidanceAudio(\`${session.response.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`)">
-	  		🎧 Listen to Response
-	  	  </button>
-	  	</div>
-	    `;
+		modalBody.innerHTML = `
+		  <div class="guidance-interface">
+			<h3>Spiritual Guidance Session</h3>
+			<p class="devotion-date">${new Date(session.date).toLocaleDateString()}</p>
+			
+			<div style="margin: 1.5rem 0;">
+			  <h4 style="color: var(--sage-green); margin-bottom: 0.5rem;">What you shared:</h4>
+			  <p style="background: var(--warm-cream); padding: 1rem; border-radius: 8px; font-style: italic;">
+				"${session.question.replace(/\n/g, ' ')}"
+			  </p>
+			</div>
+			
+			<div>
+			  <h4 style="color: var(--sage-green); margin-bottom: 0.5rem;">Biblical encouragement:</h4>
+			  <div class="response-content">${session.response.replace(/\n/g, '<br>')}</div>
+			</div>
+			
+			<button class="btn btn-accent mt-2" onclick="app.playGuidanceAudio(\`${session.response.replace(/`/g, '\\`').replace(/\$/g, '\\$').replace(/\n/g, ' ')}\`)">
+			  🎧 Listen to Response
+			</button>
+		  </div>
+		`;
 	    
 	    modal.classList.add('active');
 	  }
@@ -4093,10 +4093,10 @@
 					   
 					   <div>
 						   <h4 style="color: var(--sage-green); margin-bottom: 0.5rem;">Biblical encouragement:</h4>
-						   <div class="response-content">${item.response}</div>
+						   <div class="response-content">${item.response.replace(/\n/g, '<br>')}</div>
 					   </div>
 					   
-					   <button class="btn btn-accent mt-2" onclick="app.playGuidanceAudio(\`${item.response.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`)">
+					   <button class="btn btn-accent mt-2" onclick="app.playGuidanceAudio(\`${item.response.replace(/`/g, '\\`').replace(/\$/g, '\\$').replace(/\n/g, ' ')}\`)">
 						   🎧 Listen to Response
 					   </button>
 				   </div>
