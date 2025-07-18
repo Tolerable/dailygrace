@@ -4102,17 +4102,26 @@
 				   </div>
 			   `;
 		   } else {
-			   modalBody.innerHTML = `
-				   <div class="prayer-creator">
-					   <h3>Your Prayer</h3>
-					   <p class="devotion-date">${new Date(item.date).toLocaleDateString()}</p>
-					   <p class="devotion-text" style="margin-top: 1rem;">${item.content}</p>
-					   
-					   <button class="btn btn-accent mt-2" onclick="app.playPrayerAudio('${item.content}')">
-						   🎧 Listen to Prayer
-					   </button>
-				   </div>
-			   `;
+					const audioId = `prayer-audio-${item.id}`;
+					const escapedContent = item.content
+					  .replace(/\\/g, '\\\\')
+					  .replace(/'/g, "\\'")
+					  .replace(/"/g, '\\"')
+					  .replace(/\n/g, '\\n')
+					  .replace(/\r/g, '\\r');
+	  
+					modalBody.innerHTML = `
+					   <div class="prayer-creator">
+						   <h3>Your Prayer</h3>
+						   <p class="devotion-date">${new Date(item.date).toLocaleDateString()}</p>
+						   <p class="devotion-text" style="margin-top: 1rem;">${item.content}</p>
+						   
+						   <button class="btn btn-accent mt-2" onclick="app.toggleMessageAudio('${audioId}', '${escapedContent}', this)">
+							   🎧 Listen to Prayer
+						   </button>
+						   <audio id="${audioId}" preload="none"></audio>
+					   </div>
+					`;
 		   }
 		   
 		   modal.classList.add('active');
