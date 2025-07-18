@@ -3918,7 +3918,7 @@
               const textToRead = transcriptionInstruction + " " + cleanText;
               
               const encodedText = encodeURIComponent(textToRead);
-              const audioUrl = `https://text.pollinations.ai/${encodedText}?model=openai-audio&voice=nova`;
+              const audioUrl = `https://text.pollinations.ai/${encodedText}?model=openai-audio&voice=nova&referrer=dailygrace.online`;
               
               // Create temporary audio player
               const tempAudio = new Audio(audioUrl);
