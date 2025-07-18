@@ -3914,10 +3914,7 @@
                   .trim();
               
               // Use the EXACT same format as the working transcribe.html
-              const transcriptionInstruction = "READ THIS TEXT VERBATIM WITHOUT ANY COMMENTARY OR RESPONSE:";
-              const textToRead = transcriptionInstruction + " " + cleanText;
-              
-              const encodedText = encodeURIComponent(textToRead);
+			  const encodedText = encodeURIComponent(cleanText);
               const audioUrl = `https://text.pollinations.ai/${encodedText}?model=openai-audio&voice=nova&referrer=dailygrace.online`;
               
               // Create temporary audio player
