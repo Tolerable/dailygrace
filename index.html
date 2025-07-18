@@ -3527,7 +3527,7 @@
 	    
 	    const seed = Math.floor(Math.random() * 10000);
 	    const encodedText = encodeURIComponent(cleanText);
-	    const audioUrl = `https://text.pollinations.ai/${encodedText}?model=openai-audio&voice=nova&seed=${seed}`;
+	    const audioUrl = `https://text.pollinations.ai/${encodedText}?model=openai-audio&voice=nova&seed=${seed}&referrer=dailygrace.online`;
 	    
 	    audio.src = audioUrl;
 	    return audioUrl;
