@@ -2741,7 +2741,7 @@
 		passage.lastSeed = seed; // Store the seed for this passage
 		
 		const encodedText = encodeURIComponent(textToRead);
-		const audioUrl = `https://text.pollinations.ai/${encodedText}?model=openai-audio&voice=nova&seed=${seed}`;
+		const audioUrl = `https://text.pollinations.ai/${encodedText}?model=openai-audio&voice=nova&seed=${seed}&referrer=dailygrace.online`;
 		
 		audio.src = audioUrl;
 		
