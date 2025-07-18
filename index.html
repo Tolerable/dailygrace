@@ -3523,14 +3523,10 @@
 	    let cleanText = text
 	  	.replace(/\n/g, ' ')
 	  	.replace(/\s+/g, ' ')
-	  	.replace(/([.!?])\s+/g, '$1\n')
 	  	.trim();
 	    
-	    const transcriptionInstruction = "READ THIS TEXT VERBATIM WITHOUT ANY COMMENTARY OR RESPONSE:";
-	    const textToRead = transcriptionInstruction + " " + cleanText;
-	    
 	    const seed = Math.floor(Math.random() * 10000);
-	    const encodedText = encodeURIComponent(textToRead);
+	    const encodedText = encodeURIComponent(cleanText);
 	    const audioUrl = `https://text.pollinations.ai/${encodedText}?model=openai-audio&voice=nova&seed=${seed}`;
 	    
 	    audio.src = audioUrl;
