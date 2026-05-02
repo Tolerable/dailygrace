@@ -559,7 +559,7 @@
     /* Action Grid */
 	.action-grid {
 	  display: grid;
-	  grid-template-columns: repeat(3, 1fr);
+	  grid-template-columns: repeat(2, 1fr);
 	  gap: 1.5rem;
 	  margin: 2rem 0;
 	}
@@ -1661,7 +1661,15 @@
       <div class="welcome-section">
         <h1 class="time-greeting" id="time-greeting">Welcome to Daily Grace</h1>
         <p id="time-message">Find peace and inspiration in God's word</p>
-        
+
+        <!-- Voice chooser for read-aloud (English voices only). Saves to localStorage. -->
+        <div id="voice-chooser-row" style="text-align:center;margin:0.75rem 0 1rem;font-size:0.9rem;opacity:0.85">
+          <label for="dg-voice-select" style="margin-right:0.5rem">Read-aloud voice:</label>
+          <select id="dg-voice-select" onchange="(function(s){try{localStorage.setItem('dg_voice_name',s.value);}catch(e){}})(this)" style="padding:4px 8px;border-radius:6px;background:#0f172a;color:#e2e8f0;border:1px solid #334155">
+            <option value="">(browser default)</option>
+          </select>
+        </div>
+
         <div class="daily-verse" id="daily-verse">
           <p class="scripture-reference">Loading today's verse...</p>
           <p class="devotion-text"></p>
@@ -2026,7 +2034,7 @@
       
 		<div class="btn-group text-center">
 		  <button class="btn btn-secondary" onclick="app.filterHistory('all')">All</button>
-		  <button class="btn btn-secondary" onclick="app.filterHistory('devotion')">Reflections</button>
+		  <button class="btn btn-secondary" onclick="app.filterHistory('devotion')">Devotions</button>
 		</div>
       
       <div id="history-container" class="history-grid"></div>
@@ -2151,14 +2159,29 @@
       }
       const synth = window.speechSynthesis;
       const u = new SpeechSynthesisUtterance(String(text || '').trim());
-      // Pick a decent voice — prefer well-known good ones, fall back to first en-US
-      const voices = synth.getVoices() || [];
-      const preferred =
-        voices.find(function(v){ return /samantha|aria|jenny|natural|neural/i.test(v.name); }) ||
-        voices.find(function(v){ return v.lang && v.lang.toLowerCase().indexOf('en-us') === 0; }) ||
-        voices.find(function(v){ return v.lang && v.lang.toLowerCase().indexOf('en') === 0; }) ||
-        voices[0];
+      // Voice selection — strictly English. If the user picked a voice via
+      // the in-page chooser, honour it. Otherwise filter the available
+      // voices to en-* only, prefer en-US, and never silently fall back to
+      // a non-English voice. If no English voice exists at all, leave
+      // u.voice unset so the browser uses its system default.
+      const voices = (synth.getVoices() || []);
+      const enVoices = voices.filter(function(v){
+        return v && v.lang && /^en[-_]?/i.test(v.lang);
+      });
+      let preferred = null;
+      try {
+        const savedName = localStorage.getItem('dg_voice_name');
+        if (savedName) preferred = enVoices.find(function(v){ return v.name === savedName; }) || null;
+      } catch(e){}
+      if (!preferred && enVoices.length) {
+        preferred =
+          enVoices.find(function(v){ return /samantha|aria|jenny|natural|neural|english/i.test(v.name); }) ||
+          enVoices.find(function(v){ return v.lang && v.lang.toLowerCase().indexOf('en-us') === 0; }) ||
+          enVoices[0];
+      }
       if (preferred) u.voice = preferred;
+      // u.lang as a final hint if browser ignores u.voice
+      u.lang = (preferred && preferred.lang) || 'en-US';
       u.rate = opts.rate || 0.95;
       u.pitch = opts.pitch || 1.0;
       u.volume = opts.volume != null ? opts.volume : 1.0;
@@ -2192,10 +2215,38 @@
         isSpeaking: function(){ return synth.speaking; },
       };
     }
-    // Some browsers populate voices asynchronously; nudging once at load
-    // makes the first speak() less likely to use the default Microsoft voice.
+    // Populate the voice-chooser dropdown with English voices only and
+    // restore any saved selection. Voices load asynchronously in some
+    // browsers, so we re-run on the onvoiceschanged event.
+    function populateDgVoiceChooser() {
+      if (!('speechSynthesis' in window)) return;
+      const sel = document.getElementById('dg-voice-select');
+      if (!sel) return;
+      const voices = window.speechSynthesis.getVoices() || [];
+      const enVoices = voices.filter(function(v){ return v && v.lang && /^en[-_]?/i.test(v.lang); });
+      const saved = (function(){ try { return localStorage.getItem('dg_voice_name') || ''; } catch(e){ return ''; } })();
+      sel.innerHTML = '<option value="">(browser default)</option>' +
+        enVoices.map(function(v){
+          const label = v.name + (v.lang ? ' (' + v.lang + ')' : '');
+          const safeName = v.name.replace(/"/g, '&quot;');
+          return '<option value="' + safeName + '"' + (v.name === saved ? ' selected' : '') + '>' + label + '</option>';
+        }).join('');
+      if (!enVoices.length) {
+        const row = document.getElementById('voice-chooser-row');
+        if (row) row.style.display = 'none';
+      }
+    }
     if ('speechSynthesis' in window) {
-      window.speechSynthesis.onvoiceschanged = function(){ window.speechSynthesis.getVoices(); };
+      window.speechSynthesis.onvoiceschanged = function(){
+        window.speechSynthesis.getVoices();
+        populateDgVoiceChooser();
+      };
+      // Also populate after DOM is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', populateDgVoiceChooser);
+      } else {
+        setTimeout(populateDgVoiceChooser, 0);
+      }
     }
 
     // Enhanced Daily Grace App
@@ -3747,30 +3798,31 @@
 	  		this.radioAudio.pause();
 	  		document.getElementById('radio-play-btn').textContent = '▶️';
 	  	}
-	  	const audio = document.getElementById(`audio-${id}`);
-	  	const playBtn = event.target;
+	  	// Find the play button reliably (don't rely on event.target — child
+	  	// elements clicked inside the button would break textContent updates)
+	  	const wrap = document.getElementById(`devotion-audio-${id}`);
+	  	const playBtn = wrap ? wrap.querySelector('.play-button') : null;
+	  	const READ_LABEL = '🔊 Read aloud';
+	  	const STOP_LABEL = '⏹ Stop';
 	  	// Toggle: if speech is currently playing for THIS item, stop it.
 	  	if (this._currentSpeechId === id && window.speechSynthesis && window.speechSynthesis.speaking) {
-	  		window.speechSynthesis.cancel();
+	  		try { window.speechSynthesis.cancel(); } catch(e){}
 	  		this._currentSpeechId = null;
-	  		playBtn.textContent = '▶️';
+	  		if (playBtn) playBtn.textContent = READ_LABEL;
 	  		return;
 	  	}
-	  	// Otherwise: get the text to speak (from the audio dataset cache, or load it)
-	  	let speakText = audio && audio.dataset ? audio.dataset.speakText : '';
-	  	if (!speakText) {
-	  		const item = await this.getContentById(id);
-	  		if (item) {
-	  			speakText = `${item.topic || item.title || ''}. ${item.content || ''}`;
-	  			if (audio) audio.dataset.speakText = speakText;
-	  		}
-	  	}
-	  	if (!speakText) { return; }
-	  	playBtn.textContent = '⏸️';
+	  	// Always fetch the latest content from indexedDB so text is fresh
+	  	// (no stale dataset attribute, no missing audio element issues)
+	  	const item = await this.getContentById(id);
+	  	if (!item) return;
+	  	const speakText = String(((item.topic || item.title || '') + '. ' + (item.content || '')))
+	  	    .replace(/\s+/g, ' ').trim();
+	  	if (!speakText) return;
 	  	this._currentSpeechId = id;
+	  	if (playBtn) playBtn.textContent = STOP_LABEL;
 	  	speakWithBrowser(speakText, { onend: () => {
 	  		if (this._currentSpeechId === id) this._currentSpeechId = null;
-	  		playBtn.textContent = '▶️';
+	  		if (playBtn) playBtn.textContent = READ_LABEL;
 	  	}});
 	  }
 
