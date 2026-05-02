@@ -19,7 +19,7 @@
   <!-- Primary Meta Tags -->
   <title>Daily Grace - Your Personal Devotional Companion</title>
   <meta name="title" content="Daily Grace - Your Personal Devotional Companion">
-  <meta name="description" content="Free daily Christian devotions, AI-powered prayers, spiritual guidance, and peaceful meditation music. Personal devotional companion for your faith journey with Bible-based meditations, interactive prayer tools, and soothing instrumental tracks.">
+  <meta name="description" content="Free daily Christian devotions, scripture-based prayers, reflective journaling, and peaceful meditation music. Personal devotional companion for your faith journey with Bible-based meditations, interactive prayer tools, and soothing instrumental tracks.">
   <meta name="keywords" content="daily devotions, Christian prayers, spiritual meditation, AI ministry, Bible study, faith journey, devotional app, prayer companion, Christian meditation, spiritual guidance, daily Bible verse, Christian devotional, prayer generator, faith-based AI, free devotions, meditation music, peaceful music, worship music, Christian instrumental, relaxation music">
   <meta name="author" content="Daily Grace - AI Ministries">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
@@ -1778,7 +1778,7 @@
                 <textarea 
                     class="prayer-textarea" 
                     id="prayer-input" 
-                    placeholder="Write your prayer here, or use the AI assistant above to help create one based on your needs..."
+                    placeholder="Write your prayer here, or use the helper above to compose one based on your need..."
                 ></textarea>
             </div>
             
@@ -2225,6 +2225,11 @@
     // minimal change. Falls back silently if speechSynthesis isn't
     // available in the browser.
     // ─────────────────────────────────────────────────────────────────
+    // Module-level handle so we can hard-cancel any prior utterance even if
+    // a separate call site queued one. Firefox especially mishandles rapid
+    // cancel→speak — tracking the active utterance ourselves and gating on
+    // synth.speaking eliminates the double-voice bug.
+    var _activeUtterance = null;
     function speakWithBrowser(text, opts) {
       opts = opts || {};
       if (!('speechSynthesis' in window)) {
@@ -2244,10 +2249,29 @@
       u.rate = opts.rate || 0.95;
       u.pitch = opts.pitch || 1.0;
       u.volume = opts.volume != null ? opts.volume : 1.0;
-      if (opts.onend) u.onend = opts.onend;
+      const userOnEnd = opts.onend;
+      u.onend = function(){
+        if (_activeUtterance === u) _activeUtterance = null;
+        if (userOnEnd) userOnEnd();
+      };
       if (opts.onerror) u.onerror = opts.onerror;
-      synth.cancel(); // stop anything currently speaking before queueing the new utterance
-      synth.speak(u);
+      // Hard cancel any running speech first. In Firefox the cancel can
+      // leave a residual utterance queued, so we double-cancel and then
+      // poll until synth.speaking is false before queueing the new one.
+      try { synth.cancel(); } catch(e){}
+      try { synth.cancel(); } catch(e){}
+      _activeUtterance = u;
+      var attempts = 0;
+      function trySpeak(){
+        if (_activeUtterance !== u) return; // superseded by another speak
+        if (synth.speaking && attempts < 20) {
+          attempts++;
+          setTimeout(trySpeak, 50);
+          return;
+        }
+        synth.speak(u);
+      }
+      setTimeout(trySpeak, 100);
       return {
         play: function(){ synth.resume(); },
         pause: function(){ synth.pause(); },
@@ -3417,8 +3441,8 @@
           "Today's reflection: " + prompt + "\n\n" +
           "Sit with the verse and the question for a few unhurried minutes. Let it shape the next thing you do.\n\n" +
           closing;
-        // No remote image; reuse a locally-bundled icon as the placeholder
-        return { topic, content, imageUrl: 'img/DailyGrace.jpg', scripture: v.ref };
+        // No image — devotion display will skip rendering when imageUrl is empty
+        return { topic, content, imageUrl: '', scripture: v.ref };
       }
 
       // Stubs preserved so any external call site that still references
@@ -3429,26 +3453,23 @@
 
       displayDevotion(devotion) {
         const container = document.getElementById('devotion-container');
+        // Only render an image if it's a real bundled photo asset (not the
+        // site's own logo/placeholder, and not empty).
+        const isRealImage = devotion.imageUrl && /^img\/(?!DailyGrace\.jpg)/.test(devotion.imageUrl);
+        const imgHtml = isRealImage ? `<img src="${devotion.imageUrl}" alt="${devotion.topic}" class="devotion-image" />` : '';
         container.innerHTML = `
           <div class="devotion-card">
 			<div class="devotion-header">
               <h3>${devotion.topic}</h3>
               <span class="devotion-date">${new Date(devotion.date).toLocaleDateString()}</span>
             </div>
-            
-            <img src="${devotion.imageUrl}" alt="${devotion.topic}" class="devotion-image" />
-            
+            ${imgHtml}
             <div class="devotion-content">
-              <p class="devotion-text">${devotion.content}</p>
+              <p class="devotion-text" style="white-space:pre-wrap">${devotion.content}</p>
             </div>
-            
             <div class="audio-player" id="devotion-audio-${devotion.id}">
               <div class="audio-controls">
-                <button class="play-button" onclick="app.toggleAudio(${devotion.id}, 'devotion')">▶️</button>
-                <div class="progress-container" onclick="app.seekAudio(event, ${devotion.id})">
-                  <div class="progress-bar" id="progress-${devotion.id}"></div>
-                </div>
-                <span class="time-display" id="time-${devotion.id}">0:00 / 0:00</span>
+                <button class="play-button" onclick="app.toggleAudio(${devotion.id}, 'devotion')" title="Read aloud">🔊 Read aloud</button>
               </div>
               <audio id="audio-${devotion.id}" preload="none"></audio>
             </div>
@@ -3813,29 +3834,31 @@
 	  		this.radioAudio.pause();
 	  		document.getElementById('radio-play-btn').textContent = '▶️';
 	  	}
-	  	
 	  	const audio = document.getElementById(`audio-${id}`);
 	  	const playBtn = event.target;
-	  	
-	  	if (!audio.src) {
-	  		const item = await this.getContentById(id);
-	  		await this.preloadAudio(item);
-	  	}
-	  	
-	  	if (this.currentAudio && this.currentAudio !== audio) {
-	  		this.currentAudio.pause();
-	  		this.currentAudio.parentElement.querySelector('.play-button').textContent = '▶️';
-	  	}
-	  	
-	  	if (audio.paused) {
-	  		audio.play();
-	  		playBtn.textContent = '⏸️';
-	  		this.currentAudio = audio;
-	  		this.setupAudioListeners(audio, id);
-	  	} else {
-	  		audio.pause();
+	  	// Toggle: if speech is currently playing for THIS item, stop it.
+	  	if (this._currentSpeechId === id && window.speechSynthesis && window.speechSynthesis.speaking) {
+	  		window.speechSynthesis.cancel();
+	  		this._currentSpeechId = null;
 	  		playBtn.textContent = '▶️';
+	  		return;
 	  	}
+	  	// Otherwise: get the text to speak (from the audio dataset cache, or load it)
+	  	let speakText = audio && audio.dataset ? audio.dataset.speakText : '';
+	  	if (!speakText) {
+	  		const item = await this.getContentById(id);
+	  		if (item) {
+	  			speakText = `${item.topic || item.title || ''}. ${item.content || ''}`;
+	  			if (audio) audio.dataset.speakText = speakText;
+	  		}
+	  	}
+	  	if (!speakText) { return; }
+	  	playBtn.textContent = '⏸️';
+	  	this._currentSpeechId = id;
+	  	speakWithBrowser(speakText, { onend: () => {
+	  		if (this._currentSpeechId === id) this._currentSpeechId = null;
+	  		playBtn.textContent = '▶️';
+	  	}});
 	  }
 
       setupAudioListeners(audio, id) {
