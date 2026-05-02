@@ -20,7 +20,7 @@
   <title>Daily Grace - Your Personal Devotional Companion</title>
   <meta name="title" content="Daily Grace - Your Personal Devotional Companion">
   <meta name="description" content="Free daily Christian devotions, scripture-based prayers, reflective journaling, and peaceful meditation music. Personal devotional companion for your faith journey with Bible-based meditations, interactive prayer tools, and soothing instrumental tracks.">
-  <meta name="keywords" content="daily devotions, Christian prayers, spiritual meditation, AI ministry, Bible study, faith journey, devotional app, prayer companion, Christian meditation, spiritual guidance, daily Bible verse, Christian devotional, prayer generator, faith-based AI, free devotions, meditation music, peaceful music, worship music, Christian instrumental, relaxation music">
+  <meta name="keywords" content="daily devotions, Christian prayers, spiritual meditation, Bible study, faith journey, devotional app, prayer companion, Christian meditation, spiritual guidance, daily Bible verse, Christian devotional, free devotions, meditation music, peaceful music, worship music, Christian instrumental, relaxation music">
   <meta name="author" content="Daily Grace - AI Ministries">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
   <meta name="language" content="English">
@@ -38,7 +38,7 @@
   <meta property="og:locale" content="en_US">
   <meta property="og:url" content="https://dailygrace.eztunes.xyz/">
   <meta property="og:title" content="Daily Grace - Your Personal Devotional Companion">
-  <meta property="og:description" content="Free daily Christian devotions, AI-powered prayers, spiritual guidance, and peaceful meditation music. Personal devotional companion for your faith journey with Bible-based meditations, interactive prayer tools, and soothing tracks.">
+  <meta property="og:description" content="Free daily Christian devotions, scripture reflections, and peaceful meditation music. Personal devotional companion for your faith journey with Bible-based meditations and soothing tracks.">
   <meta property="og:image" content="https://dailygrace.eztunes.xyz/img/DailyGrace.jpg?v=4">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -51,14 +51,14 @@
   <meta name="twitter:creator" content="@dailygrace">
   <meta name="twitter:url" content="https://dailygrace.eztunes.xyz/">
   <meta name="twitter:title" content="Daily Grace - Your Personal Devotional Companion">
-  <meta name="twitter:description" content="Free daily Christian devotions, AI-powered prayers, spiritual guidance, and peaceful meditation music. Personal devotional companion for your faith journey with Bible-based meditations, interactive prayer tools, and soothing tracks.">
+  <meta name="twitter:description" content="Free daily Christian devotions, scripture reflections, and peaceful meditation music. Personal devotional companion for your faith journey with Bible-based meditations and soothing tracks.">
   <meta name="twitter:image" content="https://dailygrace.eztunes.xyz/img/DailyGrace.jpg?v=4">
   <meta name="twitter:image:alt" content="Daily Grace - Christian Devotional App">
   
   <!-- Discord -->
   <meta name="discord:card" content="summary_large_image">
   <meta name="discord:title" content="Daily Grace - Your Personal Devotional Companion">
-  <meta name="discord:description" content="Free daily Christian devotions, AI-powered prayers, spiritual guidance, and peaceful meditation music.">
+  <meta name="discord:description" content="Free daily Christian devotions, scripture reflections, and peaceful meditation music.">
   <meta name="discord:image" content="https://dailygrace.eztunes.xyz/img/DailyGrace.jpg?v=4">
   
   <!-- Apple/Mobile Meta -->
@@ -74,7 +74,7 @@
 	  "@type": "WebSite",
 	  "name": "Daily Grace",
 	  "alternateName": "Daily Grace Devotional",
-	  "description": "Free daily Christian devotions, AI-powered prayers, spiritual guidance, and peaceful meditation music. Personal devotional companion for your faith journey.",
+	  "description": "Free daily Christian devotions, scripture reflections, and peaceful meditation music. Personal devotional companion for your faith journey.",
 	  "url": "https://dailygrace.eztunes.xyz",
 	  "image": "https://dailygrace.eztunes.xyz/img/DailyGrace.jpg",
 	  "publisher": {
@@ -101,7 +101,7 @@
 			"itemOffered": {
 			  "@type": "Service",
 			  "name": "Daily Devotions",
-			  "description": "AI-generated Christian devotions and Bible verses"
+			  "description": "Daily Christian devotions and Bible verses"
 			}
 		  },
 		  {
@@ -117,7 +117,7 @@
 			"itemOffered": {
 			  "@type": "Service",
 			  "name": "Audio Bible",
-			  "description": "AI narrated Bible readings and verses"
+			  "description": "Bible readings and verses with read-aloud audio"
 			}
 		  },
 		  {
@@ -1640,52 +1640,15 @@
 		<ul class="nav-menu">
 		  <li><a onclick="app.showSection('home')">Home</a></li>
 		  <li><a onclick="app.showSection('devotions')">Devotions</a></li>
-		  <li><a onclick="app.showSection('prayers')">Prayers</a></li>
 		  <li><a onclick="app.showSection('music')">Peaceful Music</a></li>
 		  <li><a onclick="app.showSection('bible')">Audio Bible</a></li>
-  		  <li><a onclick="app.showSection('guidance')">Guidance</a></li>
 		  <li><a onclick="app.showSection('history')">My Journey</a></li>
 		</ul>
     </nav>
   </header>
 
-  <!-- Spiritual Guidance Section -->
-  <section id="guidance-section" class="section">
-    <h2 class="text-center mb-2">Spiritual Guidance</h2>
-    <p class="text-center" style="margin-bottom: 2rem; opacity: 0.8;">
-      Share what's on your heart and receive biblical wisdom and encouragement
-    </p>
-    
-    <!-- Chat Interface -->
-    <div class="chat-container">
-      <div class="chat-messages" id="chat-messages">
-        <div class="welcome-message">
-          <div class="message bot-message">
-            <div class="message-content">
-              <p>🕊️ Welcome to your spiritual guidance companion. I'm here to listen with compassion and share biblical wisdom. What's on your heart today?</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="chat-input-area">
-        <div class="input-container">
-			<textarea 
-			  class="chat-input" 
-			  id="guidance-input" 
-			  placeholder="Share your struggles, doubts, questions, or any burden you're carrying...
-			Please remember, NEVER share personal identifying information."
-			  rows="3"
-			></textarea>
-          <button class="send-button" onclick="app.seekGuidance()" id="send-btn">
-            <span class="send-icon">📤</span>
-            Send
-          </button>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Recent Sessions -->
+  <!-- Spiritual Guidance section removed: feature relied on AI that no longer runs -->
+  <section id="guidance-section" class="section" style="display:none">
     <div class="recent-sessions" id="guidance-history-section" style="display: none;">
       <h3 style="text-align: center; margin: 2rem 0 1rem 0;">Recent Guidance Sessions</h3>
       <div id="guidance-history" class="history-grid"></div>
@@ -1711,12 +1674,6 @@
 		  	<p class="action-description">Receive a fresh word from the Lord</p>
 		  </div>
           
-          <div class="action-card" onclick="app.showSection('prayers'); app.showPrayerCreator()">
-            <div class="action-icon">🙏</div>
-            <h3 class="action-title">Write a Prayer</h3>
-            <p class="action-description">Express your heart to God</p>
-          </div>
-          
           <div class="action-card" onclick="app.showSection('history')">
             <div class="action-icon">📖</div>
             <h3 class="action-title">My Journey</h3>
@@ -1732,15 +1689,8 @@
 		  <div class="action-card" onclick="app.showSection('bible')">
 			<div class="action-icon">📖</div>
 			<h3 class="action-title">Audio Bible</h3>
-			<p class="action-description">Listen to God's Word with AI narration</p>
+			<p class="action-description">Listen to God's Word read aloud</p>
 		  </div>
-
-		  <div class="action-card" onclick="app.showSection('guidance')">
-			<div class="action-icon">🤝</div>
-			<h3 class="action-title">Spiritual Guidance</h3>
-			<p class="action-description">Share your heart and receive biblical wisdom</p>
-		  </div>
-		  
         </div>
       </div>
     </section>
@@ -1757,43 +1707,8 @@
 	</section>
 
     <!-- Prayers Section -->
-    <section id="prayers-section" class="section">
-        <h2 class="text-center mb-2">Prayer Corner</h2>
-        
-        <div class="prayer-creator" id="prayer-creator">
-            <div class="prayer-request-section">
-                <label class="section-label">What would you like to pray about?</label>
-                <textarea 
-                    class="prayer-request-input" 
-                    id="prayer-request-input" 
-                    placeholder="Share your heart... (e.g., 'Help me pray for rain and good harvests' or 'I need strength during a difficult time')"
-                ></textarea>
-                <button class="btn btn-secondary mt-2" onclick="app.requestPrayerHelp()">
-                    ✨ Create Prayer from My Request
-                </button>
-            </div>
-            
-            <div>
-                <label class="section-label">Your Prayer</label>
-                <textarea 
-                    class="prayer-textarea" 
-                    id="prayer-input" 
-                    placeholder="Write your prayer here, or use the helper above to compose one based on your need..."
-                ></textarea>
-            </div>
-            
-            <div class="btn-group">
-                <button class="btn btn-primary" onclick="app.savePrayer()">
-                    💾 Save Prayer
-                </button>
-                <button class="btn btn-accent" onclick="app.listenToPrayer()">
-                    🎧 Listen to Prayer
-                </button>
-            </div>
-        </div>
-        
-        <div id="saved-prayers" class="history-grid mt-2"></div>
-    </section>
+    <!-- Prayer Corner section removed entirely: no prayer creation, no saved prayers display -->
+    <section id="prayers-section" class="section" style="display:none"></section>
 
 	<!-- Peaceful Music Section -->
 	<section id="music-section" class="section">
@@ -2031,7 +1946,7 @@
 	<section id="bible-section" class="section">
 	  <h2 class="text-center mb-2">Audio Bible</h2>
 	  <p class="text-center" style="margin-bottom: 2rem; opacity: 0.8;">
-		Listen to God's Word with AI narration
+		Listen to God's Word read aloud
 	  </p>
 	  
 	  <!-- Bible Version Selector -->
@@ -2111,9 +2026,7 @@
       
 		<div class="btn-group text-center">
 		  <button class="btn btn-secondary" onclick="app.filterHistory('all')">All</button>
-		  <button class="btn btn-secondary" onclick="app.filterHistory('devotion')">Devotions</button>
-		  <button class="btn btn-secondary" onclick="app.filterHistory('prayer')">Prayers</button>
-		  <button class="btn btn-secondary" onclick="app.filterHistory('guidance')">Guidance</button>
+		  <button class="btn btn-secondary" onclick="app.filterHistory('devotion')">Reflections</button>
 		</div>
       
       <div id="history-container" class="history-grid"></div>
@@ -2444,13 +2357,13 @@
 	  	  
 	  	  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Use of Service</h3>
 	  	  <p style="line-height: 1.6; margin-bottom: 1rem;">
-	  		Daily Grace is intended for personal devotional use. The AI-generated content is meant to 
+	  		Daily Grace is intended for personal devotional use. The reflections are meant to
 	  		inspire and supplement your personal relationship with God, not replace biblical study or pastoral guidance.
 	  	  </p>
 	  	  
 	  	  <h3 style="color: var(--sage-green); margin: 1.5rem 0 1rem 0;">Content Disclaimer</h3>
 	  	  <p style="line-height: 1.6; margin-bottom: 1rem;">
-	  		While we strive for biblical accuracy, AI-generated content should be considered supplementary. 
+	  		While we strive for biblical accuracy, the daily reflections should be considered supplementary.
 	  		Always verify spiritual guidance with scripture and trusted spiritual advisors.
 	  	  </p>
 	  	  
@@ -4320,7 +4233,7 @@
 			<div>
 				<h4 style="color: var(--gold-accent); margin-bottom: 1rem; font-size: 1.1rem;">Daily Grace</h4>
 				<p style="font-size: 0.9rem; opacity: 0.9; line-height: 1.6;">
-					Your personal devotional companion, providing AI-powered Christian meditations, prayers, spiritual guidance, and peaceful meditation music. Connecting hearts to God through technology and faith. Whether you're seeking daily inspiration, biblical wisdom, or moments of quiet reflection, our platform offers personalized content to deepen your spiritual journey and strengthen your relationship with Christ.
+					Your personal devotional companion, offering Christian scripture reflections, daily verses, and peaceful meditation music. Connecting hearts to God through quiet, scripture-grounded content. Whether you're seeking daily inspiration, biblical wisdom, or moments of quiet reflection, our pages offer simple, calm content to deepen your spiritual journey.
 				</p>
 			</div>
 
@@ -4336,7 +4249,7 @@
 			<div>
 				<h4 style="color: var(--gold-accent); margin-bottom: 1rem; font-size: 1.1rem;">Support</h4>
 				<p style="font-size: 0.85rem; opacity: 0.8; line-height: 1.5; margin-bottom: 1rem;">
-					If you've been blessed by this ministry and would like to help, any contribution is gratefully received and appreciated. Your generosity helps us continue expanding our AI-powered spiritual resources and reaching more hearts worldwide. Donations are processed through our parent ministry,  
+					If you've been blessed by this ministry and would like to help, any contribution is gratefully received and appreciated. Your generosity helps us continue expanding our spiritual resources and reaching more hearts. Donations are processed through our parent ministry,  
 					<a href="https://ai-ministries.com" target="_blank" rel="noopener" 
 					   style="color: var(--gold-accent); text-decoration: none;">AI-Ministries.com</a>, which supports multiple AI based projects dedicated to serving the body of Christ.
 				</p>
