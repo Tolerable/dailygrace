@@ -16,3 +16,5 @@ secrets.json
 sandbox_versions/
 _archive/
 _backup*/
+*.bak
+*.bak-*
