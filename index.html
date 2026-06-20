@@ -116,8 +116,8 @@
 			"@type": "Offer",
 			"itemOffered": {
 			  "@type": "Service",
-			  "name": "Audio Bible",
-			  "description": "Bible readings and verses with read-aloud audio"
+			  "name": "Holy Bible App",
+			  "description": "A free, offline Bible app with natural read-aloud (KJV, ASV, ERV)"
 			}
 		  },
 		  {
@@ -1641,7 +1641,7 @@
 		  <li><a onclick="app.showSection('home')">Home</a></li>
 		  <li><a onclick="app.showSection('devotions')">Devotions</a></li>
 		  <li><a onclick="app.showSection('music')">Peaceful Music</a></li>
-		  <li><a onclick="app.showSection('bible')">Audio Bible</a></li>
+		  <li><a onclick="app.showSection('bible')">Bible App</a></li>
 		  <li><a onclick="app.showSection('history')">My Journey</a></li>
 		</ul>
     </nav>
@@ -1696,8 +1696,8 @@
 
 		  <div class="action-card" onclick="app.showSection('bible')">
 			<div class="action-icon">📖</div>
-			<h3 class="action-title">Audio Bible</h3>
-			<p class="action-description">Listen to God's Word read aloud</p>
+			<h3 class="action-title">Holy Bible App</h3>
+			<p class="action-description">Our free, offline Bible with natural read-aloud</p>
 		  </div>
         </div>
       </div>
@@ -1950,82 +1950,28 @@
 	  </div>
 	</section>
 
-	<!-- Bible Audio Section -->
+	<!-- Bible App Section (replaces the old in-page audio reader) -->
 	<section id="bible-section" class="section">
-	  <h2 class="text-center mb-2">Audio Bible</h2>
-	  <p class="text-center" style="margin-bottom: 2rem; opacity: 0.8;">
-		Listen to God's Word read aloud
+	  <h2 class="text-center mb-2">The Holy Bible — Free App</h2>
+	  <p class="text-center" style="margin-bottom: 2rem; opacity: 0.85;">
+		For reading and listening, we built a free, offline Bible app with a
+		natural read-aloud voice — far better than a browser can do.
 	  </p>
-	  
-	  <!-- Bible Version Selector -->
-	  <div class="bible-controls" id="bible-controls">
-		<div class="version-selector">
-		  <label class="section-label">Bible Version:</label>
-		  <select id="bible-version" onchange="app.loadBibleBooks()">
-			<option value="kjv">King James Version (KJV)</option>
-			<option value="asv">American Standard Version (ASV)</option>
-			<option value="ylt">Young's Literal Translation (YLT)</option>
-			<option value="lxx">Septuagint (LXX)</option>
-		  </select>
-		</div>
-		
-		<!-- Book Selector -->
-		<div class="book-selector">
-		  <label class="section-label">Book:</label>
-		  <select id="bible-book" onchange="app.loadChapters()">
-			<option value="">Select a Book</option>
-		  </select>
-		</div>
-		
-		<!-- Chapter Selector -->
-		<div class="chapter-selector">
-		  <label class="section-label">Chapter:</label>
-		  <select id="bible-chapter" onchange="app.loadVerses()">
-			<option value="">Select Chapter</option>
-		  </select>
+
+	  <div class="action-card" style="max-width: 520px; margin: 0 auto; text-align: center; cursor: default;">
+		<div class="action-icon" style="font-size: 3rem;">📖</div>
+		<h3 class="action-title">Holy Bible</h3>
+		<p class="action-description">
+		  King James, American Standard &amp; English Revised — with read-aloud,
+		  full-text search, illustrated books, and prayers. No account, no ads,
+		  works completely offline once installed.
+		</p>
+		<div style="margin-top: 1.5rem;">
+		  <a class="btn btn-primary" href="https://bibleapk.ai-ministries.com/" target="_blank" rel="noopener">
+			Get the free Bible app →
+		  </a>
 		</div>
 	  </div>
-	  
-	  <!-- Reading Mode Options -->
-	  <div class="reading-mode" id="bible-instructions">
-		<h3>What would you like to listen to?</h3>
-		<div class="mode-buttons">
-		  <button class="btn btn-secondary" onclick="app.setReadingMode('verse')">Individual Verses</button>
-		  <button class="btn btn-secondary" onclick="app.setReadingMode('chapter')">Entire Chapter</button>
-		  <button class="btn btn-secondary" onclick="app.setReadingMode('book')">Entire Book</button>
-		</div>
-	  </div>
-	  
-	  <!-- Bible Player -->
-	  <div class="bible-player hidden" id="bible-player">
-		<div class="current-passage">
-		  <h3 id="current-reference">Genesis 1:1</h3>
-		  <p id="current-text">In the beginning God created the heaven and the earth.</p>
-		</div>
-		
-		<div class="bible-audio-controls">
-			<button class="play-button" onclick="app.playCurrentPassage()" id="bible-play-btn">▶️</button>
-			<button class="bible-btn" onclick="app.previousPassage()">⏮️</button>
-			<button class="bible-btn" onclick="app.nextPassage()">⏭️</button>
-			<button class="bible-btn" onclick="app.toggleAutoPlay()" id="auto-play-btn">🔄</button>
-			<button class="bible-btn" onclick="app.redoCurrentPassage()" title="Regenerate audio">🔁</button>
-		</div>
-		
-		<div class="progress-section">
-		  <div class="progress-container">
-			<div class="progress-bar" id="bible-progress"></div>
-		  </div>
-		  <div class="passage-info">
-			<span id="passage-position">Verse 1 of 31</span>
-			<span id="bible-time">0:00 / 0:00</span>
-		  </div>
-		</div>
-		
-		<audio id="bible-audio" preload="none"></audio>
-	  </div>
-	  
-	  <!-- Verse List for Individual Mode -->
-	  <div class="verse-list hidden" id="verse-list"></div>
 	</section>
 
     <!-- History Section -->
@@ -3226,8 +3172,6 @@
 			this.loadSavedPrayers();
 		} else if (sectionName === 'devotions') {
 			this.loadLatestDevotion();
-		} else if (sectionName === 'bible') {
-			this.loadBibleBooks();
 		} else if (sectionName === 'guidance') {
 		  this.loadGuidanceHistory();			
 		}
